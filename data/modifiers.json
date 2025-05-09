@@ -1,0 +1,28 @@
+[
+	{
+		"Modifiers": [
+			{
+				"ID": "basic_strength_mod_0001",
+				"Name": "Basic Strength Enhancement",
+				"TargetProperty": "Strength",
+				"FlatValue": { "x": 1, "y": 2 },
+				"PercentValue": { "x": 0, "y": 0 },
+				"RarityWeight": 1,
+				"RarityTier": "Common",
+				"RarityColor": { "r": 0.667, "g": 1.0, "b": 0.667, "a": 1.0 },
+				"InstanceLimit": -1
+			},
+			{
+				"ID": "basic_dexterity_mod_0002",
+				"Name": "Basic Dexterity Enhancement",
+				"TargetProperty": "Dexterity",
+				"FlatValue": { "x": 2, "y": 3 },
+				"PercentValue": { "x": 0, "y": 0 },
+				"RarityWeight": 1,
+				"RarityTier": "Common",
+				"RarityColor": { "r": 0.533, "g": 0.8, "b": 1.0, "a": 1.0 },
+				"InstanceLimit": -1
+			}
+		]
+	}
+]

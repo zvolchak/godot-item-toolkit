@@ -1,0 +1,40 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="ItemsLibrary"
+config/features=PackedStringArray("4.4", "C#", "Forward Plus")
+config/icon="res://icon.svg"
+
+[dotnet]
+
+project/assembly_name="ItemsLibrary"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/item_kit/plugin.cfg")
+
+[itemkit]
+
+input_path="res://data/item_shapes.json"
+output_path="res://resources/"
+img_dir_path="res://sprites"
+ItemShapeResourceGenerator/input_path="res://data/item_shapes.json"
+{GetType().Name}/output_path="res://resources/modifiers/"
+TexturesResourceGenerator/input_path="res://data/item_images.json"
+PropertyModResourceGenerator/input_path="res://data/modifiers.json"
+ItemShapeResourceGenerator/output_path="res://resources/shapes/"
+TexturesResourceGenerator/output_path="res://resources/images/"
+PropertyModResourceGenerator/output_path="res://resources/modifiers/"
+TexturesResourceGenerator/imgs_dir_path="res://sprites/"
+WeaponResourcesGenerator/input_path="res://data/weapons.json"
+WeaponResourcesGenerator/output_path="res://resources/weapons/"
+ItemShapeResource/output_path="res://resources/shapes/"

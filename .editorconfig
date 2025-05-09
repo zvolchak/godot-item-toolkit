@@ -1,0 +1,45 @@
+root = true
+
+[*]
+charset = utf-8
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.cs]
+# Use spaces for indentation
+indent_style = space
+indent_size = 4
+
+# Set the maximum line length for C# files
+max_line_length = 100
+
+# Braces on the same line for methods, properties, and classes
+csharp_new_line_before_open_brace = none
+
+# Braces on a new line for control blocks (if, for, while, etc.)
+csharp_new_line_before_open_brace_control_blocks = all
+
+# Place `else`, `catch`, and `finally` on the same line as the closing brace
+csharp_new_line_before_else = false
+csharp_new_line_before_catch = false
+csharp_new_line_before_finally = false
+
+# Require a blank line between members (methods, properties, etc.)
+csharp_blank_lines_between_members = true
+
+# No blank lines before or after braces
+csharp_new_line_between_query_expression_clauses = false
+
+# Use `var` when the type is apparent
+csharp_style_var_for_built_in_types = true:suggestion
+csharp_style_var_when_type_is_apparent = true:suggestion
+csharp_style_var_elsewhere = false:suggestion
+
+# Use explicit access modifiers
+dotnet_style_require_accessibility_modifiers = always
+
+# Place `using` directives inside the namespace
+dotnet_sort_system_directives_first = true
+dotnet_separate_import_directive_groups = true

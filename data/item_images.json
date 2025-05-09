@@ -1,0 +1,22 @@
+[
+	{
+		"Images": [
+			{
+				"ID": "sword_preview_001",
+				"Name": "Sword",
+				"Category": "Inventory",
+				"ImagePath": "items/Sword.png"
+			}
+		]
+	},
+	{
+		"Images": [
+			{
+				"ID": "bow_preview_002",
+				"Name": "Bow",
+				"Category": "Inventory",
+				"ImagePath": "items/Crossbow-64x32px.png"
+			}
+		]
+	}
+]
