@@ -5,6 +5,8 @@ using System.Runtime.CompilerServices;
 using System.Runtime.Loader;
 using System.Text.Json;
 
+using Godot;
+
 namespace Gamehound.ItemKit.Editor;
 
 /* This is needed to cleanup Json cache that is used by generator scripts.
@@ -16,23 +18,25 @@ public static class JsonCacheCleaner {
 
     [ModuleInitializer]
     public static void Init() {
-        var asm = typeof(JsonSerializerOptions).Assembly;
-        var handlerType = asm.GetType(
-            "System.Text.Json.JsonSerializerOptionsUpdateHandler"
-        );
-        _clearCacheMethod = handlerType?
-            .GetMethod("ClearCache", BindingFlags.Static | BindingFlags.Public);
-
-        var ctx = AssemblyLoadContext.GetLoadContext(
-            Assembly.GetExecutingAssembly()
-        );
-        ctx.Unloading += OnUnloading;
+        GD.Print("JsonCacheCleaner initializing...");
+        Clear();
     } // Init
 
 
     private static void OnUnloading(AssemblyLoadContext _) {
-        _clearCacheMethod?.Invoke(null, new object[] { null });
+        Clear();
     } // OnUnloading
+
+
+    public static void Clear() {
+        AssemblyLoadContext.GetLoadContext(Assembly.GetExecutingAssembly())!.Unloading += alc =>
+        {
+            var assembly = typeof(JsonSerializerOptions).Assembly;
+            var updateHandlerType = assembly.GetType("System.Text.Json.JsonSerializerOptionsUpdateHandler");
+            var clearCacheMethod = updateHandlerType?.GetMethod("ClearCache", BindingFlags.Static | BindingFlags.Public);
+            clearCacheMethod?.Invoke(null, new object?[] { null });
+        };
+    }
 
 } // JsonCacheCleaner
 

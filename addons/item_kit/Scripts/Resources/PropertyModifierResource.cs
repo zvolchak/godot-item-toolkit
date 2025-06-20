@@ -8,21 +8,12 @@ using Godot.Collections;
 namespace Gamehound.ItemKit.Resources;
 
 
-[Tool]
 [GlobalClass]
+[ScriptPath("res://addons/item_kit/Scripts/Resources/PropertyModifierResource.cs")]
 public partial class PropertyModifierResource :
-Resource,
-IIdentifier,
-IRarityData,
-IPropertyModifier {
-
-    [Export] public string ID { get; set; } = string.Empty;
-
-    [Export] public string Name { get; set; } = string.Empty;
-
-    [Export] public string Category { get; set; } = string.Empty;
-
-    [Export] public string Description { get; set; } = string.Empty;
+    ItemResourceBase<PropertyModifierResource>,
+    IRarityData,
+    IPropertyModifier {
 
     // "Attack Speed", "Damage", "Resist", etc
     [Export] public string TargetProperty { get; set; } = "";
@@ -33,6 +24,7 @@ IPropertyModifier {
     // A range within which a percentage value could be randomized for a Percent bonus.
     [Export] public Vector2 PercentValue { get; set; } = Vector2.Zero;
 
+    // Randomizer factor. Or anything else that makes sense in a context of a game.
     [Export] public int Weight { get; set; } = 1;
 
     [Export] public string Tier { get; set; } = "Normal";
@@ -41,30 +33,4 @@ IPropertyModifier {
 
     [Export] public int InstanceLimit { get; set; } = -1;
 
-
-    public PropertyModifierResource CreateResource(
-        string path,
-        Dictionary<string, Variant> options = null
-    ) {
-        ItemKitUtils.ValidateResource(this, path);
-        // Overwrite the resource ef it exists (by not doing anything with
-        // ValidateResource return value), because why not.
-
-        SetScript(ResourceLoader.Load<Script>(
-            "res://addons/item_kit/Scripts/Resources/PropertyModifierResource.cs"
-        ));
-
-        return this;
-    } // CreateResource
-
-
-    public override string ToString() {
-        return $"[{GetType().Name}]: " +
-            $"[ID={ID}, Name={Name}, Category={Category}, " +
-            $"Description={Description}, TargetProperty={TargetProperty}, " +
-            $"FlatValue={FlatValue}, PercentValue={PercentValue}, " +
-            $"Weight={Weight}, Tier={Tier}, RarityColor={RarityColor}, " +
-            $"InstanceLimit={InstanceLimit}]";
-    } // ToString
-
-} // OffensiveModifierResource
+} // PropertyModifierResource

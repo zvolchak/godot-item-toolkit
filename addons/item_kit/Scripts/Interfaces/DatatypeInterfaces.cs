@@ -25,9 +25,6 @@ public interface IItemData {
     public int Power { get; }
     public int Weight { get; }
 
-    // Minimum level of the character to use this item.
-    public int RequiredLevel { get; }
-
     public RarityResource Rarety { get; }
 
     // Could be useful for filtering items.
@@ -77,10 +74,14 @@ public interface IImageData {
 
 
 public interface IEquippableData {
-    // Slot to which this item can be equiped to (e.g. Chest, Left Hand, Belt, etc)
+    /// <summary>
+    /// Slot to which this item can be equiped to (e.g. Chest, Left Hand, Belt, etc)
+    /// </summary>
     public Array<string> CompatibleSlots { get; }
 
-    // Helps resolve slot conflicts or UI ordering
+    /// <summary>
+    /// Helps resolve slot conflicts or UI ordering
+    /// </summary>
     public int SlotPriority { get; }
 } // IEquippable
 
@@ -147,13 +148,8 @@ public interface ITradeableData {
 * crit chance or damage and etc.
 */
 public interface IPropertyModifier {
-    public string ID { get; }
     // e.g. "MinDamage", "AttackSpeed", "Resist Cold", "Strength", etc
     public string TargetProperty { get; }
     public Vector2 FlatValue { get; }
     public Vector2 PercentValue { get; }
-    public int Weight { get; }
-    public string Tier { get; }
-    public Color RarityColor { get; }
-    public int InstanceLimit { get; }
 } // IPropertyModifier

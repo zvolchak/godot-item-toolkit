@@ -15,9 +15,12 @@
 	],
 	"Power": 15,
 	"Weight": 10,
-	"RequiredLevel": 2,
 	"Tags": ["melee", "sword", "steel"],
 	"StatRequirements": [
+		{
+			"TargetProperty": "Level",
+			"FlatValue": { "x": 2, "y": 2 }
+		},
 		{
 			"TargetProperty": "Strength",
 			"FlatValue": { "x": 10, "y": 10 }
@@ -74,9 +77,12 @@
 	],
 	"Power": 12,
 	"Weight": 6,
-	"RequiredLevel": 3,
 	"Tags": ["ranged", "bow", "oak"],
 	"StatRequirements": [
+		{
+			"TargetProperty": "Level",
+			"FlatValue": { "x": 3, "y": 3 }
+		},
 		{
 			"TargetProperty": "Level",
 			"FlatValue": { "x": 2, "y": 2 }

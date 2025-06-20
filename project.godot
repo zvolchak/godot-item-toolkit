@@ -38,3 +38,11 @@ TexturesResourceGenerator/imgs_dir_path="res://sprites/"
 WeaponResourcesGenerator/input_path="res://data/weapons.json"
 WeaponResourcesGenerator/output_path="res://resources/weapons/"
 ItemShapeResource/output_path="res://resources/shapes/"
+PropertyModifierResource/output_path="res://resources/modifiers/"
+ItemImageResource/output_path="res://resources/images/"
+ItemImageResource/imgs_dir_path="res://sprites/"
+PropertyModResourceGenerator/is_overwrite=true
+
+[mono]
+
+reload_assemblies_on_script_change=false

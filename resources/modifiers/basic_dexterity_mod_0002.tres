@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="PropertyModifierResource" load_steps=2 format=3 uid="uid://b1lasdiep642n"]
+
+[ext_resource type="Script" uid="uid://c4p55sicu2pqs" path="res://addons/item_kit/Scripts/Resources/PropertyModifierResource.cs" id="1_y38b0"]
+
+[resource]
+script = ExtResource("1_y38b0")
+TargetProperty = "Dexterity"
+FlatValue = Vector2(2, 3)
+PercentValue = Vector2(0, 0)
+Weight = 1
+Tier = "Normal"
+RarityColor = Color(0.533, 0.8, 1, 1)
+InstanceLimit = -1
+ID = "basic_dexterity_mod_0002"
+Name = "Basic Dexterity Enhancement"
+Category = ""
+Description = ""

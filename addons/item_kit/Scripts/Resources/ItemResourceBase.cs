@@ -1,7 +1,7 @@
 using Godot;
+using static Godot.ResourceSaver;
 using Gamehound.ItemKit.Interfaces;
 using Gamehound.ItemKit.Editor;
-using static Godot.ResourceSaver;
 
 namespace Gamehound.ItemKit.Resources;
 
@@ -11,7 +11,7 @@ public partial class ItemResourceBase<T> :
     IIdentifier,
     IResourceCreator<T> where T : ItemResourceBase<T>, new() {
 
-    [Export] public string ID { get; set; }
+    [Export] public virtual string ID { get; set; }
     [Export] public virtual string Name { get; set; }
     [Export] public virtual string Category { get; set; }
     [Export(PropertyHint.MultilineText)] public virtual string Description { get; set; }
@@ -26,13 +26,16 @@ public partial class ItemResourceBase<T> :
         ResourceOptions options = null
     ) {
         path = Hook_Preprocess(path: path, options: options);
-        T existingResource = Hook_LoadResource(path: path, options: options);
-        existingResource = Hook_ProcessDuplicate(existingResource, options: options);
-        if (existingResource != null)
-            return existingResource;
+        T resource = Hook_LoadResource(path: path, options: options);
+        resource = Hook_ProcessDuplicate(resource, options: options);
+        if (resource != null)
+            return resource;
+        else
+            resource = this as T;
 
-        Hook_SaveResource(path: path, options: options);
-        return this as T;
+        resource = Hook_SaveResource(resource, path: path, options: options);
+        resource = Hook_Postprocess(resource, path: path, options: options);
+        return resource;
     } // CreateResource
 
 
@@ -62,10 +65,14 @@ public partial class ItemResourceBase<T> :
 
 
     /// <summary>
-    /// Save this resource to the disk into the GetFullPath() location, unless
+    /// Save a resource to the disk into the GetFullPath() location, unless
     /// "path" parameter is set to a different value.
     /// </summary>
+    /// <param name="resource">
+    ///     The resource to save. Typically, this is the current.
+    /// </param>
     public virtual T Hook_SaveResource(
+        T resource,
         string path = null,
         ResourceOptions options = null
     ) {
@@ -73,7 +80,7 @@ public partial class ItemResourceBase<T> :
             path = GetFullPath();
 
         Error result = ResourceSaver.Save(
-            this,
+            resource,
             path,
             SaverFlags.Compress | SaverFlags.OmitEditorProperties
         );
@@ -90,11 +97,11 @@ public partial class ItemResourceBase<T> :
             GD.PushError(errorMsg);
         } else {
             GD.Print($"[{GetType().Name}] created: {path}");
-            GD.Print($" - {this}");
+            GD.Print($" - {resource}");
             GD.Print("----");
         }
 
-        return this as T;
+        return resource;
     } // Hook_SaveResource
 
 
@@ -114,8 +121,9 @@ public partial class ItemResourceBase<T> :
         if (!ResourceLoader.Exists(globalPath)) {
             return null;
         }
-
-        return ResourceLoader.Load<T>(globalPath);
+        GD.Print(globalPath);
+        var resource = ResourceLoader.Load<T>(globalPath);
+        return resource;
     } // LoadExistingResource
 
 
@@ -139,6 +147,7 @@ public partial class ItemResourceBase<T> :
             return null;
 
         string path = existing.GetFullPath();
+
         if (existing != null && !(options?.IsOverwrite ?? false)) {
             GD.PushWarning(
                 $"[{GetType().Name}::{existing.ID}] exists at " +
@@ -147,18 +156,35 @@ public partial class ItemResourceBase<T> :
             return existing;
         } else if (existing != null && (options?.IsOverwrite ?? false)) {
             GD.PushWarning(
-                $"""
-                [{GetType().Name}::{existing.ID}] already exists: {path}.
-                Overwriting existing resource.
-                """
+                $"[{GetType().Name}::{existing.ID}] already exists: {path}." +
+                "Overwriting existing resource."
             );
-            this.CopyFrom(existing);
+            // this.CopyFrom(existing);
         }
 
         // null means no existing resource needs to be used as reference. Instead,
         // this current resource is modified and will need to be saved.
         return null;
     } // Hook_ProcessDuplicate
+
+
+    /// <summary>
+    /// Called after the resource is saved. It can be used to do any post-processing
+    /// on the resource, such as updating references or modifying properties.
+    /// </summary>
+    /// <param name="resource">
+    ///     The resource to save. Typically, this is the current.
+    /// </param>
+    /// <param name="path">
+    ///     The path to the resource where it was saved.
+    /// </param>
+    public virtual T Hook_Postprocess(
+        T resource,
+        string path = null,
+        ResourceOptions options = null
+    ) {
+        return resource;
+    } // Hook_Postprocess
 
 
     /// <summary>
@@ -171,9 +197,25 @@ public partial class ItemResourceBase<T> :
         }
 
         foreach (var property in typeof(T).GetProperties()) {
-            if (property.CanRead && property.CanWrite) {
-                property.SetValue(this, property.GetValue(source));
+            if (!(property.CanRead && property.CanWrite))
+                continue;
+
+            var value = property.GetValue(source);
+
+            if (value is Resource res) {
+                if (res == this) {
+                    GD.Print($"[CopyFrom] Skipping self-reference in property: {property.Name}");
+                    continue;
+                }
+
+                // Optional: detect path overlap
+                if (res.ResourcePath == this.ResourcePath && !string.IsNullOrEmpty(res.ResourcePath)) {
+                    GD.Print($"[CopyFrom] Skipping cyclic reference by path in property: {property.Name}");
+                    continue;
+                }
             }
+
+            property.SetValue(this, value);
         } // foreach
 
         return (T)this;

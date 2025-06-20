@@ -9,7 +9,6 @@ using System.Text.Json;
 namespace Gamehound.ItemKit.Editor;
 
 
-[Tool]
 public partial class TexturesResourceGenerator : ResourceFromJson {
 
 
@@ -54,25 +53,9 @@ public partial class TexturesResourceGenerator : ResourceFromJson {
             jsonContent, SerializerOptions
         );
 
-        foreach (JsonItemTextureData textureData in data) {
-            foreach (ItemImageResource texture in textureData.Images) {
-                string fileName = $"{texture.ID.Replace(" ", "_").ToLower()}";
-
-                if (texture.Category != string.Empty) {
-                    fileName = $"{fileName}_{texture.Category
-                            .Replace(" ", "_").ToLower()}";
-                }
-
-                fileName = $"{fileName}_texture.tres";
-                string path = $"{OutputDir.TrimEnd('/')}/{fileName}";
-                ItemImageResource textureResource = texture.CreateResource(
-                    path,
-                    new Godot.Collections.Dictionary<string, Variant> {
-                        { "ImagesDir", _inputImgDirField.Text }
-                    }
-                );
-
-                saveResource(textureResource, path);
+        foreach (JsonItemTextureData imgJson in data) {
+            foreach (ItemImageResource img in imgJson.Images) {
+                img.CreateResource();
             } // for images
         } // for data
     } // GenerateResources
@@ -84,7 +67,13 @@ public partial class TexturesResourceGenerator : ResourceFromJson {
 
     protected virtual string ImagesPath => "res://sprites/";
 
-    protected virtual string ImgsDirSettingName => $"itemkit/{GetType().Name}/imgs_dir_path";
+    protected virtual string ImgsDirSettingName => $"itemkit/ItemImageResource/imgs_dir_path";
+
+
+    // Matching setting name with ItemShapeResource classname so that it con
+    // be accessed later by the ItemShapeResource instance by its GetOutputDir()
+    // method.
+    protected override string OutputSettingName => $"itemkit/ItemImageResource/output_path";
 
 
     public virtual string GetImagesDirSetting() {

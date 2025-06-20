@@ -5,7 +5,6 @@ using Godot;
 namespace Gamehound.ItemKit.Resources;
 
 
-[Tool]
 [GlobalClass]
 public partial class RarityResource : Resource, IRarityData, IIdentifier {
     [Export] public string ID { get; set; } = string.Empty;
@@ -25,26 +24,26 @@ public partial class RarityResource : Resource, IRarityData, IIdentifier {
     [Export] public int InstanceLimit { get; set; } = -1;
 
 
-    public Resource CreateResource(string path) {
-        RarityResource existing = ItemKitUtils.ValidateResource(this, path) as RarityResource;
-        if (existing != null)
-            return existing;
+    // public Resource CreateResource(string path) {
+    //     RarityResource existing = ItemKitUtils.ValidateResource(this, path) as RarityResource;
+    //     if (existing != null)
+    //         return existing;
 
-        RarityResource resource = new RarityResource {
-            ID = ID,
-            Name = Name,
-            Description = Description,
-            Weight = Weight,
-            Tier = Tier,
-            RarityColor = RarityColor,
-            InstanceLimit = InstanceLimit,
-        };
+    //     RarityResource resource = new RarityResource {
+    //         ID = ID,
+    //         Name = Name,
+    //         Description = Description,
+    //         Weight = Weight,
+    //         Tier = Tier,
+    //         RarityColor = RarityColor,
+    //         InstanceLimit = InstanceLimit,
+    //     };
 
-        resource.SetScript(ResourceLoader.Load<Script>(
-            "res://addons/item_kit/Scripts/Resources/RarityResource.cs"
-        ));
+    //     resource.SetScript(ResourceLoader.Load<Script>(
+    //         "res://addons/item_kit/Scripts/Resources/RarityResource.cs"
+    //     ));
 
-        return resource;
-    } // CreateResource
+    //     return resource;
+    // } // CreateResource
 
 } // class

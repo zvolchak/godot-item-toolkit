@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ItemShapeResource" load_steps=2 format=3 uid="uid://dojoviwl0k6fn"]
+[gd_resource type="Resource" script_class="ItemShapeResource" load_steps=2 format=3 uid="uid://bacwjke557d1u"]
 
 [ext_resource type="Script" uid="uid://c7ch5h4eegeai" path="res://addons/item_kit/Scripts/Resources/ItemShapeResource.cs" id="1_itodn"]
 

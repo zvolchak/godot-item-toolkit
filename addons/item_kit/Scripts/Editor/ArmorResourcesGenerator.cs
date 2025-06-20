@@ -5,12 +5,10 @@ using Gamehound.ItemKit.Resources;
 
 namespace Gamehound.ItemKit.Editor;
 
-[Tool]
 public partial class ArmorResourcesGenerator : VBoxContainer {
     private Button _generateButton;
     private LineEdit _inputPathField;
     private LineEdit _outputPathField;
-
 
     //public override void _Ready() {
     //    GD.Print("- ArmorResourcesGenerator initialized");

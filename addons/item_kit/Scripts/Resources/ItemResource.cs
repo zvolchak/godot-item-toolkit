@@ -7,7 +7,6 @@ using Gamehound.ItemKit.Utils;
 namespace Gamehound.ItemKit.Resources;
 
 
-[Tool]
 [GlobalClass]
 public partial class ItemResource :
     ItemResourceBase<ItemResource>,

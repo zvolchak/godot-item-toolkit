@@ -46,35 +46,35 @@ public static class ItemKitUtils {
     } // GetStringFromJson
 
 
-    public static Resource ValidateResource(Resource res, string path) {
-        // Ensure the folder exists on a disk (absolute OS path)
-        var absPath = ProjectSettings.GlobalizePath(path);
-        var absDir = Path.GetDirectoryName(absPath);
-        Directory.CreateDirectory(absDir);
+    // public static Resource ValidateResource(Resource res, string path) {
+    //     // Ensure the folder exists on a disk (absolute OS path)
+    //     var absPath = ProjectSettings.GlobalizePath(path);
+    //     var absDir = Path.GetDirectoryName(absPath);
+    //     Directory.CreateDirectory(absDir);
 
-        // Try loading existing resource to prevent duplicate .tres files.
-        Resource existing = null;
-        if (ResourceLoader.Exists(path)) {
-            existing = GD.Load(path);
-        }
-        if (existing == null)
-            return null;
+    //     // Try loading existing resource to prevent duplicate .tres files.
+    //     Resource existing = null;
+    //     if (ResourceLoader.Exists(path)) {
+    //         existing = GD.Load(path);
+    //     }
+    //     if (existing == null)
+    //         return null;
 
-        IIdentifier existingId = existing as IIdentifier;
-        IIdentifier resId = res as IIdentifier;
-        // Check the content of a resource for duplication, but ignore the ID,
-        // since same ID assumes an overwrite.
-        if (existing != null && existing.Equals(res)) {
-            GD.PushWarning($"Duplicate {res.GetType().Name}: incoming.ID='{resId.ID}' vs existing.ID='{existingId.ID}'");
-            return existing;
-        }
+    //     IIdentifier existingId = existing as IIdentifier;
+    //     IIdentifier resId = res as IIdentifier;
+    //     // Check the content of a resource for duplication, but ignore the ID,
+    //     // since same ID assumes an overwrite.
+    //     if (existing != null && existing.Equals(res)) {
+    //         GD.PushWarning($"Duplicate {res.GetType().Name}: incoming.ID='{resId.ID}' vs existing.ID='{existingId.ID}'");
+    //         return existing;
+    //     }
 
-        if (existingId?.ID == resId?.ID) {
-            GD.PushWarning($"{res.GetType().Name}:: Incoming resource ID '{resId.ID}' will overwrite existing resource.");
-        }
+    //     if (existingId?.ID == resId?.ID) {
+    //         GD.PushWarning($"{res.GetType().Name}:: Incoming resource ID '{resId.ID}' will overwrite existing resource.");
+    //     }
 
-        return existing;
-    } // CreateResource
+    //     return existing;
+    // } // CreateResource
 
 
     public static Texture2D LoadTextureFromPath(string path) {

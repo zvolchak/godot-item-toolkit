@@ -13,12 +13,15 @@
 	],
 	"Power": 0,
 	"Weight": 15,
-	"RequiredLevel": 5,
 	"Tags": ["armor", "steel", "heavy"],
 	"StatRequirements": [
 	  {
 		"TargetProperty": "Strength",
 		"FlatValue": { "x": 8, "y": 8 }
+	  },
+	  {
+		"TargetProperty": "Level",
+		"FlatValue": { "x": 5, "y": 5 }
 	  }
 	],
 	"Modifiers": [

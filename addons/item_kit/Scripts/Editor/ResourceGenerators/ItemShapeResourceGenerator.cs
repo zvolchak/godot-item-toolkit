@@ -1,12 +1,13 @@
-using Gamehound.ItemKit.Resources;
-using Godot;
 using System.Collections.Generic;
 using System.Text.Json;
+
+using Gamehound.ItemKit.Resources;
+
+using Godot;
 
 namespace Gamehound.ItemKit.Editor;
 
 
-[Tool]
 [GlobalClass]
 public partial class ItemShapeResourceGenerator : ResourceFromJson {
 
@@ -19,9 +20,7 @@ public partial class ItemShapeResourceGenerator : ResourceFromJson {
 
         foreach (JsonItemShapeData shapeData in data) {
             ItemShapeResource shape = shapeData.InventoryShape;
-            string fileName = $"{shape.ID.ToLower()}.tres";
-            string path = $"{OutputDir.TrimEnd('/')}/{fileName}";
-            shape.CreateResource(path: path);
+            shape.CreateResource();
         }
     } // GenerateResources
 
@@ -34,3 +33,4 @@ public partial class ItemShapeResourceGenerator : ResourceFromJson {
     protected override string OutputSettingName => $"itemkit/ItemShapeResource/output_path";
 
 } // class
+

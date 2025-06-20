@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="PropertyModifierResource" load_steps=2 format=3 uid="uid://bt00eeccxo8b8"]
+
+[ext_resource type="Script" uid="uid://c4p55sicu2pqs" path="res://addons/item_kit/Scripts/Resources/PropertyModifierResource.cs" id="1_fx88n"]
+
+[resource]
+script = ExtResource("1_fx88n")
+TargetProperty = "Strength"
+FlatValue = Vector2(1, 2)
+PercentValue = Vector2(0, 0)
+Weight = 1
+Tier = "Normal"
+RarityColor = Color(0.667, 1, 0.667, 1)
+InstanceLimit = -1
+ID = "basic_strength_mod_0001"
+Name = "Basic Strength Enhancement"
+Category = ""
+Description = ""

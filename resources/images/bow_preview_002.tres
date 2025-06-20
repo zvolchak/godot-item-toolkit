@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemImageResource" load_steps=3 format=3 uid="uid://cte74grovn4q4"]
+
+[ext_resource type="Texture2D" uid="uid://civ8lmnxrbq5q" path="res://sprites/items/Crossbow-64x32px.png" id="1_1fgrp"]
+[ext_resource type="Script" uid="uid://4ae61ceerdh1" path="res://addons/item_kit/Scripts/Resources/ItemImageResource.cs" id="2_afo04"]
+
+[resource]
+script = ExtResource("2_afo04")
+ImagePath = "items/Crossbow-64x32px.png"
+TextureAsset = ExtResource("1_1fgrp")
+ID = "bow_preview_002"
+Name = "Bow"
+Category = "Inventory"
+Description = ""

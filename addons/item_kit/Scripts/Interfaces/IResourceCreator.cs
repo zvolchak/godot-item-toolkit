@@ -28,6 +28,14 @@ public interface IResourceCreator<T> where T : Resource {
     );
 
     public T Hook_SaveResource(
+        T resource,
+        string path = null,
+        ResourceOptions options = null
+    );
+
+
+    public T Hook_Postprocess(
+        T resource,
         string path = null,
         ResourceOptions options = null
     );

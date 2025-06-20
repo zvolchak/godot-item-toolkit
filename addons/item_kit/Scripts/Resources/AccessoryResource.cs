@@ -2,7 +2,6 @@ using Godot;
 
 namespace Gamehound.ItemKit.Resources;
 
-[Tool]
 [GlobalClass]
 public partial class AccessoryResource : ItemResource {
     // Whether this item grants passive effects while in inventory (e.g. charms)

@@ -6,7 +6,6 @@ using Godot.Collections;
 namespace Gamehound.ItemKit.Resources;
 
 
-[Tool]
 [GlobalClass]
 public partial class WeaponResource :
     ItemResourceBase<WeaponResource>,
@@ -36,6 +35,7 @@ public partial class WeaponResource :
     [Export] public Array<string> HoldingStyles { get; set; } = new();
 
     [Export] public ItemShapeResource InventoryShape {get; set; }
+    [Export] public Array<PropertyModifierResource> StatRequirements {get; set; }
 
     // public override string ToString() {
     //     return $"""
