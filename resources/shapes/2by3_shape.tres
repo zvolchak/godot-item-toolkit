@@ -1,11 +1,11 @@
-[gd_resource type="Resource" script_class="ItemShapeResource" load_steps=2 format=3 uid="uid://bacwjke557d1u"]
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://bq1uxrhhqbu42"]
 
-[ext_resource type="Script" uid="uid://c7ch5h4eegeai" path="res://addons/item_kit/Scripts/Resources/ItemShapeResource.cs" id="1_itodn"]
+[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/ItemShapeResource.cs" id="1_fc181"]
 
 [resource]
-script = ExtResource("1_itodn")
+script = ExtResource("1_fc181")
 Width = 2
-Layout = Array[int]([1, 1, 1, 1, 1, 1])
+Layout = [1, 1, 1, 1, 1, 1]
 ID = "2by3_shape"
 Name = ""
 Category = ""

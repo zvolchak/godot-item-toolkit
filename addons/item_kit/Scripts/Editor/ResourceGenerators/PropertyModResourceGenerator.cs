@@ -6,7 +6,6 @@ using System.Text.Json;
 namespace Gamehound.ItemKit.Editor;
 
 
-[GlobalClass]
 public partial class PropertyModResourceGenerator : ResourceFromJson {
 
     public override void GenerateResources(string jsonContent) {

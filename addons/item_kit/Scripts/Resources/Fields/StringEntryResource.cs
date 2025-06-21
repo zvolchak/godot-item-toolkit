@@ -6,7 +6,6 @@ namespace Gamehound.ItemKit.Resources;
 * ShortDescription, FullDescription and Tooltip - fields of an Item description
 * in different context.
 */
-[GlobalClass]
 public partial class StringEntryResource : Resource {
     [Export] public string FieldName { get; set; } = "Field";
     [Export] public string Value { get; set; } = string.Empty;

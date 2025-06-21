@@ -41,6 +41,7 @@
 	  }
 	],
 	"Rarity": {
+		"ID": "rarity_common"
 	},
 	"InstanceLimit": -1,
 	"TradeValue": [],
@@ -99,6 +100,7 @@
 	  }
 	],
 	"Rarity": {
+		"ID": "rarity_common"
 	},
 	"InstanceLimit": -1,
 	"TradeValue": [],

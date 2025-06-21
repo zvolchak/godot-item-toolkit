@@ -9,7 +9,6 @@ using System.Text.Json.Serialization;
 namespace Gamehound.ItemKit.Resources;
 
 
-[GlobalClass]
 [ScriptPath("res://addons/item_kit/Scripts/Resources/ItemShapeResource.cs")]
 public partial class ItemShapeResource :
     ItemResourceBase<ItemShapeResource>,

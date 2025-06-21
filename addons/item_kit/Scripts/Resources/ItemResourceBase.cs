@@ -11,9 +11,24 @@ public partial class ItemResourceBase<T> :
     IIdentifier,
     IResourceCreator<T> where T : ItemResourceBase<T>, new() {
 
+    /// <summary>
+    /// Unique identifier value for this item.
+    /// </summary>
     [Export] public virtual string ID { get; set; }
+
+    /// <summary>
+    /// Name of the item that will be displayed to the player.
+    /// </summary>
     [Export] public virtual string Name { get; set; }
+
+    /// <summary>
+    /// A category name this item belongs to. May not necessary be player visible.
+    /// </summary>
     [Export] public virtual string Category { get; set; }
+
+    /// <summary>
+    /// Description of the item that is player visible.
+    /// </summary>
     [Export(PropertyHint.MultilineText)] public virtual string Description { get; set; }
 
 
@@ -79,6 +94,8 @@ public partial class ItemResourceBase<T> :
         if (path == "" || path == null)
             path = GetFullPath();
 
+        resource.SetScript(ResourceLoader.Load<Script>(ScriptPath));
+
         Error result = ResourceSaver.Save(
             resource,
             path,
@@ -118,10 +135,10 @@ public partial class ItemResourceBase<T> :
             path = GetFullPath();
 
         string globalPath = ProjectSettings.GlobalizePath(path);
+        GD.Print(globalPath);
         if (!ResourceLoader.Exists(globalPath)) {
             return null;
         }
-        GD.Print(globalPath);
         var resource = ResourceLoader.Load<T>(globalPath);
         return resource;
     } // LoadExistingResource
@@ -235,6 +252,18 @@ public partial class ItemResourceBase<T> :
 
 
     /*************************** GETTERS **************************************/
+
+
+    /// <summary>
+    /// Path to This .cs script that creates a .tres file. By default it will assume the following
+    /// path: $"res://addons/item_kit/Scripts/Resources/{typeof(T).Name}.cs"
+    /// </summary>
+    public virtual string ScriptPath {
+        get {
+            return $"res://addons/item_kit/Scripts/Resources/{typeof(T).Name}.cs";
+        }
+    } // ScriptPath
+
 
     /// <summary>
     /// Returns a filename for the resource that will be saved into GetOutputDir()

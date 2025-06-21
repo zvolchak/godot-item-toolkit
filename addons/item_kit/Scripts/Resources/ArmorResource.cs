@@ -4,7 +4,6 @@ using Godot.Collections;
 
 namespace Gamehound.ItemKit.Resources;
 
-[GlobalClass]
 public partial class ArmorResource :
     ItemResourceBase<ArmorResource>,
     IArmorData,

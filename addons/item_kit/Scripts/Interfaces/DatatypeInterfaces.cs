@@ -54,9 +54,6 @@ public interface IRarityData {
     // Higher rarity value - less chance of a drop.
     public int Weight { get; }
 
-    // "Common", "Rare", "Epic", etc
-    public string Tier { get; }
-
     // Could be a UI or a Name color of the item.
     public Color RarityColor { get; }
 

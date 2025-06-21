@@ -6,7 +6,6 @@ using Gamehound.ItemKit.Interfaces;
 namespace Gamehound.ItemKit.Resources;
 
 
-[GlobalClass]
 public partial class ItemImageResource :
     ItemResourceBase<ItemImageResource>,
     IImageData {

@@ -8,6 +8,7 @@ public partial class SubResourcesGenerator : ResourceFromJson {
     protected ItemShapeResourceGenerator _shapeGenerator;
     protected PropertyModResourceGenerator _propModGenerator;
     protected TexturesResourceGenerator _texturesGenerator;
+    protected RarityResourceGenerator _rarityGenerator;
 
 
     protected SubResourcesGenerator() {}
@@ -16,11 +17,13 @@ public partial class SubResourcesGenerator : ResourceFromJson {
     public SubResourcesGenerator(
         ItemShapeResourceGenerator shapeGenerator = null,
         PropertyModResourceGenerator propModGenerator = null,
-        TexturesResourceGenerator texturesGenerator = null
+        TexturesResourceGenerator texturesGenerator = null,
+        RarityResourceGenerator rarityGenerator = null
     ) {
         _shapeGenerator = shapeGenerator;
         _propModGenerator = propModGenerator;
         _texturesGenerator = texturesGenerator;
+        _rarityGenerator = rarityGenerator;
     } // ctor
 
 
@@ -38,6 +41,7 @@ public partial class SubResourcesGenerator : ResourceFromJson {
         _shapeGenerator.OnGeneratePressed();
         _propModGenerator.OnGeneratePressed();
         _texturesGenerator.OnGeneratePressed();
+        _rarityGenerator.OnGeneratePressed();
     } // OnGeneratePressed
 
 

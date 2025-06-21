@@ -14,20 +14,21 @@ public partial class item_kit : EditorPlugin {
     /// <summary>
     /// Delay before the next update scan on the files is done.
     /// </summary>
-    private double _refreshThrottleTime = 1f;
+    private double _refreshThrottleTime = 0.5f;
     private double _currRefreshTime = 0;
-    private const string WatchDir = "res://addons/item_kit/";
+    private const string _watchDir = "res://addons/item_kit/";
+    private string _menuBtnTitle = "Item Kit Panel";
 
 
     public override void _EnterTree() {
-        AddToolMenuItem("Item Kit/Toggle Panel", Callable.From(ToggleDockPanel));
+        AddToolMenuItem(_menuBtnTitle, Callable.From(ToggleDockPanel));
         _lastScriptWriteTime = GetLatestScriptWriteTime();
         SetProcess(true);
     } // _EnterTree
 
 
     public override void _ExitTree() {
-        RemoveToolMenuItem("Item Kit/Toggle Panel");
+        RemoveToolMenuItem(_menuBtnTitle);
 
         if (_dock != null && _dock.IsInsideTree()) {
             RemoveControlFromDocks(_dock);
@@ -42,6 +43,11 @@ public partial class item_kit : EditorPlugin {
 
 
     public override void _Process(double delta) {
+        //if (_dock == null) {
+        //    _currRefreshTime = 0;
+        //    return;
+        //}
+
         _currRefreshTime += delta;
         if (_currRefreshTime < _refreshThrottleTime)
             return;
@@ -50,7 +56,6 @@ public partial class item_kit : EditorPlugin {
 
         double latest = GetLatestScriptWriteTime();
         if (latest > _lastScriptWriteTime) {
-            GD.Print("Detected script change. Closing dock.");
             CloseDock();
             _lastScriptWriteTime = latest;
         }
@@ -72,13 +77,15 @@ public partial class item_kit : EditorPlugin {
 
         var shapeGen = new ItemShapeResourceGenerator();
         var texturesGen = new TexturesResourceGenerator();
+        var rarityGen = new RarityResourceGenerator();
         var propModGen = new PropertyModResourceGenerator();
         var weaponGen = new WeaponResourcesGenerator();
 
         var subResourceGen = new SubResourcesGenerator(
             shapeGenerator: shapeGen,
             propModGenerator: propModGen,
-            texturesGenerator: texturesGen
+            texturesGenerator: texturesGen,
+            rarityGenerator: rarityGen
         );
 
         var subTab = new VBoxContainer();
@@ -86,6 +93,7 @@ public partial class item_kit : EditorPlugin {
         subTab.AddChild(shapeGen);
         subTab.AddChild(texturesGen);
         subTab.AddChild(propModGen);
+        subTab.AddChild(rarityGen);
         subTab.AddChild(subResourceGen);
 
         var itemTab = new VBoxContainer();
@@ -113,7 +121,7 @@ public partial class item_kit : EditorPlugin {
 
 
     private double GetLatestScriptWriteTime() {
-        return ScanDirectoryForModifiedTime(WatchDir);
+        return ScanDirectoryForModifiedTime(_watchDir);
     } // GetLatestScriptWriteTime
 
 

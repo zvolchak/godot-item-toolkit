@@ -1,14 +1,11 @@
 using System.Collections.Generic;
 using System.Text.Json;
-
 using Gamehound.ItemKit.Resources;
 
-using Godot;
 
 namespace Gamehound.ItemKit.Editor;
 
 
-[GlobalClass]
 public partial class ItemShapeResourceGenerator : ResourceFromJson {
 
     public override void GenerateResources(string jsonContent) {

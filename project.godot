@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="ItemsLibrary"
-config/features=PackedStringArray("4.4", "C#", "Forward Plus")
+config/features=PackedStringArray("4.2", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
 [dotnet]
@@ -42,6 +42,9 @@ PropertyModifierResource/output_path="res://resources/modifiers/"
 ItemImageResource/output_path="res://resources/images/"
 ItemImageResource/imgs_dir_path="res://sprites/"
 PropertyModResourceGenerator/is_overwrite=true
+RarityResourceGenerator/input_path="res://data/rarity.json"
+RarityResource/output_path="res://resources/rarities/"
+RarityResourceGenerator/is_overwrite=true
 
 [mono]
 
