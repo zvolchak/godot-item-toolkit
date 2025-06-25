@@ -1,5 +1,3 @@
-using Gamehound.ItemKit.Resources;
-
 using Godot;
 using Godot.Collections;
 
@@ -12,31 +10,6 @@ public interface IIdentifier {
     public string Category { get; }
     public string Description { get; }
 } // IIdentifier
-
-
-public interface IItemData {
-    // Use this description array if you need a context-based description
-    // for an Item, example: "short description" and "full description".
-    public Array<StringEntryResource> ContextDescription { get; }
-
-    // The icons for different context in which this item could be shown at.
-    public Array<ItemImageResource> Textures { get; }
-
-    public int Power { get; }
-    public int Weight { get; }
-
-    public RarityResource Rarety { get; }
-
-    // Could be useful for filtering items.
-    public Array<string> Tags { get; }
-
-    // What minimum stats values are needed to use this item.
-    public Array<PropertyModifierResource> StatRequirements { get; }
-
-    public Array<PropertyModifierResource> Modifiers { get; }
-
-    public ItemShapeResource InventoryShape { get; }
-} // IItem
 
 
 public interface IItemShape {
@@ -129,15 +102,6 @@ public interface IArmorData {
     // "Iron", "Leather", etc
     public string ArmorMaterial { get; }
 } // IArmorData
-
-
-public interface ITradeableData {
-    // e.g. [{ FieldName: "Gold", Value: "100" }, { FieldName: "Silver", Value: "500" }]
-    public Array<StringEntryResource> TradeValue { get; }
-
-    public bool IsCanSell { get; }
-    public bool IsCanBuy { get; }
-} // ITradeableData
 
 
 /* Modifiers that affect Offensive corresteristics of an equipment item.

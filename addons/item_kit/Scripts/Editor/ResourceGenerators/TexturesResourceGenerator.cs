@@ -55,7 +55,13 @@ public partial class TexturesResourceGenerator : ResourceFromJson {
 
         foreach (JsonItemTextureData imgJson in data) {
             foreach (ItemImageResource img in imgJson.Images) {
-                img.CreateResource();
+                var opts = new Godot.Collections.Dictionary<string, Variant>();
+                opts.Add("sprites_dir", GetSettingsValue(IsOverwriteSettingName).AsString());
+
+                img.CreateResource(options: new ResourceOptions {
+                    IsOverwrite = GetSettingsValue(IsOverwriteSettingName).AsBool(),
+                    other = opts
+                });
             } // for images
         } // for data
     } // GenerateResources
@@ -67,15 +73,27 @@ public partial class TexturesResourceGenerator : ResourceFromJson {
 
     protected virtual string ImagesPath => "res://sprites/";
 
-    protected virtual string ImgsDirSettingName => $"itemkit/ItemImageResource/imgs_dir_path";
+    protected virtual string ImgsDirSettingName {
+        get {
+            return $"itemkit/{GetType().Name}/imgs_dir_path";
+        }
+    }
 
 
     // Matching setting name with ItemShapeResource classname so that it con
     // be accessed later by the ItemShapeResource instance by its GetOutputDir()
     // method.
-    protected override string OutputSettingName => $"itemkit/ItemImageResource/output_path";
+    protected override string OutputSettingName {
+        get {
+            return $"itemkit/{GetType().Name}/output_path";
+        }
+    }
 
 
+    /// <summary>
+    /// Location of the sprits/texture that will be used as base path to set textures for a
+    /// resource.
+    /// </summary>
     public virtual string GetImagesDirSetting() {
         string text = ProjectSettings.HasSetting(ImgsDirSettingName)
             ? (string)ProjectSettings.GetSetting(ImgsDirSettingName)

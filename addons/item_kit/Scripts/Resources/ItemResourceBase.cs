@@ -6,10 +6,10 @@ using Gamehound.ItemKit.Editor;
 namespace Gamehound.ItemKit.Resources;
 
 
-public partial class ItemResourceBase<T> :
+public abstract partial class ItemResourceBase :
     Resource,
     IIdentifier,
-    IResourceCreator<T> where T : ItemResourceBase<T>, new() {
+    IResourceCreator {
 
     /// <summary>
     /// Unique identifier value for this item.
@@ -36,17 +36,17 @@ public partial class ItemResourceBase<T> :
     /// Create a resource from the current instance. It will first try to load the
     /// resource from the disk or create a new one from the current instance.
     /// </summary>
-    public virtual T CreateResource(
+    public virtual Resource CreateResource(
         string path = null,
         ResourceOptions options = null
     ) {
         path = Hook_Preprocess(path: path, options: options);
-        T resource = Hook_LoadResource(path: path, options: options);
+        Resource resource = Hook_LoadResource(path: path, options: options);
         resource = Hook_ProcessDuplicate(resource, options: options);
         if (resource != null)
             return resource;
         else
-            resource = this as T;
+            resource = this;
 
         resource = Hook_SaveResource(resource, path: path, options: options);
         resource = Hook_Postprocess(resource, path: path, options: options);
@@ -86,15 +86,13 @@ public partial class ItemResourceBase<T> :
     /// <param name="resource">
     ///     The resource to save. Typically, this is the current.
     /// </param>
-    public virtual T Hook_SaveResource(
-        T resource,
+    public virtual Resource Hook_SaveResource(
+        Resource resource,
         string path = null,
         ResourceOptions options = null
     ) {
         if (path == "" || path == null)
             path = GetFullPath();
-
-        resource.SetScript(ResourceLoader.Load<Script>(ScriptPath));
 
         Error result = ResourceSaver.Save(
             resource,
@@ -127,7 +125,7 @@ public partial class ItemResourceBase<T> :
     /// parameter if it is provided. If the resource does not exist, it will
     /// return null.
     /// </summary>
-    public virtual T Hook_LoadResource(
+    public virtual Resource Hook_LoadResource(
         string path = null,
         ResourceOptions options = null
     ) {
@@ -135,11 +133,10 @@ public partial class ItemResourceBase<T> :
             path = GetFullPath();
 
         string globalPath = ProjectSettings.GlobalizePath(path);
-        GD.Print(globalPath);
         if (!ResourceLoader.Exists(globalPath)) {
             return null;
         }
-        var resource = ResourceLoader.Load<T>(globalPath);
+        var resource = ResourceLoader.Load(globalPath);
         return resource;
     } // LoadExistingResource
 
@@ -156,24 +153,23 @@ public partial class ItemResourceBase<T> :
     /// JSON data and try to figure out which fields are present in the JSON and
     /// overwrite only those.
     /// </summary>
-    public virtual T Hook_ProcessDuplicate(
-        T existing,
+    public virtual Resource Hook_ProcessDuplicate(
+        Resource existing,
         ResourceOptions options = null
     ) {
         if (existing == null)
             return null;
 
-        string path = existing.GetFullPath();
-
+        string path = (existing as ItemResourceBase)?.GetFullPath() ?? "";
         if (existing != null && !(options?.IsOverwrite ?? false)) {
             GD.PushWarning(
-                $"[{GetType().Name}::{existing.ID}] exists at " +
-                $"{path}. No overwrite is set. Returning existing as is."
+                $"[{GetType().Name}::{existing.ResourcePath}] exists. " +
+                $"No overwrite is set. Returning existing resource as is."
             );
             return existing;
         } else if (existing != null && (options?.IsOverwrite ?? false)) {
             GD.PushWarning(
-                $"[{GetType().Name}::{existing.ID}] already exists: {path}." +
+                $"[{GetType().Name}::{existing.ResourcePath}] already exists. " +
                 "Overwriting existing resource."
             );
             // this.CopyFrom(existing);
@@ -195,8 +191,8 @@ public partial class ItemResourceBase<T> :
     /// <param name="path">
     ///     The path to the resource where it was saved.
     /// </param>
-    public virtual T Hook_Postprocess(
-        T resource,
+    public virtual Resource Hook_Postprocess(
+        Resource resource,
         string path = null,
         ResourceOptions options = null
     ) {
@@ -207,13 +203,13 @@ public partial class ItemResourceBase<T> :
     /// <summary>
     /// Copy the properties from the source resource to this resource.
     /// </summary>
-    public virtual T CopyFrom(T source) {
+    public virtual Resource CopyFrom(Resource source) {
         if (source == null) {
             GD.PushError("CopyFrom failed: Source is null.");
-            return (T)this;
+            return (Resource)this;
         }
 
-        foreach (var property in typeof(T).GetProperties()) {
+        foreach (var property in typeof(Resource).GetProperties()) {
             if (!(property.CanRead && property.CanWrite))
                 continue;
 
@@ -235,7 +231,7 @@ public partial class ItemResourceBase<T> :
             property.SetValue(this, value);
         } // foreach
 
-        return (T)this;
+        return (Resource)this;
     } // CopyFrom
 
 
@@ -252,18 +248,6 @@ public partial class ItemResourceBase<T> :
 
 
     /*************************** GETTERS **************************************/
-
-
-    /// <summary>
-    /// Path to This .cs script that creates a .tres file. By default it will assume the following
-    /// path: $"res://addons/item_kit/Scripts/Resources/{typeof(T).Name}.cs"
-    /// </summary>
-    public virtual string ScriptPath {
-        get {
-            return $"res://addons/item_kit/Scripts/Resources/{typeof(T).Name}.cs";
-        }
-    } // ScriptPath
-
 
     /// <summary>
     /// Returns a filename for the resource that will be saved into GetOutputDir()

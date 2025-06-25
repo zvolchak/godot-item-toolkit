@@ -17,7 +17,6 @@ public partial class PropertyModResourceGenerator : ResourceFromJson {
 
         foreach (JsonPropertymodData modData in data) {
             foreach (PropertyModifierResource mod in modData.Modifiers) {
-                GD.Print(mod);
                 mod.CreateResource(options: new ResourceOptions {
                     IsOverwrite = GetSettingsValue(IsOverwriteSettingName).AsBool(),
                 });
@@ -29,9 +28,11 @@ public partial class PropertyModResourceGenerator : ResourceFromJson {
     /****************************** GETTERS ***********************************/
 
     protected override string GenerateBtnLable => "Generate Modifiers";
-    // Matching setting name with PropertyModifierResource classname so that it con
-    // be accessed later by the PropertyModifierResource instance by its GetOutputDir()
-    // method.
+
+    /// <summary>
+    /// Matching setting name with PropertyModifierResource classname so that it can be accessed
+    /// later by the PropertyModifierResource instance by its GetOutputDir() method.
+    /// </summary>
     protected override string OutputSettingName => $"itemkit/PropertyModifierResource/output_path";
 
 } // class

@@ -4,10 +4,9 @@ using Godot;
 
 namespace Gamehound.ItemKit.Resources;
 
-
-//[ScriptPath("res://addons/item_kit/Scripts/Resources/PropertyModifierResource.cs")]
+[Tool]
 public partial class PropertyModifierResource :
-    ItemResourceBase<PropertyModifierResource>,
+    ItemResourceBase,
     IPropertyModifier {
 
     /// <summary>

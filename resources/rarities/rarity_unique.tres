@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dya0l6hf7cq6h"]
+
+[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/RarityResource.cs" id="1_qr2tt"]
+
+[resource]
+script = ExtResource("1_qr2tt")
+Weight = 30
+RarityColor = Color(1, 0.5, 0.2, 1)
+InstanceLimit = -1
+ID = "rarity_unique"
+Name = "Unique"
+Category = ""
+Description = ""

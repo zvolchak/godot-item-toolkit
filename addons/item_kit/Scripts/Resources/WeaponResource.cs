@@ -6,9 +6,11 @@ namespace Gamehound.ItemKit.Resources;
 
 
 public partial class WeaponResource :
-    ItemResourceBase<WeaponResource>,
+    ItemResourceBase,
     IWeaponData,
     IEquippableData {
+
+    // -- IWeaponData -- //
 
     [Export] public Vector2 DamageAmount { get; set; } = Vector2.One;
     [Export] public float AttackSpeed { get; set; } = 1.0f;
@@ -33,19 +35,27 @@ public partial class WeaponResource :
     /// </summary>
     [Export] public Array<string> DamageStyles { get; set; } = new();
 
-    [Export] public Array<string> CompatibleSlots { get; set; } = new();
-
-    [Export] public int SlotPriority { get; set; } = 1;
-
     /// <summary>
     /// e.g. TwoHanded, OneHanded, OffHand, Fist, etc
     /// </summary>
     [Export] public Array<string> HoldingStyles { get; set; } = new();
 
-    [Export] public ItemShapeResource InventoryShape {get; set; }
 
-    [Export] public RarityResource Rarity {get; set; }
+    // -- IEquippableData -- //
 
-    [Export] public Array<PropertyModifierResource> StatRequirements {get; set; }
+    [Export] public Array<string> CompatibleSlots { get; set; } = new();
+
+    [Export] public int SlotPriority { get; set; } = 1;
+
+
+    // -- Other -- //
+
+    [Export] public ItemShapeResource InventoryShape { get; set; }
+
+    [Export] public RarityResource Rarity { get; set; }
+
+    [Export] public Array<PropertyModifierResource> StatRequirements { get; set; }
+
+    [Export] public Array<ItemImageResource> Images { get; set; }
 
 } // WeaponResource

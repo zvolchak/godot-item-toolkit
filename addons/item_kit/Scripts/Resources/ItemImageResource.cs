@@ -6,8 +6,9 @@ using Gamehound.ItemKit.Interfaces;
 namespace Gamehound.ItemKit.Resources;
 
 
+[Tool]
 public partial class ItemImageResource :
-    ItemResourceBase<ItemImageResource>,
+    ItemResourceBase,
     IImageData {
 
     [Export] public string ImagePath { get; set; } = string.Empty;
@@ -15,13 +16,13 @@ public partial class ItemImageResource :
     [Export] public Texture2D TextureAsset { get; set; }
 
 
-    public override ItemImageResource Hook_SaveResource(
-        ItemImageResource resource,
+    public override Resource Hook_SaveResource(
+        Resource resource,
         string path = null,
         ResourceOptions options = null
     ) {
         Variant spritesDir;
-        if (options == null || (options?.other.ContainsKey("sprites_dir") ?? false)) {
+        if (options == null || (options?.other?.ContainsKey("sprites_dir") ?? false)) {
             spritesDir = ProjectSettings
                 .GetSetting($"itemkit/{GetType().Name}/imgs_dir_path")
                 .AsString();
@@ -29,7 +30,10 @@ public partial class ItemImageResource :
             options.other.TryGetValue("sprites_dir", out spritesDir);
         }
 
-        resource.TextureAsset = getTextureFromPath(spritesDir.AsString(), ImagePath);
+        (resource as ItemImageResource).TextureAsset = getTextureFromPath(
+            spritesDir.AsString(),
+            ImagePath
+        );
 
         resource = base.Hook_SaveResource(resource, path: path, options: options);
         return resource;
@@ -43,14 +47,9 @@ public partial class ItemImageResource :
             path = $"res://{path}";
         }
 
-        try {
-            texture = ResourceLoader.Load<Texture2D>(path);
-            if (texture == null) {
-                GD.PushWarning($"{GetType().Name}:: Failed to load texture from path: {path}");
-            }
-        } catch (Exception e) {
+        texture = ResourceLoader.Load<Texture2D>(path);
+        if (texture == null) {
             GD.PushWarning($"{GetType().Name}:: Failed to load texture from path: {path}");
-            GD.PushError(e.Message);
         }
 
         return texture;

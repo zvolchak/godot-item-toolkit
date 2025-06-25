@@ -1,0 +1,28 @@
+[gd_resource type="Resource" load_steps=7 format=3 uid="uid://dvfddqbyhsm1j"]
+
+[ext_resource type="Resource" uid="uid://da73lgfhrao3g" path="res://resources/shapes/2by3_shape.tres" id="1_oymo1"]
+[ext_resource type="Resource" uid="uid://ddy5xo7iunreb" path="res://resources/images/sword_preview_001.tres" id="1_w6fkt"]
+[ext_resource type="Resource" uid="uid://blw7th4dheilv" path="res://resources/rarities/rarity_common.tres" id="2_b27c1"]
+[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/WeaponResource.cs" id="3_10b3v"]
+[ext_resource type="Resource" uid="uid://db87vibdu2tqr" path="res://resources/modifiers/basic_dexterity_mod_0002.tres" id="4_xwfcd"]
+[ext_resource type="Resource" uid="uid://dl3v64gcbieto" path="res://resources/modifiers/basic_strength_mod_0001.tres" id="5_naeqr"]
+
+[resource]
+script = ExtResource("3_10b3v")
+DamageAmount = Vector2(5, 8)
+AttackSpeed = 1.1
+Range = 1.5
+WeaponClass = "Melee"
+DamageTypes = ["Physical"]
+DamageStyles = ["Slash"]
+HoldingStyles = ["TwoHanded"]
+CompatibleSlots = ["MainHand"]
+SlotPriority = 1
+InventoryShape = ExtResource("1_oymo1")
+Rarity = ExtResource("2_b27c1")
+StatRequirements = [ExtResource("4_xwfcd"), ExtResource("5_naeqr")]
+Images = [ExtResource("1_w6fkt")]
+ID = "sword_0001"
+Name = "Steel Sword"
+Category = "sword"
+Description = "A reliable blade of tempered steel."

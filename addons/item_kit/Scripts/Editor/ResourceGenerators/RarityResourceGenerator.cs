@@ -5,7 +5,7 @@ using System.Text.Json;
 
 namespace Gamehound.ItemKit.Editor;
 
-//[GlobalClass]
+
 public partial class RarityResourceGenerator: ResourceFromJson {
 
     public override void GenerateResources(string jsonContent) {
@@ -17,7 +17,9 @@ public partial class RarityResourceGenerator: ResourceFromJson {
 
         foreach (JsonRarityData rarityData in data) {
             RarityResource rarity = rarityData.Rarity;
-            rarity.CreateResource();
+            rarity.CreateResource(options: new ResourceOptions {
+                IsOverwrite = GetSettingsValue(IsOverwriteSettingName).AsBool(),
+            });
         }
     } // GenerateResources
 

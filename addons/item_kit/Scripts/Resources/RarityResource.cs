@@ -3,10 +3,9 @@ using Godot;
 
 namespace Gamehound.ItemKit.Resources;
 
-
-//[ScriptPath("res://addons/item_kit/Scripts/Resources/RarityResource.cs")]
+[Tool]
 public partial class RarityResource :
-    ItemResourceBase<RarityResource>,
+    ItemResourceBase,
     IRarityData {
 
     /// <summary>

@@ -8,12 +8,10 @@ using System.Text.Json.Serialization;
 
 namespace Gamehound.ItemKit.Resources;
 
-
-[ScriptPath("res://addons/item_kit/Scripts/Resources/ItemShapeResource.cs")]
+[Tool]
 public partial class ItemShapeResource :
-    ItemResourceBase<ItemShapeResource>,
-    IItemShape,
-    IIdentifier {
+    ItemResourceBase,
+    IItemShape {
 
     [Export] public int Width { get; set; } = 1;
 

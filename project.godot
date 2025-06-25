@@ -41,10 +41,13 @@ ItemShapeResource/output_path="res://resources/shapes/"
 PropertyModifierResource/output_path="res://resources/modifiers/"
 ItemImageResource/output_path="res://resources/images/"
 ItemImageResource/imgs_dir_path="res://sprites/"
-PropertyModResourceGenerator/is_overwrite=true
+PropertyModResourceGenerator/is_overwrite=false
 RarityResourceGenerator/input_path="res://data/rarity.json"
 RarityResource/output_path="res://resources/rarities/"
-RarityResourceGenerator/is_overwrite=true
+RarityResourceGenerator/is_overwrite=false
+ItemShapeResourceGenerator/is_overwrite=true
+TexturesResourceGenerator/is_overwrite=true
+WeaponResourcesGenerator/is_overwrite=true
 
 [mono]
 

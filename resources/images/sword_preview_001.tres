@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://ddy5xo7iunreb"]
+
+[ext_resource type="Texture2D" uid="uid://clud4f8cq5k2h" path="res://sprites/items/Sword.png" id="1_d4vyo"]
+[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/ItemImageResource.cs" id="2_6vbyd"]
+
+[resource]
+script = ExtResource("2_6vbyd")
+ImagePath = "items/Sword.png"
+TextureAsset = ExtResource("1_d4vyo")
+ID = "sword_preview_001"
+Name = "Sword"
+Category = "Inventory"
+Description = ""

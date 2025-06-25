@@ -18,16 +18,10 @@
 	"Tags": ["melee", "sword", "steel"],
 	"StatRequirements": [
 		{
-			"TargetProperty": "Level",
-			"FlatValue": { "x": 2, "y": 2 }
+			"ID": "basic_dexterity_mod_0002"			
 		},
 		{
-			"TargetProperty": "Strength",
-			"FlatValue": { "x": 10, "y": 10 }
-		},
-		{
-			"TargetProperty": "Dexterity",
-			"FlatValue": { "x": 5, "y": 5 }
+			"ID": "basic_strength_mod_0001"			
 		}
 	],
 	"Modifiers": [
@@ -81,12 +75,7 @@
 	"Tags": ["ranged", "bow", "oak"],
 	"StatRequirements": [
 		{
-			"TargetProperty": "Level",
-			"FlatValue": { "x": 3, "y": 3 }
-		},
-		{
-			"TargetProperty": "Level",
-			"FlatValue": { "x": 2, "y": 2 }
+			"ID": "basic_dexterity_mod_0002"
 		}
 	],
 	"Modifiers": [
