@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://be1ww6n85sp5f"]
+
+[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/Fields/DamageTypeResource.cs" id="1_8vy3g"]
+
+[resource]
+script = ExtResource("1_8vy3g")
+ID = "dt_magic"
+Name = "magic"
+Category = ""
+Description = "Deals Magic damage."

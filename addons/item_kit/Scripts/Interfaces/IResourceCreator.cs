@@ -5,9 +5,9 @@ using Godot;
 namespace Gamehound.ItemKit.Interfaces;
 
 
-public interface IResourceCreator<T> where T : Resource {
+public interface IResourceCreator {
 
-    public T CreateResource(
+    public Resource CreateResource(
         string destination = null,
         ResourceOptions options = null
     );
@@ -17,17 +17,25 @@ public interface IResourceCreator<T> where T : Resource {
         ResourceOptions options = null
     );
 
-    public T Hook_LoadResource(
+    public Resource Hook_LoadResource(
         string path = null,
         ResourceOptions options = null
     );
 
-    public T Hook_ProcessDuplicate(
-        T existingResource,
+    public Resource Hook_ProcessDuplicate(
+        Resource existingResource,
         ResourceOptions options = null
     );
 
-    public T Hook_SaveResource(
+    public Resource Hook_SaveResource(
+        Resource resource,
+        string path = null,
+        ResourceOptions options = null
+    );
+
+
+    public Resource Hook_Postprocess(
+        Resource resource,
         string path = null,
         ResourceOptions options = null
     );

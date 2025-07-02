@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://bt5iqxyk3nub1"]
+
+[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/Fields/WeaponClassResource.cs" id="1_4vypb"]
+
+[resource]
+script = ExtResource("1_4vypb")
+ID = "wc_melee"
+Name = ""
+Category = ""
+Description = ""

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://bem1dc4wjc8u3"]
+
+[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/PropertyModifierResource.cs" id="1_yei68"]
+
+[resource]
+script = ExtResource("1_yei68")
+TargetProperty = "Dexterity"
+PercentValue = Vector2(0, 0)
+ID = "basic_dexterity_mod_0002"
+Name = "Basic Dexterity Enhancement"
+Category = ""
+Description = "Add some dexterity to your actions.
+It only gets better."

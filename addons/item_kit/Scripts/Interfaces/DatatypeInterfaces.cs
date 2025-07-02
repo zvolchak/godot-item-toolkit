@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 using Gamehound.ItemKit.Resources;
 
 using Godot;
@@ -14,34 +16,6 @@ public interface IIdentifier {
 } // IIdentifier
 
 
-public interface IItemData {
-    // Use this description array if you need a context-based description
-    // for an Item, example: "short description" and "full description".
-    public Array<StringEntryResource> ContextDescription { get; }
-
-    // The icons for different context in which this item could be shown at.
-    public Array<ItemImageResource> Textures { get; }
-
-    public int Power { get; }
-    public int Weight { get; }
-
-    // Minimum level of the character to use this item.
-    public int RequiredLevel { get; }
-
-    public RarityResource Rarety { get; }
-
-    // Could be useful for filtering items.
-    public Array<string> Tags { get; }
-
-    // What minimum stats values are needed to use this item.
-    public Array<PropertyModifierResource> StatRequirements { get; }
-
-    public Array<PropertyModifierResource> Modifiers { get; }
-
-    public ItemShapeResource InventoryShape { get; }
-} // IItem
-
-
 public interface IItemShape {
     public int Width { get; }
     public Array<int> Layout { get; }
@@ -56,9 +30,6 @@ public interface IItemShape {
 public interface IRarityData {
     // Higher rarity value - less chance of a drop.
     public int Weight { get; }
-
-    // "Common", "Rare", "Epic", etc
-    public string Tier { get; }
 
     // Could be a UI or a Name color of the item.
     public Color RarityColor { get; }
@@ -77,10 +48,14 @@ public interface IImageData {
 
 
 public interface IEquippableData {
-    // Slot to which this item can be equiped to (e.g. Chest, Left Hand, Belt, etc)
+    /// <summary>
+    /// Slot to which this item can be equiped to (e.g. Chest, Left Hand, Belt, etc)
+    /// </summary>
     public Array<string> CompatibleSlots { get; }
 
-    // Helps resolve slot conflicts or UI ordering
+    /// <summary>
+    /// Helps resolve slot conflicts or UI ordering
+    /// </summary>
     public int SlotPriority { get; }
 } // IEquippable
 
@@ -112,15 +87,22 @@ public interface IDurableData {
 } // IDurable
 
 
+public interface IDamageData {
+    public Vector3 Amount { get; }
+    public float AttackSpeed { get; }
+    public float Cooldown { get; }
+    public float Range { get; }
+    public DamageTypeResource DamageType { get; }
+    public AttackTypeResource AttackType { get; }
+} // IDamageData
+
+
 public interface IWeaponData {
     // Could be different from CategoryName of the IItem base class by further
-    // categorization of a weapon: "Melee", "Ranged", "TwoHanded", "Finesse", etc.
-    public string WeaponClass { get; }
-    public Vector2 DamageAmount { get; }
-    public float AttackSpeed { get; }
-    public float Range { get; }
-    public Array<string> DamageTypes { get; }
-    public Array<string> DamageStyles { get; }
+    // categorization of a weapon: "Melee", "Ranged", "Finesse", etc.
+    public WeaponClassResource WeaponClass { get; }
+    public Array<DamageData> Damages { get; }
+
     // e.g. TwoHanded, OneHanded, OffHand, Fist, etc
     public Array<string> HoldingStyles { get; }
 } // IWeaponData
@@ -133,27 +115,13 @@ public interface IArmorData {
 } // IArmorData
 
 
-public interface ITradeableData {
-    // e.g. [{ FieldName: "Gold", Value: "100" }, { FieldName: "Silver", Value: "500" }]
-    public Array<StringEntryResource> TradeValue { get; }
-
-    public bool IsCanSell { get; }
-    public bool IsCanBuy { get; }
-} // ITradeableData
-
-
 /* Modifiers that affect Offensive corresteristics of an equipment item.
 * Could be increase to Min attach damage, overall damage, attack speed,
 * crit chance or damage and etc.
 */
 public interface IPropertyModifier {
-    public string ID { get; }
     // e.g. "MinDamage", "AttackSpeed", "Resist Cold", "Strength", etc
     public string TargetProperty { get; }
     public Vector2 FlatValue { get; }
     public Vector2 PercentValue { get; }
-    public int Weight { get; }
-    public string Tier { get; }
-    public Color RarityColor { get; }
-    public int InstanceLimit { get; }
 } // IPropertyModifier

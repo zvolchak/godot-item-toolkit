@@ -1,0 +1,16 @@
+[
+	{
+		"AttackType": {
+			"ID": "at_slash",
+			"Name": "slash",
+			"Description": "Slash attack."
+		}
+	},
+	{
+		"AttackType": {
+			"ID": "at_thrust",
+			"Name": "thrust",
+			"Description": "Thrust attack."
+		}
+	}
+]

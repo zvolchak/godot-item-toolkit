@@ -1,64 +1,43 @@
-using Gamehound.ItemKit.Interfaces;
-using Gamehound.ItemKit.Utils;
-
-using Godot;
-using Godot.Collections;
-
 using System;
-using System.Text.Json.Serialization;
+using Godot;
+using Gamehound.ItemKit.Editor;
+using Gamehound.ItemKit.Interfaces;
 
 namespace Gamehound.ItemKit.Resources;
 
 
 [Tool]
-[GlobalClass]
 public partial class ItemImageResource :
-    Resource,
-    IIdentifier,
+    ItemResourceBase,
     IImageData {
-
-    [Export] public string ID { get; set; } = string.Empty;
-
-    // The name of the context in which this icon should be shown for
-    // the item. e.g. "Inventory", "Preview", "Equipped" and etc.
-    [Export] public virtual string Name { get; set; } = string.Empty;
-
-    [Export] public virtual string Category { get; set; } = string.Empty;
-
-    [Export] public virtual string Description { get; set; } = string.Empty;
 
     [Export] public string ImagePath { get; set; } = string.Empty;
 
     [Export] public Texture2D TextureAsset { get; set; }
 
 
-    public ItemImageResource CreateResource(
-        string path,
-        Dictionary<string, Variant> options = null
+    public override Resource Hook_SaveResource(
+        Resource resource,
+        string path = null,
+        ResourceOptions options = null
     ) {
-        ItemKitUtils.ValidateResource(this, path);
-        // Overwrite the resource ef it exists (by not doing anything with
-        // ValidateResource return value), because why not.
+        Variant spritesDir;
+        if (options == null || (options?.other?.ContainsKey("sprites_dir") ?? false)) {
+            spritesDir = ProjectSettings
+                .GetSetting($"itemkit/{GetType().Name}/imgs_dir_path")
+                .AsString();
+        } else {
+            options.other.TryGetValue("sprites_dir", out spritesDir);
+        }
 
-        string imagesDir = options != null && options.ContainsKey("ImagesDir")
-            ? options["ImagesDir"].AsString()
-            : string.Empty;
+        (resource as ItemImageResource).TextureAsset = getTextureFromPath(
+            spritesDir.AsString(),
+            ImagePath
+        );
 
-        Texture2D imageTexture = getTextureFromPath(imagesDir, ImagePath);
-        ItemImageResource resource = new ItemImageResource {
-            ID = ID,
-            Name = Name,
-            Description = Description,
-            ImagePath = ImagePath,
-            Category = Category,
-            TextureAsset = imageTexture
-        };
-
-        resource.SetScript(ResourceLoader.Load<Script>(
-            "res://addons/item_kit/Scripts/Resources/ItemImageResource.cs"
-        ));
+        resource = base.Hook_SaveResource(resource, path: path, options: options);
         return resource;
-    } // CreateResouceFile
+    } // Hook_Postprocess
 
 
     protected Texture2D getTextureFromPath(string rootDir, string imagePath) {
@@ -67,14 +46,10 @@ public partial class ItemImageResource :
         if (!path.StartsWith("res://")) {
             path = $"res://{path}";
         }
-        try {
-            texture = ResourceLoader.Load<Texture2D>(path);
-            if (texture == null) {
-                GD.PushWarning($"{GetType().Name}:: Failed to load texture from path: {path}");
-            }
-        } catch (Exception e) {
+
+        texture = ResourceLoader.Load<Texture2D>(path);
+        if (texture == null) {
             GD.PushWarning($"{GetType().Name}:: Failed to load texture from path: {path}");
-            GD.PushError(e.Message);
         }
 
         return texture;
@@ -98,13 +73,4 @@ public partial class ItemImageResource :
         return HashCode.Combine(ID, Category, ImagePath, TextureAsset);
     } // GetHashCode
 
-
-    public override string ToString() {
-        return $"{GetType().Name}:: " +
-        $"[ID={ID}, " +
-        $"Name={Name}, " +
-        $"Category={Category}, " +
-        $"ImagePath={ImagePath}, " +
-        $"TextureAsset={TextureAsset}]";
-    } // ToString
 } // class

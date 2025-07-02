@@ -1,0 +1,26 @@
+[
+	{
+		"Rarity": {
+			"ID": "rarity_common",
+			"Name": "Common",
+			"Weight": 1,
+			"RarityColor": { "r": 0.8, "g": 0.8, "b": 0.8, "a": 1.0 }
+		}
+	},
+	{
+		"Rarity": {
+			"ID": "rarity_rare",
+			"Name": "Rare",
+			"Weight": 20,
+			"RarityColor": { "r": 0.4, "g": 0.6, "b": 1.0, "a": 1.0 }
+		}
+	},
+	{
+		"Rarity": {
+			"ID": "rarity_unique",
+			"Name": "Unique",
+			"Weight": 30,
+			"RarityColor": { "r": 1.0, "g": 0.5, "b": 0.2, "a": 1.0 }
+		}
+	}
+]

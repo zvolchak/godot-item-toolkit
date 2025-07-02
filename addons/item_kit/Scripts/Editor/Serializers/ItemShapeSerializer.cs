@@ -23,10 +23,22 @@ public class ItemShapeSerializer : JsonConverter<ItemShapeResource> {
         return new ItemShapeResource();
     } // Read
 
-    public override void Write(Utf8JsonWriter writer, ItemShapeResource value, JsonSerializerOptions options) {
-        // writer.WriteStartObject();
-        // writer.WriteNumber("x", value.X);
-        // writer.WriteNumber("y", value.Y);
-        // writer.WriteEndObject();
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ItemShapeResource value,
+        JsonSerializerOptions options
+    ) {
+        writer.WriteStartObject();
+        writer.WriteNumber("width", value.Width);
+
+        writer.WritePropertyName("layout");
+        writer.WriteStartArray();
+        foreach (int cell in value.Layout) {
+            writer.WriteNumberValue(cell);
+        }
+        writer.WriteEndArray();
+
+        writer.WriteEndObject();
     } // Write
 } // class

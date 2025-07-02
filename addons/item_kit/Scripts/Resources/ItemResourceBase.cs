@@ -1,38 +1,67 @@
 using Godot;
+using static Godot.ResourceSaver;
 using Gamehound.ItemKit.Interfaces;
 using Gamehound.ItemKit.Editor;
-using static Godot.ResourceSaver;
 
 namespace Gamehound.ItemKit.Resources;
 
-
-public partial class ItemResourceBase<T> :
+[Tool]
+public partial class ItemResourceBase :
     Resource,
     IIdentifier,
-    IResourceCreator<T> where T : ItemResourceBase<T>, new() {
+    IResourceCreator {
 
-    [Export] public string ID { get; set; }
+    /// <summary>
+    /// Unique identifier value for this item.
+    /// </summary>
+    [Export] public virtual string ID { get; set; }
+
+    /// <summary>
+    /// Name of the item that will be displayed to the player.
+    /// </summary>
     [Export] public virtual string Name { get; set; }
+
+    /// <summary>
+    /// A category name this item belongs to. May not necessary be player visible.
+    /// </summary>
     [Export] public virtual string Category { get; set; }
+
+    /// <summary>
+    /// Description of the item that is player visible.
+    /// </summary>
     [Export(PropertyHint.MultilineText)] public virtual string Description { get; set; }
 
 
     /// <summary>
     /// Create a resource from the current instance. It will first try to load the
     /// resource from the disk or create a new one from the current instance.
+    ///
+    /// @param path: either a directory or a full path to where a resource should be saved to. If
+    ///             a directory is passed without a filename, then GetResourceFilename() will be used
+    ///             to generate a filename for this resource.
     /// </summary>
-    public virtual T CreateResource(
+    public virtual Resource CreateResource(
         string path = null,
         ResourceOptions options = null
     ) {
-        path = Hook_Preprocess(path: path, options: options);
-        T existingResource = Hook_LoadResource(path: path, options: options);
-        existingResource = Hook_ProcessDuplicate(existingResource, options: options);
-        if (existingResource != null)
-            return existingResource;
+        if (ID == null)
+            return null;
 
-        Hook_SaveResource(path: path, options: options);
-        return this as T;
+        // When path is a directory, use GetResourceFilename() as a filename.
+        if (path != null && path != "" && !path.Contains("."))
+            path = System.IO.Path.Combine(path, GetResourceFilename());
+
+        path = Hook_Preprocess(path: path, options: options);
+        Resource resource = Hook_LoadResource(path: path, options: options);
+        resource = Hook_ProcessDuplicate(resource, options: options);
+        if (resource != null)
+            return resource;
+        else
+            resource = this;
+
+        resource = Hook_SaveResource(resource, path: path, options: options);
+        resource = Hook_Postprocess(resource, path: path, options: options);
+        return resource;
     } // CreateResource
 
 
@@ -56,16 +85,19 @@ public partial class ItemResourceBase<T> :
         using (var dirAccess = DirAccess.Open(globalDirPath)) {
             dirAccess?.MakeDirRecursive(globalDirPath);
         }
-
         return path;
     } // Hook_Prepare
 
 
     /// <summary>
-    /// Save this resource to the disk into the GetFullPath() location, unless
+    /// Save a resource to the disk into the GetFullPath() location, unless
     /// "path" parameter is set to a different value.
     /// </summary>
-    public virtual T Hook_SaveResource(
+    /// <param name="resource">
+    ///     The resource to save. Typically, this is the current.
+    /// </param>
+    public virtual Resource Hook_SaveResource(
+        Resource resource,
         string path = null,
         ResourceOptions options = null
     ) {
@@ -73,7 +105,7 @@ public partial class ItemResourceBase<T> :
             path = GetFullPath();
 
         Error result = ResourceSaver.Save(
-            this,
+            resource,
             path,
             SaverFlags.Compress | SaverFlags.OmitEditorProperties
         );
@@ -90,11 +122,11 @@ public partial class ItemResourceBase<T> :
             GD.PushError(errorMsg);
         } else {
             GD.Print($"[{GetType().Name}] created: {path}");
-            GD.Print($" - {this}");
+            GD.Print($" - {resource}");
             GD.Print("----");
         }
 
-        return this as T;
+        return resource;
     } // Hook_SaveResource
 
 
@@ -103,7 +135,7 @@ public partial class ItemResourceBase<T> :
     /// parameter if it is provided. If the resource does not exist, it will
     /// return null.
     /// </summary>
-    public virtual T Hook_LoadResource(
+    public virtual Resource Hook_LoadResource(
         string path = null,
         ResourceOptions options = null
     ) {
@@ -114,8 +146,8 @@ public partial class ItemResourceBase<T> :
         if (!ResourceLoader.Exists(globalPath)) {
             return null;
         }
-
-        return ResourceLoader.Load<T>(globalPath);
+        var resource = ResourceLoader.Load(globalPath);
+        return resource;
     } // LoadExistingResource
 
 
@@ -131,28 +163,27 @@ public partial class ItemResourceBase<T> :
     /// JSON data and try to figure out which fields are present in the JSON and
     /// overwrite only those.
     /// </summary>
-    public virtual T Hook_ProcessDuplicate(
-        T existing,
+    public virtual Resource Hook_ProcessDuplicate(
+        Resource existing,
         ResourceOptions options = null
     ) {
         if (existing == null)
             return null;
 
-        string path = existing.GetFullPath();
+        string path = (existing as ItemResourceBase)?.GetFullPath();
+
         if (existing != null && !(options?.IsOverwrite ?? false)) {
             GD.PushWarning(
-                $"[{GetType().Name}::{existing.ID}] exists at " +
-                $"{path}. No overwrite is set. Returning existing as is."
+                $"[{GetType().Name}::{existing.ResourcePath}] exists. " +
+                $"No overwrite is set. Returning existing resource as is."
             );
             return existing;
         } else if (existing != null && (options?.IsOverwrite ?? false)) {
             GD.PushWarning(
-                $"""
-                [{GetType().Name}::{existing.ID}] already exists: {path}.
-                Overwriting existing resource.
-                """
+                $"[{GetType().Name}::{existing.ResourcePath}] already exists. " +
+                "Overwriting existing resource."
             );
-            this.CopyFrom(existing);
+            // this.CopyFrom(existing);
         }
 
         // null means no existing resource needs to be used as reference. Instead,
@@ -162,21 +193,56 @@ public partial class ItemResourceBase<T> :
 
 
     /// <summary>
+    /// Called after the resource is saved. It can be used to do any post-processing
+    /// on the resource, such as updating references or modifying properties.
+    /// </summary>
+    /// <param name="resource">
+    ///     The resource to save. Typically, this is the current.
+    /// </param>
+    /// <param name="path">
+    ///     The path to the resource where it was saved.
+    /// </param>
+    public virtual Resource Hook_Postprocess(
+        Resource resource,
+        string path = null,
+        ResourceOptions options = null
+    ) {
+        return resource;
+    } // Hook_Postprocess
+
+
+    /// <summary>
     /// Copy the properties from the source resource to this resource.
     /// </summary>
-    public virtual T CopyFrom(T source) {
+    public virtual Resource CopyFrom(Resource source) {
         if (source == null) {
             GD.PushError("CopyFrom failed: Source is null.");
-            return (T)this;
+            return (Resource)this;
         }
 
-        foreach (var property in typeof(T).GetProperties()) {
-            if (property.CanRead && property.CanWrite) {
-                property.SetValue(this, property.GetValue(source));
+        foreach (var property in typeof(Resource).GetProperties()) {
+            if (!(property.CanRead && property.CanWrite))
+                continue;
+
+            var value = property.GetValue(source);
+
+            if (value is Resource res) {
+                if (res == this) {
+                    GD.Print($"[CopyFrom] Skipping self-reference in property: {property.Name}");
+                    continue;
+                }
+
+                // Optional: detect path overlap
+                if (res.ResourcePath == this.ResourcePath && !string.IsNullOrEmpty(res.ResourcePath)) {
+                    GD.Print($"[CopyFrom] Skipping cyclic reference by path in property: {property.Name}");
+                    continue;
+                }
             }
+
+            property.SetValue(this, value);
         } // foreach
 
-        return (T)this;
+        return (Resource)this;
     } // CopyFrom
 
 

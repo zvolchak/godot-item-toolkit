@@ -1,80 +1,213 @@
 #if TOOLS
 using Gamehound.ItemKit.Editor;
+
 using Godot;
+using Godot.Collections;
+
+using System;
+
 
 [Tool]
 public partial class item_kit : EditorPlugin {
-    private WeaponResourcesGenerator _weaponGen;
+	private TabContainer _dock;
 
-    private ItemShapeResourceGenerator _shapeGen;
-    private TexturesResourceGenerator _texturesGen;
-    private PropertyModResourceGenerator _propModGen;
-    private SubResourcesGenerator _subResourceGen;
+	private double _lastScriptWriteTime;
+	/// <summary>
+	/// Delay before the next update scan on the files is done.
+	/// </summary>
+	private double _refreshThrottleTime = 0.5f;
+	private double _currRefreshTime = 0;
+	private const string _watchDir = "res://addons/item_kit/";
+	private string _menuBtnTitle = "Item Kit Panel";
 
-    private TabContainer _propertiesTab;
-    private TabContainer _itemsTab;
-    private VBoxContainer _propsContainer;
-    private VBoxContainer _itemsContainer;
+
+	public override void _EnterTree() {
+		AddToolMenuItem(_menuBtnTitle, Callable.From(ToggleDockPanel));
+		_lastScriptWriteTime = GetLatestScriptWriteTime();
+		SetProcess(true);
+	} // _EnterTree
 
 
-    public override void _EnterTree() {
-        _weaponGen = new WeaponResourcesGenerator();
-        _shapeGen = new ItemShapeResourceGenerator();
-        _texturesGen = new TexturesResourceGenerator();
-        _propModGen = new PropertyModResourceGenerator();
+	public override void _ExitTree() {
+		RemoveToolMenuItem(_menuBtnTitle);
 
-        _subResourceGen = new SubResourcesGenerator(
-            shapeGenerator: _shapeGen,
-            propModGenerator: _propModGen,
-            texturesGenerator: _texturesGen
+		if (_dock != null && _dock.IsInsideTree()) {
+			RemoveControlFromDocks(_dock);
+			_dock.QueueFree();
+		}
+
+		_dock = null;
+
+		SetProcess(false);
+		base._ExitTree();
+	} // _ExitTree
+
+
+	public override void _Process(double delta) {
+        // No need to check for files update in the directory if the docker is not open, since
+        // it is already unloaded from the editor's runtime.
+        if (_dock == null || _dock.IsQueuedForDeletion()) {
+		    _currRefreshTime = 0;
+            return;
+        }
+
+        _currRefreshTime += delta;
+        // Throttle how oftern directories are checked for updates.
+		if (_currRefreshTime < _refreshThrottleTime)
+            return;
+
+		_currRefreshTime = 0;
+
+		double latest = GetLatestScriptWriteTime();
+		if (latest > _lastScriptWriteTime) {
+			CloseDock();
+			_lastScriptWriteTime = latest;
+		}
+	} // _Process
+
+
+	private void ToggleDockPanel() {
+		if (_dock != null) {
+			CloseDock();
+			return;
+		}
+
+		CreateDockPanel();
+	} // ToggleDockPanel
+
+
+	private void CreateDockPanel() {
+		_dock = new TabContainer();
+
+        _dock.AddChild(buildBasePropsTab());
+        _dock.SetTabTitle(0, "Base Properties");
+
+
+        _dock.AddChild(buildSubResourcesTab());
+        _dock.SetTabTitle(1, "Sub Resources");
+
+        _dock.AddChild(buildItemsTab());
+		_dock.SetTabTitle(2, "Item Resources");
+
+		AddControlToDock(DockSlot.RightUl, _dock);
+	} // CreateDockPanel
+
+
+    private GroupGenerators buildBasePropsTab() {
+        string inputDir = "res://data/base_properties";
+        string outputDir = "res://resources";
+        var basePropsTab = new GroupGenerators(
+            new Array<ResourceFromJson>() {
+                new WeaponClassResouceGenerator(
+                    $"{inputDir}/weapon_classes.json",
+                    $"{outputDir}/weapon_classes/",
+                    settingName: "WeaponClassResource"
+                ),
+                new AttackTypeResourceGenerator(
+                    $"{inputDir}/attack_types.json",
+                    $"{outputDir}/attack_types/",
+                    settingName: $"AttackTypeResource"
+                ),
+                new DamageTypeResourceGenerators(
+                    $"{inputDir}/damage_types.json",
+                    $"{outputDir}/damage_types/",
+                    settingName: "DamageTypeResource"
+                 ),
+            }
         );
-
-        _propsContainer = new VBoxContainer();
-        _propsContainer.AddThemeConstantOverride("separation", 24);
-        _propsContainer.AddChild(_shapeGen);
-        _propsContainer.AddChild(_texturesGen);
-        _propsContainer.AddChild(_propModGen);
-        _propsContainer.AddChild(_subResourceGen);
-
-        _itemsContainer = new VBoxContainer();
-        _itemsContainer.AddThemeConstantOverride("separation", 24);
-        _itemsContainer.AddChild(_weaponGen);
-
-        _propertiesTab = new TabContainer();
-        AddTabWithContainer(_propertiesTab, _propsContainer, "Sub Resources");
-        AddTabWithContainer(_propertiesTab, _itemsContainer, "Item Resources");
-
-        AddControlToDock(DockSlot.RightUl, _propertiesTab);
-    } // _EnterTree
+        return basePropsTab;
+    } // buildBasePropsGenerators
 
 
-    public override void _ExitTree() {
-        cleanup(_propertiesTab);
-        cleanup(_itemsTab);
-        cleanup(_propsContainer);
-        cleanup(_itemsContainer);
+    private GroupGenerators buildSubResourcesTab() {
+        string inputDir = "res://data/sub_resources";
+        string outputDir = "res://resources";
+        var subResourceTab = new GroupGenerators(
+            new Array<ResourceFromJson>() {
+                new ItemShapeResourceGenerator(
+                    $"{inputDir}/item_shapes.json",
+                    $"{outputDir}/shapes/",
+                    settingName: "ItemShapeResource"
+                ),
+                new TexturesResourceGenerator(
+                    $"{inputDir}/item_images.json",
+                    $"{outputDir}/images/",
+                    settingName: "ItemImageResource"
 
-        cleanup(_weaponGen);
-        cleanup(_shapeGen);
-        cleanup(_texturesGen);
-        cleanup(_propModGen);
-        cleanup(_subResourceGen);
+                ),
+                new RarityResourceGenerator(
+                    $"{inputDir}/rarities.json",
+                    $"{outputDir}/rarities/",
+                    settingName: "RarityResource"
+                ),
+                new PropertyModResourceGenerator(
+                    $"{inputDir}/modifiers.json",
+                    $"{outputDir}/modifiers/",
+                    settingName: "PropertyModResource"
+                ),
+            }
+        );
+        return subResourceTab;
+    } // buildSubResourcesTab
 
-        base._ExitTree();
-    } // _ExitTree
+
+    private GroupGenerators buildItemsTab() {
+        string inputDir = "res://data/items";
+        string outputDir = "res://resources";
+        var itemsTab = new GroupGenerators(
+            new Array<ResourceFromJson>() {
+                        new WeaponResourcesGenerator($"{inputDir}/weapons.json",  $"{outputDir}/weapons/"),
+            }
+        );
+        return itemsTab;
+    } // buildSubResourcesTab
 
 
-    private void AddTabWithContainer(TabContainer tabContainer, VBoxContainer container, string tabName) {
-        container.AddThemeConstantOverride("separation", 24);
-        tabContainer.AddChild(container);
-        tabContainer.SetTabTitle(tabContainer.GetChildCount() - 1, tabName);
-    }
+    private void CloseDock() {
+		if (_dock != null && _dock.IsInsideTree()) {
+			RemoveControlFromDocks(_dock);
+			_dock.QueueFree();
+		}
+
+		_dock = null;
+	} // CloseDock
+	
+
+	private double GetLatestScriptWriteTime() {
+		return ScanDirectoryForModifiedTime(_watchDir);
+	} // GetLatestScriptWriteTime
 
 
-    protected virtual void cleanup(Container target) {
-        RemoveControlFromDocks(target);
-        target?.QueueFree();
-    } // cleanup
+	private double ScanDirectoryForModifiedTime(string path) {
+		double latest = 0;
+
+		var dir = DirAccess.Open(path);
+		if (dir == null)
+			return latest;
+
+		dir.ListDirBegin();
+
+		while (true) {
+			var entry = dir.GetNext();
+			if (string.IsNullOrEmpty(entry))
+				break;
+
+			if (entry == "." || entry == "..")
+				continue;
+
+			var fullPath = path + entry;
+
+			if (dir.CurrentIsDir()) {
+				latest = Math.Max(latest, ScanDirectoryForModifiedTime(fullPath + "/"));
+			} else if (entry.EndsWith(".cs")) {
+				var time = FileAccess.GetModifiedTime(fullPath);
+				latest = Math.Max(latest, time);
+			}
+		}
+
+		dir.ListDirEnd();
+		return latest;
+	} // ScanDirectoryForModifiedTime
 
 } // class
 #endif

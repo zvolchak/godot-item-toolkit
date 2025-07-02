@@ -1,22 +1,32 @@
 using Godot;
+
+using System;
 using System.Text.Json;
 
 namespace Gamehound.ItemKit.Editor;
 
-[Tool]
+
 public partial class ResourceFromJson : VBoxContainer {
 
     protected Button _generateButton;
     protected LineEdit _inputPathField;
     protected LineEdit _outputPathField;
     protected string _fileContent;
+    protected string _settingName;
 
 
     public ResourceFromJson() { }
 
 
-    public ResourceFromJson(string outputPath) {
-        SetOutputDir(outputPath);
+    public ResourceFromJson(string inputPath, string outputPath, string settingName = null) {
+        if (settingName == null || settingName == "") {
+            _settingName = GetType().Name;
+        } else {
+            _settingName = settingName;
+        }
+
+        SetSettingsValue(InputSettingName, inputPath);
+        SetSettingsValue(OutputSettingName, outputPath);
     }
 
 
@@ -31,12 +41,20 @@ public partial class ResourceFromJson : VBoxContainer {
         var inputRow = BuildInputRow(
             ref _inputPathField,
             "Input",
-            GetSettingsValue(InputSettingName, InputPath)
+            GetSettingsValue(InputSettingName, InputPath).AsString()
         );
         var outputRow = BuildInputRow(
             ref _outputPathField,
             "Output",
-            GetSettingsValue(OutputSettingName, InputPath)
+            GetSettingsValue(OutputSettingName, InputPath).AsString()
+        );
+
+        var isOverwriteCheckbox = BuildCheckboxRow(
+            "Is Overwrite",
+            GetSettingsValue(IsOverwriteSettingName, false).As<bool>(),
+            (isChecked) => {
+                SetSettingsValue(IsOverwriteSettingName, isChecked);
+            }
         );
 
         _generateButton = new Button { Text = GenerateBtnLable };
@@ -51,6 +69,7 @@ public partial class ResourceFromJson : VBoxContainer {
 
         AddChild(inputRow);
         AddChild(outputRow);
+        AddChild(isOverwriteCheckbox);
         AddChild(_generateButton);
     }
 
@@ -112,33 +131,33 @@ public partial class ResourceFromJson : VBoxContainer {
     } // BuildInputRow
 
 
-    protected virtual void saveResource(Resource resource, string path) {
-        string dirPath = System.IO.Path.GetDirectoryName(path);
-        string globalDirPath = ProjectSettings.GlobalizePath(dirPath);
-        // Ensure the directory exists
-        using (var dirAccess = DirAccess.Open(globalDirPath)) {
-            dirAccess?.MakeDirRecursive(globalDirPath);
-        }
+    protected virtual HBoxContainer BuildCheckboxRow(
+        string labelText,
+        bool initialState,
+        Action<bool> onToggled
+    ) {
+        // Create a horizontal container for the checkbox and label
+        HBoxContainer row = new HBoxContainer();
 
-        Error result = ResourceSaver.Save(
-            resource,
-            path,
-            ResourceSaver.SaverFlags.Compress | ResourceSaver.SaverFlags.OmitEditorProperties
-        );
+        // Create the checkbox
+        CheckBox checkBox = new CheckBox {
+            ButtonPressed = initialState
+        };
 
-        if (result != Error.Ok) {
-            string errorMsg = $"Failed to save [{resource.GetType().Name}] resource at {path}: {result}";
-            if (result == Error.CantOpen){
-                errorMsg =$"{errorMsg}\n - Most likey directory permissions issue. Try creating one manually.";
-            }
+        // Connect the toggled signal to the provided action
+        checkBox.Toggled += (pressed) => onToggled(pressed);
 
-            GD.PushError(errorMsg);
-        } else {
-            GD.Print($"[{resource.GetType().Name}] created: {path}");
-            GD.Print($" - {resource}");
-            GD.Print("----");
-        }
-    } // saveResource
+        // Create the label
+        Label label = new Label {
+            Text = labelText
+        };
+
+        // Add the checkbox and label to the row
+        row.AddChild(checkBox);
+        row.AddChild(label);
+
+        return row;
+    } // BuildCheckboxRow
 
 
     public virtual void SetOutputDir(string path) {
@@ -149,19 +168,30 @@ public partial class ResourceFromJson : VBoxContainer {
     } // SetOutputDir
 
 
-    public virtual void SetSettingsValue(string keyName, string value) {
+    public virtual void SetSettingsValue(string keyName, Variant value) {
         ProjectSettings.SetSetting(keyName, value);
     } // SetSettingsValue
 
 
     /*********************************GETTERS*********************************/
 
-    protected virtual string GenerateBtnLable => "Generate";
-    protected virtual string InputPath => _inputPathField?.Text ?? "res://data/";
-    protected virtual string OutputDir => _outputPathField?.Text ?? "res://resources/";
+    public virtual string GenerateBtnLable => "Generate";
+    public virtual string InputPath => _inputPathField?.Text ?? "res://data/";
+    public virtual string OutputDir => _outputPathField?.Text ?? "res://resources/";
 
-    protected virtual string InputSettingName => $"itemkit/{GetType().Name}/input_path";
-    protected virtual string OutputSettingName => $"itemkit/{GetType().Name}/output_path";
+    public virtual string InputSettingName => $"itemkit/{SettingName}/input_path";
+    public virtual string OutputSettingName => $"itemkit/{SettingName}/output_path";
+    public virtual string IsOverwriteSettingName => $"itemkit/{SettingName}/is_overwrite";
+
+    public virtual string SettingName {
+        get {
+            if (_settingName == "") {
+                return GetType().Name;
+            }
+            return _settingName;
+        }
+    } // SettingName
+
 
     protected virtual JsonSerializerOptions SerializerOptions {
         get {
@@ -180,20 +210,13 @@ public partial class ResourceFromJson : VBoxContainer {
     } // SerializerOptions
 
 
-    public virtual string GetSettingsValue(string keyName, string defaultValue = "") {
+    public virtual Variant GetSettingsValue(
+        string keyName,
+        Variant defaultValue = new Variant()
+    ) {
         return ProjectSettings.HasSetting(keyName)
-            ? (string)ProjectSettings.GetSetting(keyName)
+            ? ProjectSettings.GetSetting(keyName)
             : defaultValue;
     }
-
-
-    public virtual string GetInputSetting() {
-        return GetSettingsValue(InputSettingName, InputPath);
-    } // GetInputSetting
-
-
-    public virtual string GetOutputSetting() {
-        return GetSettingsValue(OutputSettingName, OutputDir);
-    } // GetOutputSetting
 
 } // class

@@ -1,0 +1,10 @@
+[
+	{
+		"InventoryShape": {
+			"ID": "2by3_shape",
+			"Name": "2x3",
+			"Width": 2,
+			"Layout": [1, 1, 1, 1, 1, 1]
+		}
+	}
+]

@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="ItemsLibrary"
-config/features=PackedStringArray("4.4", "C#", "Forward Plus")
+config/features=PackedStringArray("4.2", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
 [dotnet]
@@ -24,17 +24,26 @@ enabled=PackedStringArray("res://addons/item_kit/plugin.cfg")
 
 [itemkit]
 
-input_path="res://data/item_shapes.json"
-output_path="res://resources/"
-img_dir_path="res://sprites"
-ItemShapeResourceGenerator/input_path="res://data/item_shapes.json"
-{GetType().Name}/output_path="res://resources/modifiers/"
-TexturesResourceGenerator/input_path="res://data/item_images.json"
-PropertyModResourceGenerator/input_path="res://data/modifiers.json"
-ItemShapeResourceGenerator/output_path="res://resources/shapes/"
-TexturesResourceGenerator/output_path="res://resources/images/"
-PropertyModResourceGenerator/output_path="res://resources/modifiers/"
-TexturesResourceGenerator/imgs_dir_path="res://sprites/"
-WeaponResourcesGenerator/input_path="res://data/weapons.json"
-WeaponResourcesGenerator/output_path="res://resources/weapons/"
+WeaponClassResource/input_path="res://data/base_properties/weapon_classes.json"
+WeaponClassResource/output_path="res://resources/weapon_classes/"
+AttackTypeResource/input_path="res://data/base_properties/attack_types.json"
+AttackTypeResource/output_path="res://resources/attack_types/"
+DamageTypeResource/input_path="res://data/base_properties/damage_types.json"
+DamageTypeResource/output_path="res://resources/damage_types/"
+ItemShapeResource/input_path="res://data/sub_resources/item_shapes.json"
 ItemShapeResource/output_path="res://resources/shapes/"
+ItemImageResource/input_path="res://data/sub_resources/item_images.json"
+ItemImageResource/output_path="res://resources/images/"
+RarityResource/input_path="res://data/sub_resources/rarities.json"
+RarityResource/output_path="res://resources/rarities/"
+PropertyModResource/input_path="res://data/sub_resources/modifiers.json"
+PropertyModResource/output_path="res://resources/modifiers/"
+WeaponResourcesGenerator/input_path="res://data/items/weapons.json"
+WeaponResourcesGenerator/output_path="res://resources/weapons/"
+PropertyModResource/is_overwrite=true
+WeaponResourcesGenerator/is_overwrite=true
+PropertyModifierResource/output_path="res://resources/modifiers/"
+
+[mono]
+
+reload_assemblies_on_script_change=false
