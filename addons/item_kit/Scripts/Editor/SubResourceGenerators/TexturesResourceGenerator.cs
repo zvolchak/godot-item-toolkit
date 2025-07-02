@@ -1,8 +1,5 @@
 using Gamehound.ItemKit.Resources;
-
 using Godot;
-using Godot.Collections;
-
 using System.Collections.Generic;
 using System.Text.Json;
 
@@ -13,6 +10,14 @@ public partial class TexturesResourceGenerator : ResourceFromJson {
 
 
     protected LineEdit _inputImgDirField;
+
+
+    public TexturesResourceGenerator() : base() { }
+    public TexturesResourceGenerator(
+        string inputPath,
+        string outputPath,
+        string settingName = null
+    ) : base(inputPath, outputPath, settingName) { }
 
 
     protected override void init() {
@@ -58,10 +63,13 @@ public partial class TexturesResourceGenerator : ResourceFromJson {
                 var opts = new Godot.Collections.Dictionary<string, Variant>();
                 opts.Add("sprites_dir", GetSettingsValue(IsOverwriteSettingName).AsString());
 
-                img.CreateResource(options: new ResourceOptions {
-                    IsOverwrite = GetSettingsValue(IsOverwriteSettingName).AsBool(),
-                    other = opts
-                });
+                img.CreateResource(
+                    path: OutputDir,
+                    options: new ResourceOptions {
+                        IsOverwrite = GetSettingsValue(IsOverwriteSettingName).AsBool(),
+                        other = opts
+                    }
+                );
             } // for images
         } // for data
     } // GenerateResources
@@ -69,13 +77,15 @@ public partial class TexturesResourceGenerator : ResourceFromJson {
 
     /********************************* GETTERS *********************************/
 
-    protected override string GenerateBtnLable => "Generate Textures";
+    public override string GenerateBtnLable => "Generate Textures";
 
     protected virtual string ImagesPath => "res://sprites/";
 
     protected virtual string ImgsDirSettingName {
         get {
-            return $"itemkit/{GetType().Name}/imgs_dir_path";
+            // The `ItemImageResource` name should match what is set in item_kit.cs for the
+            // TexturesResourceGenerator instance.
+            return $"itemkit/ItemImageResource/imgs_dir_path";
         }
     }
 
@@ -83,11 +93,11 @@ public partial class TexturesResourceGenerator : ResourceFromJson {
     // Matching setting name with ItemShapeResource classname so that it con
     // be accessed later by the ItemShapeResource instance by its GetOutputDir()
     // method.
-    protected override string OutputSettingName {
-        get {
-            return $"itemkit/{GetType().Name}/output_path";
-        }
-    }
+    //public override string OutputSettingName {
+    //    get {
+    //        return $"itemkit/{GetType().Name}/output_path";
+    //    }
+    //}
 
 
     /// <summary>

@@ -1,0 +1,60 @@
+[
+	{
+		"ID": "sword_0001",
+		"Name": "Steel Sword",
+		"Category": "sword",
+		"Description": "A reliable blade of tempered steel.",
+
+		"WeaponClass": {
+			"ID": "wc_melee"
+		},
+
+		"Damages": [
+			{
+				"Amount": {
+					"x": 1,
+					"y": 2
+				},
+				"AttackSpeed": 1.0,
+				"Cooldown": 0.0,
+				"Range": 2.5,
+				"DamageType": {
+					"ID": "dt_physical"
+				},
+				"AttackType": {
+					"ID": "at_slash"
+				}
+			}
+		],
+
+		"Images": [
+			{
+				"ID": "sword_preview_001",
+				"Name": "Sword",
+				"Category": "Inventory",
+				"ImagePath": "items/Sword.png"
+			}
+		],
+
+		"StatRequirements": [
+			{
+				"ID": "basic_dexterity_mod_0002"
+			},
+			{
+				"ID": "basic_strength_mod_0001"
+			}
+		],
+
+		"Rarity": {
+			"ID": "rarity_common"
+		},
+
+		"SlotPriority": 1,
+
+		"InventoryShape": {
+			"ID": "2by3_shape",
+			"Width": 2,
+			"Layout": [ 1, 1, 1, 1, 1, 1 ]
+		}
+	}
+]

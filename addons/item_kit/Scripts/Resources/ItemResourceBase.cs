@@ -5,8 +5,8 @@ using Gamehound.ItemKit.Editor;
 
 namespace Gamehound.ItemKit.Resources;
 
-
-public abstract partial class ItemResourceBase :
+[Tool]
+public partial class ItemResourceBase :
     Resource,
     IIdentifier,
     IResourceCreator {
@@ -35,11 +35,22 @@ public abstract partial class ItemResourceBase :
     /// <summary>
     /// Create a resource from the current instance. It will first try to load the
     /// resource from the disk or create a new one from the current instance.
+    ///
+    /// @param path: either a directory or a full path to where a resource should be saved to. If
+    ///             a directory is passed without a filename, then GetResourceFilename() will be used
+    ///             to generate a filename for this resource.
     /// </summary>
     public virtual Resource CreateResource(
         string path = null,
         ResourceOptions options = null
     ) {
+        if (ID == null)
+            return null;
+
+        // When path is a directory, use GetResourceFilename() as a filename.
+        if (path != null && path != "" && !path.Contains("."))
+            path = System.IO.Path.Combine(path, GetResourceFilename());
+
         path = Hook_Preprocess(path: path, options: options);
         Resource resource = Hook_LoadResource(path: path, options: options);
         resource = Hook_ProcessDuplicate(resource, options: options);
@@ -74,7 +85,6 @@ public abstract partial class ItemResourceBase :
         using (var dirAccess = DirAccess.Open(globalDirPath)) {
             dirAccess?.MakeDirRecursive(globalDirPath);
         }
-
         return path;
     } // Hook_Prepare
 
@@ -160,7 +170,8 @@ public abstract partial class ItemResourceBase :
         if (existing == null)
             return null;
 
-        string path = (existing as ItemResourceBase)?.GetFullPath() ?? "";
+        string path = (existing as ItemResourceBase)?.GetFullPath();
+
         if (existing != null && !(options?.IsOverwrite ?? false)) {
             GD.PushWarning(
                 $"[{GetType().Name}::{existing.ResourcePath}] exists. " +

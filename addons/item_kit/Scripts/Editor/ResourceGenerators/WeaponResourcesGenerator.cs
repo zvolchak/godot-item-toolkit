@@ -10,6 +10,15 @@ namespace Gamehound.ItemKit.Editor;
 
 public partial class WeaponResourcesGenerator : ResourceFromJson {
 
+
+    public WeaponResourcesGenerator() : base() { }
+    public WeaponResourcesGenerator(
+        string inputPath,
+        string outputPath,
+        string settingName = null
+    ) : base(inputPath, outputPath, settingName) { }
+
+
     public override void GenerateResources(string jsonContent) {
         base.GenerateResources(jsonContent);
 
@@ -33,13 +42,15 @@ public partial class WeaponResourcesGenerator : ResourceFromJson {
                     return res as PropertyModifierResource ?? null;
                 })
             );
+            var weaponClass = entry.WeaponClass.CreateResource() as WeaponClassResource;
 
             /// Override sub resources with a reference to a previously created resources.
-
+            updateDamageReferences(entry.Damages);
             entry.InventoryShape = shape ?? entry.InventoryShape;
             entry.Rarity = rarity ?? entry.Rarity;
             entry.Images = images ?? entry.Images;
             entry.StatRequirements = statReq ?? entry.StatRequirements;
+            entry.WeaponClass = weaponClass ?? entry.WeaponClass;
 
             entry.CreateResource(
                 path,
@@ -52,6 +63,18 @@ public partial class WeaponResourcesGenerator : ResourceFromJson {
         GD.Print($"{data.Count} Weapons generated.");
     } // GenerateResources
 
-    protected override string GenerateBtnLable { get; } = "Generate Weapon Resource";
+
+    private void updateDamageReferences(Array<DamageData> damages) {
+        foreach (var damage in damages) {
+            var at = damage.AttackType?.CreateResource() as AttackTypeResource;
+            var dt = damage.DamageType?.CreateResource() as DamageTypeResource;
+
+            damage.AttackType = at;
+            damage.DamageType = dt;
+        } // foreach
+    } // updateDamageReferences
+
+
+    public override string GenerateBtnLable { get; } = "Generate Weapon Resource";
 
 } // WeaponResourcesGenerator

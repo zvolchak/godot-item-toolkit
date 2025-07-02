@@ -3,6 +3,6 @@ using Gamehound.ItemKit.Resources;
 namespace Gamehound.ItemKit.Editor;
 
 
-internal class JsonItemShapeData {
-    public ItemShapeResource InventoryShape { get; set; }
+public class JsonItemBaseData {
+    public ItemResourceBase Item { get; set; }
 } // InventoryShapeData

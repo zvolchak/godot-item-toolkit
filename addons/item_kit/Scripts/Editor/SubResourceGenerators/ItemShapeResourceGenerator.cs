@@ -10,6 +10,15 @@ namespace Gamehound.ItemKit.Editor;
 
 public partial class ItemShapeResourceGenerator : ResourceFromJson {
 
+
+    public ItemShapeResourceGenerator(): base() { }
+    public ItemShapeResourceGenerator(
+        string inputPath,
+        string outputPath,
+        string settingName = null
+    ) : base(inputPath, outputPath, settingName) { }
+
+
     public override void GenerateResources(string jsonContent) {
         base.GenerateResources(jsonContent);
 
@@ -19,19 +28,22 @@ public partial class ItemShapeResourceGenerator : ResourceFromJson {
 
         foreach (JsonItemShapeData shapeData in data) {
             ItemShapeResource shape = shapeData.InventoryShape;
-            var s = shape.CreateResource(options: new ResourceOptions {
-                IsOverwrite = GetSettingsValue(IsOverwriteSettingName).AsBool(),
-            });
+            var s = shape.CreateResource(
+                path: OutputDir,
+                options: new ResourceOptions {
+                    IsOverwrite = GetSettingsValue(IsOverwriteSettingName).AsBool(),
+                }
+            );
         }
     } // GenerateResources
 
 
-    protected override string GenerateBtnLable => "Generate Shapes";
+    public override string GenerateBtnLable => "Generate Shapes";
 
     // Matching setting name with ItemShapeResource classname so that it con
     // be accessed later by the ItemShapeResource instance by its GetOutputDir()
     // method.
-    protected override string OutputSettingName => $"itemkit/ItemShapeResource/output_path";
+    //public override string OutputSettingName => $"itemkit/ItemShapeResource/output_path";
 
 } // class
 

@@ -1,9 +1,9 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://blw7th4dheilv"]
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dsdgbad4hyc6x"]
 
-[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/RarityResource.cs" id="1_qqe0c"]
+[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/RarityResource.cs" id="1_7cvqy"]
 
 [resource]
-script = ExtResource("1_qqe0c")
+script = ExtResource("1_7cvqy")
 Weight = 1
 RarityColor = Color(0.8, 0.8, 0.8, 1)
 InstanceLimit = -1

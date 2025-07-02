@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://ddd2coug1blww"]
+
+[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/Fields/DamageTypeResource.cs" id="1_x3wa7"]
+
+[resource]
+script = ExtResource("1_x3wa7")
+ID = "dt_physical"
+Name = "physical"
+Category = ""
+Description = "Deals physical damage."

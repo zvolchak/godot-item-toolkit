@@ -1,12 +1,12 @@
-[gd_resource type="Resource" load_steps=3 format=3 uid="uid://ddy5xo7iunreb"]
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://cm5xpby8mcpiy"]
 
-[ext_resource type="Texture2D" uid="uid://clud4f8cq5k2h" path="res://sprites/items/Sword.png" id="1_d4vyo"]
-[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/ItemImageResource.cs" id="2_6vbyd"]
+[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/ItemImageResource.cs" id="1_81lc8"]
+[ext_resource type="Texture2D" uid="uid://clud4f8cq5k2h" path="res://sprites/items/Sword.png" id="1_umxe4"]
 
 [resource]
-script = ExtResource("2_6vbyd")
+script = ExtResource("1_81lc8")
 ImagePath = "items/Sword.png"
-TextureAsset = ExtResource("1_d4vyo")
+TextureAsset = ExtResource("1_umxe4")
 ID = "sword_preview_001"
 Name = "Sword"
 Category = "Inventory"

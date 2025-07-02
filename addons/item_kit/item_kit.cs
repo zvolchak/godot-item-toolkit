@@ -2,6 +2,7 @@
 using Gamehound.ItemKit.Editor;
 
 using Godot;
+using Godot.Collections;
 
 using System;
 
@@ -78,42 +79,91 @@ public partial class item_kit : EditorPlugin {
 	private void CreateDockPanel() {
 		_dock = new TabContainer();
 
-		var shapeGen = new ItemShapeResourceGenerator();
-		var texturesGen = new TexturesResourceGenerator();
-		var rarityGen = new RarityResourceGenerator();
-		var propModGen = new PropertyModResourceGenerator();
-		var weaponGen = new WeaponResourcesGenerator();
+        _dock.AddChild(buildBasePropsTab());
+        _dock.SetTabTitle(0, "Base Properties");
 
-		var subResourceGen = new SubResourcesGenerator(
-			shapeGenerator: shapeGen,
-			propModGenerator: propModGen,
-			texturesGenerator: texturesGen,
-			rarityGenerator: rarityGen
-		);
 
-		var subTab = new VBoxContainer();
-		subTab.AddThemeConstantOverride("separation", 24);
-		subTab.AddChild(shapeGen);
-		subTab.AddChild(texturesGen);
-		subTab.AddChild(propModGen);
-		subTab.AddChild(rarityGen);
-		subTab.AddChild(subResourceGen);
+        _dock.AddChild(buildSubResourcesTab());
+        _dock.SetTabTitle(1, "Sub Resources");
 
-		var itemTab = new VBoxContainer();
-		itemTab.AddThemeConstantOverride("separation", 24);
-		itemTab.AddChild(weaponGen);
-
-		_dock.AddChild(subTab);
-		_dock.SetTabTitle(0, "Sub Resources");
-
-		_dock.AddChild(itemTab);
-		_dock.SetTabTitle(1, "Item Resources");
+        _dock.AddChild(buildItemsTab());
+		_dock.SetTabTitle(2, "Item Resources");
 
 		AddControlToDock(DockSlot.RightUl, _dock);
 	} // CreateDockPanel
 
 
-	private void CloseDock() {
+    private GroupGenerators buildBasePropsTab() {
+        string inputDir = "res://data/base_properties";
+        string outputDir = "res://resources";
+        var basePropsTab = new GroupGenerators(
+            new Array<ResourceFromJson>() {
+                new WeaponClassResouceGenerator(
+                    $"{inputDir}/weapon_classes.json",
+                    $"{outputDir}/weapon_classes/",
+                    settingName: "WeaponClassResource"
+                ),
+                new AttackTypeResourceGenerator(
+                    $"{inputDir}/attack_types.json",
+                    $"{outputDir}/attack_types/",
+                    settingName: $"AttackTypeResource"
+                ),
+                new DamageTypeResourceGenerators(
+                    $"{inputDir}/damage_types.json",
+                    $"{outputDir}/damage_types/",
+                    settingName: "DamageTypeResource"
+                 ),
+            }
+        );
+        return basePropsTab;
+    } // buildBasePropsGenerators
+
+
+    private GroupGenerators buildSubResourcesTab() {
+        string inputDir = "res://data/sub_resources";
+        string outputDir = "res://resources";
+        var subResourceTab = new GroupGenerators(
+            new Array<ResourceFromJson>() {
+                new ItemShapeResourceGenerator(
+                    $"{inputDir}/item_shapes.json",
+                    $"{outputDir}/shapes/",
+                    settingName: "ItemShapeResource"
+                ),
+                new TexturesResourceGenerator(
+                    $"{inputDir}/item_images.json",
+                    $"{outputDir}/images/",
+                    settingName: "ItemImageResource"
+
+                ),
+                new RarityResourceGenerator(
+                    $"{inputDir}/rarities.json",
+                    $"{outputDir}/rarities/",
+                    settingName: "RarityResource"
+                ),
+                new PropertyModResourceGenerator(
+                    $"{inputDir}/modifiers.json",
+                    $"{outputDir}/modifiers/",
+                    settingName: "PropertyModResource"
+                ),
+            }
+        );
+        return subResourceTab;
+    } // buildSubResourcesTab
+
+
+    private GroupGenerators buildItemsTab() {
+        string inputDir = "res://data/items";
+        string outputDir = "res://resources";
+        var itemsTab = new GroupGenerators(
+            new Array<ResourceFromJson>() {
+                        new WeaponResourcesGenerator($"{inputDir}/weapons.json",  $"{outputDir}/weapons/"),
+            }
+        );
+        return itemsTab;
+    } // buildSubResourcesTab
+
+
+    private void CloseDock() {
 		if (_dock != null && _dock.IsInsideTree()) {
 			RemoveControlFromDocks(_dock);
 			_dock.QueueFree();

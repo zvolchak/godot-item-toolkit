@@ -12,13 +12,21 @@ public partial class ResourceFromJson : VBoxContainer {
     protected LineEdit _inputPathField;
     protected LineEdit _outputPathField;
     protected string _fileContent;
+    protected string _settingName;
 
 
     public ResourceFromJson() { }
 
 
-    public ResourceFromJson(string outputPath) {
-        SetOutputDir(outputPath);
+    public ResourceFromJson(string inputPath, string outputPath, string settingName = null) {
+        if (settingName == null || settingName == "") {
+            _settingName = GetType().Name;
+        } else {
+            _settingName = settingName;
+        }
+
+        SetSettingsValue(InputSettingName, inputPath);
+        SetSettingsValue(OutputSettingName, outputPath);
     }
 
 
@@ -167,13 +175,22 @@ public partial class ResourceFromJson : VBoxContainer {
 
     /*********************************GETTERS*********************************/
 
-    protected virtual string GenerateBtnLable => "Generate";
-    protected virtual string InputPath => _inputPathField?.Text ?? "res://data/";
-    protected virtual string OutputDir => _outputPathField?.Text ?? "res://resources/";
+    public virtual string GenerateBtnLable => "Generate";
+    public virtual string InputPath => _inputPathField?.Text ?? "res://data/";
+    public virtual string OutputDir => _outputPathField?.Text ?? "res://resources/";
 
-    protected virtual string InputSettingName => $"itemkit/{GetType().Name}/input_path";
-    protected virtual string OutputSettingName => $"itemkit/{GetType().Name}/output_path";
-    protected virtual string IsOverwriteSettingName => $"itemkit/{GetType().Name}/is_overwrite";
+    public virtual string InputSettingName => $"itemkit/{SettingName}/input_path";
+    public virtual string OutputSettingName => $"itemkit/{SettingName}/output_path";
+    public virtual string IsOverwriteSettingName => $"itemkit/{SettingName}/is_overwrite";
+
+    public virtual string SettingName {
+        get {
+            if (_settingName == "") {
+                return GetType().Name;
+            }
+            return _settingName;
+        }
+    } // SettingName
 
 
     protected virtual JsonSerializerOptions SerializerOptions {

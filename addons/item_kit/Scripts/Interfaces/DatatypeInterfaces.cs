@@ -1,3 +1,7 @@
+using System.Collections.Generic;
+
+using Gamehound.ItemKit.Resources;
+
 using Godot;
 using Godot.Collections;
 
@@ -83,15 +87,22 @@ public interface IDurableData {
 } // IDurable
 
 
+public interface IDamageData {
+    public Vector3 Amount { get; }
+    public float AttackSpeed { get; }
+    public float Cooldown { get; }
+    public float Range { get; }
+    public DamageTypeResource DamageType { get; }
+    public AttackTypeResource AttackType { get; }
+} // IDamageData
+
+
 public interface IWeaponData {
     // Could be different from CategoryName of the IItem base class by further
-    // categorization of a weapon: "Melee", "Ranged", "TwoHanded", "Finesse", etc.
-    public string WeaponClass { get; }
-    public Vector2 DamageAmount { get; }
-    public float AttackSpeed { get; }
-    public float Range { get; }
-    public Array<string> DamageTypes { get; }
-    public Array<string> DamageStyles { get; }
+    // categorization of a weapon: "Melee", "Ranged", "Finesse", etc.
+    public WeaponClassResource WeaponClass { get; }
+    public Array<DamageData> Damages { get; }
+
     // e.g. TwoHanded, OneHanded, OffHand, Fist, etc
     public Array<string> HoldingStyles { get; }
 } // IWeaponData

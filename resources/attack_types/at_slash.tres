@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dxi5xgq5tub5o"]
+
+[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/Fields/AttackTypeResource.cs" id="1_lahbh"]
+
+[resource]
+script = ExtResource("1_lahbh")
+ID = "at_slash"
+Name = "slash"
+Category = ""
+Description = "Slash attack."

@@ -8,6 +8,14 @@ namespace Gamehound.ItemKit.Editor;
 
 public partial class PropertyModResourceGenerator : ResourceFromJson {
 
+    public PropertyModResourceGenerator() : base() { }
+    public PropertyModResourceGenerator(
+        string inputPath,
+        string outputPath,
+        string settingName = null
+    ) : base(inputPath, outputPath, settingName) { }
+
+
     public override void GenerateResources(string jsonContent) {
         base.GenerateResources(jsonContent);
 
@@ -17,9 +25,12 @@ public partial class PropertyModResourceGenerator : ResourceFromJson {
 
         foreach (JsonPropertymodData modData in data) {
             foreach (PropertyModifierResource mod in modData.Modifiers) {
-                mod.CreateResource(options: new ResourceOptions {
-                    IsOverwrite = GetSettingsValue(IsOverwriteSettingName).AsBool(),
-                });
+                mod.CreateResource(
+                    path: OutputDir,
+                    options: new ResourceOptions {
+                        IsOverwrite = GetSettingsValue(IsOverwriteSettingName).AsBool(),
+                    }
+                );
             } // foreach mod
         } // foreach data
     } // GenerateResources
@@ -27,12 +38,12 @@ public partial class PropertyModResourceGenerator : ResourceFromJson {
 
     /****************************** GETTERS ***********************************/
 
-    protected override string GenerateBtnLable => "Generate Modifiers";
+    public override string GenerateBtnLable => "Generate Modifiers";
 
     /// <summary>
     /// Matching setting name with PropertyModifierResource classname so that it can be accessed
     /// later by the PropertyModifierResource instance by its GetOutputDir() method.
     /// </summary>
-    protected override string OutputSettingName => $"itemkit/PropertyModifierResource/output_path";
+    public override string OutputSettingName => $"itemkit/PropertyModifierResource/output_path";
 
 } // class
