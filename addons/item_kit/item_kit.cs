@@ -113,6 +113,11 @@ public partial class item_kit : EditorPlugin {
                     $"{outputDir}/damage_types/",
                     settingName: "DamageTypeResource"
                  ),
+                new HoldingTypeResourceGenerator(
+                    $"{inputDir}/holding_types.json",
+                    $"{outputDir}/holding_types/",
+                    settingName: "HoldingTypeResource"
+                )
             }
         );
         return basePropsTab;

@@ -43,6 +43,9 @@ public partial class WeaponResourcesGenerator : ResourceFromJson {
                 })
             );
             var weaponClass = entry.WeaponClass.CreateResource() as WeaponClassResource;
+            var holdingTypes = new Array<HoldingTypeResource>(
+                entry.HoldingTypes.Select(ht => ht.CreateResource() as HoldingTypeResource)
+            );
 
             /// Override sub resources with a reference to a previously created resources.
             updateDamageReferences(entry.Damages);
@@ -51,6 +54,7 @@ public partial class WeaponResourcesGenerator : ResourceFromJson {
             entry.Images = images ?? entry.Images;
             entry.StatRequirements = statReq ?? entry.StatRequirements;
             entry.WeaponClass = weaponClass ?? entry.WeaponClass;
+            entry.HoldingTypes = holdingTypes ?? entry.HoldingTypes;
 
             entry.CreateResource(
                 path,

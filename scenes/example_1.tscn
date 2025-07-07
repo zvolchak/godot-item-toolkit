@@ -1,0 +1,208 @@
+[gd_scene load_steps=21 format=3 uid="uid://d3mgw2uyw8y86"]
+
+[ext_resource type="Script" path="res://scripts/ItemTooltip.cs" id="1_jmj0o"]
+[ext_resource type="FontFile" uid="uid://djjiih6rw678r" path="res://fonts/avqest.ttf" id="1_ui2lw"]
+[ext_resource type="PackedScene" uid="uid://enqhhpxqy8gl" path="res://prefabs/line_with_title_and_value.tscn" id="3_hdsho"]
+[ext_resource type="Resource" uid="uid://dxi5xgq5tub5o" path="res://resources/attack_types/at_slash.tres" id="3_t8sgv"]
+[ext_resource type="Script" path="res://scripts/ItemWeapon.cs" id="3_v80oi"]
+[ext_resource type="Resource" uid="uid://ddd2coug1blww" path="res://resources/damage_types/dt_physical.tres" id="4_4vuwx"]
+[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/Fields/DamageData.cs" id="5_yhtjo"]
+[ext_resource type="Resource" uid="uid://cm5xpby8mcpiy" path="res://resources/images/sword_preview_001.tres" id="6_bleoc"]
+[ext_resource type="Resource" uid="uid://5kyyise7mdkh" path="res://resources/shapes/2by3_shape.tres" id="7_sb1wd"]
+[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/Fields/DurabilityData.cs" id="7_sqs8p"]
+[ext_resource type="Resource" uid="uid://dsdgbad4hyc6x" path="res://resources/rarities/rarity_common.tres" id="8_60v8r"]
+[ext_resource type="Resource" uid="uid://bem1dc4wjc8u3" path="res://resources/modifiers/basic_dexterity_mod_0002.tres" id="9_1rng5"]
+[ext_resource type="Resource" uid="uid://d2eiy30iewwj5" path="res://resources/modifiers/basic_strength_mod_0001.tres" id="10_k645a"]
+[ext_resource type="Resource" uid="uid://bt5iqxyk3nub1" path="res://resources/weapon_classes/wc_melee.tres" id="11_jtwam"]
+[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/WeaponResource.cs" id="12_6b71b"]
+
+[sub_resource type="Theme" id="Theme_xpmtb"]
+default_font = ExtResource("1_ui2lw")
+
+[sub_resource type="LabelSettings" id="LabelSettings_dut2w"]
+font_color = Color(0.647059, 0.572549, 0.388235, 1)
+outline_size = 1
+outline_color = Color(0.647059, 0.572549, 0.388235, 1)
+
+[sub_resource type="Resource" id="Resource_h6cd6"]
+script = ExtResource("5_yhtjo")
+Amount = Vector3(1, 2, 0)
+AttackSpeed = 1.0
+Cooldown = 0.0
+Range = 2.5
+DamageType = ExtResource("4_4vuwx")
+AttackType = ExtResource("3_t8sgv")
+
+[sub_resource type="Resource" id="Resource_kbps6"]
+script = ExtResource("7_sqs8p")
+MaxDurability = 10
+IsRepairable = true
+IsPermaBreak = false
+DegradeRateModifier = 0.1
+CurrentDurability = 0.0
+
+[sub_resource type="Resource" id="Resource_wfx2t"]
+script = ExtResource("12_6b71b")
+WeaponClass = ExtResource("11_jtwam")
+Damages = [SubResource("Resource_h6cd6")]
+HoldingTypes = []
+CompatibleSlots = []
+SlotPriority = 1
+Durability = SubResource("Resource_kbps6")
+InventoryShape = ExtResource("7_sb1wd")
+Rarity = ExtResource("8_60v8r")
+StatRequirements = [ExtResource("9_1rng5"), ExtResource("10_k645a")]
+Images = [ExtResource("6_bleoc")]
+ID = "sword_0001"
+Name = "Steel Sword"
+Category = "sword"
+Description = "A reliable blade of tempered steel."
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="ItemTooltip" type="PanelContainer" parent="Camera2D" node_paths=PackedStringArray("Title", "DmgOrDefTitle", "DebugWeapon")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+script = ExtResource("1_jmj0o")
+Title = NodePath("")
+DmgOrDefTitle = NodePath("")
+DebugWeapon = NodePath("")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Camera2D/ItemTooltip"]
+layout_mode = 2
+theme = SubResource("Theme_xpmtb")
+theme_override_constants/separation = 3
+alignment = 2
+
+[node name="Title" type="Label" parent="Camera2D/ItemTooltip/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.647059, 0.572549, 0.388235, 1)
+text = "Steel Sword"
+label_settings = SubResource("LabelSettings_dut2w")
+horizontal_alignment = 1
+
+[node name="LineWithTitleAndValue" parent="Camera2D/ItemTooltip/VBoxContainer" instance=ExtResource("3_hdsho")]
+layout_mode = 2
+
+[node name="DurabilityBox" type="HBoxContainer" parent="Camera2D/ItemTooltip/VBoxContainer"]
+clip_contents = true
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="DurabilityTitle" type="Label" parent="Camera2D/ItemTooltip/VBoxContainer/DurabilityBox"]
+layout_mode = 2
+text = "Durability:
+"
+horizontal_alignment = 1
+
+[node name="DurabilityValue" type="Label" parent="Camera2D/ItemTooltip/VBoxContainer/DurabilityBox"]
+layout_mode = 2
+text = "29 of 32
+"
+horizontal_alignment = 1
+
+[node name="RequirementsBox" type="VBoxContainer" parent="Camera2D/ItemTooltip/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 3
+
+[node name="ReqStatBox" type="HBoxContainer" parent="Camera2D/ItemTooltip/VBoxContainer/RequirementsBox"]
+clip_contents = true
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="ReqTitle" type="Label" parent="Camera2D/ItemTooltip/VBoxContainer/RequirementsBox/ReqStatBox"]
+layout_mode = 2
+text = "Required Dexterity:
+"
+horizontal_alignment = 1
+
+[node name="ReqValue" type="Label" parent="Camera2D/ItemTooltip/VBoxContainer/RequirementsBox/ReqStatBox"]
+layout_mode = 2
+text = "102"
+horizontal_alignment = 1
+
+[node name="ItemTypeBox" type="HBoxContainer" parent="Camera2D/ItemTooltip/VBoxContainer"]
+clip_contents = true
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="ItemTypeTitle" type="Label" parent="Camera2D/ItemTooltip/VBoxContainer/ItemTypeBox"]
+layout_mode = 2
+text = "Sword Class -
+"
+horizontal_alignment = 1
+
+[node name="ItemTypeValue" type="Label" parent="Camera2D/ItemTooltip/VBoxContainer/ItemTypeBox"]
+layout_mode = 2
+text = "Fast Attack Speed"
+horizontal_alignment = 1
+
+[node name="EnhancementsBox" type="VBoxContainer" parent="Camera2D/ItemTooltip/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 3
+
+[node name="Bonus_1" type="HBoxContainer" parent="Camera2D/ItemTooltip/VBoxContainer/EnhancementsBox"]
+clip_contents = true
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Value" type="Label" parent="Camera2D/ItemTooltip/VBoxContainer/EnhancementsBox/Bonus_1"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.254902, 0.411765, 0.882353, 1)
+text = "+150% Enhanced Damage"
+horizontal_alignment = 1
+
+[node name="Bonus_2" type="HBoxContainer" parent="Camera2D/ItemTooltip/VBoxContainer/EnhancementsBox"]
+clip_contents = true
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Value" type="Label" parent="Camera2D/ItemTooltip/VBoxContainer/EnhancementsBox/Bonus_2"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.254902, 0.411765, 0.882353, 1)
+text = "+00 To Maximum Damage (Based On Character Level)"
+horizontal_alignment = 1
+
+[node name="Bonus_3" type="HBoxContainer" parent="Camera2D/ItemTooltip/VBoxContainer/EnhancementsBox"]
+clip_contents = true
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Value" type="Label" parent="Camera2D/ItemTooltip/VBoxContainer/EnhancementsBox/Bonus_3"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.254902, 0.411765, 0.882353, 1)
+text = "Prevent Monster Heal"
+horizontal_alignment = 1
+
+[node name="Bonus_4" type="HBoxContainer" parent="Camera2D/ItemTooltip/VBoxContainer/EnhancementsBox"]
+clip_contents = true
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Value" type="Label" parent="Camera2D/ItemTooltip/VBoxContainer/EnhancementsBox/Bonus_4"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.254902, 0.411765, 0.882353, 1)
+text = "Ethereal (Cannot Be Repaired)"
+horizontal_alignment = 1
+
+[node name="Items" type="Node2D" parent="."]
+
+[node name="Sword_0001" type="Node2D" parent="Items"]
+script = ExtResource("3_v80oi")
+WeaponProps = SubResource("Resource_wfx2t")
+
+[editable path="Camera2D/ItemTooltip/VBoxContainer/LineWithTitleAndValue"]
