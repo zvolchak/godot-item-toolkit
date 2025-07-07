@@ -4,7 +4,7 @@ using Godot.Collections;
 
 namespace Gamehound.ItemKit.Resources;
 
-
+[Tool]
 public partial class WeaponResource :
     ItemResourceBase,
     IWeaponData,
@@ -20,10 +20,11 @@ public partial class WeaponResource :
 
     [Export] public Array<DamageData> Damages { get; set; }
 
+
     /// <summary>
     /// e.g. TwoHanded, OneHanded, OffHand, Fist, etc
     /// </summary>
-    [Export] public Array<string> HoldingStyles { get; set; } = new();
+    [Export] public Array<HoldingTypeResource> HoldingTypes { get; set; } = new();
 
 
     // -- IEquippableData -- //
@@ -34,6 +35,8 @@ public partial class WeaponResource :
 
 
     // -- Other -- //
+
+    [Export] public DurabilityData Durability { get; set; }
 
     [Export] public ItemShapeResource InventoryShape { get; set; }
 

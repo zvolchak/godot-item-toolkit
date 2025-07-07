@@ -19,7 +19,7 @@ public partial class ItemResourceBase :
     /// <summary>
     /// Name of the item that will be displayed to the player.
     /// </summary>
-    [Export] public virtual string Name { get; set; }
+    [Export(PropertyHint.MultilineText)] public virtual string Name { get; set; }
 
     /// <summary>
     /// A category name this item belongs to. May not necessary be player visible.

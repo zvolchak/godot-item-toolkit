@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="ItemsLibrary"
+run/main_scene="res://scenes/example_1.tscn"
 config/features=PackedStringArray("4.2", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -43,6 +44,8 @@ WeaponResourcesGenerator/output_path="res://resources/weapons/"
 PropertyModResource/is_overwrite=true
 WeaponResourcesGenerator/is_overwrite=true
 PropertyModifierResource/output_path="res://resources/modifiers/"
+HoldingTypeResource/input_path="res://data/base_properties/holding_types.json"
+HoldingTypeResource/output_path="res://resources/holding_types/"
 
 [mono]
 

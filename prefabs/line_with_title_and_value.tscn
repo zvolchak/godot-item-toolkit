@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://enqhhpxqy8gl"]
+
+[node name="LineWithTitleAndValue" type="HBoxContainer"]
+clip_contents = true
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="LineTitle" type="Label" parent="."]
+layout_mode = 2
+text = "One-Hand Damage:
+"
+horizontal_alignment = 1
+
+[node name="LineValue" type="Label" parent="."]
+layout_mode = 2
+text = "137 to 296
+"
+horizontal_alignment = 1

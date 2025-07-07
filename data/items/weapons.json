@@ -5,9 +5,22 @@
 		"Category": "sword",
 		"Description": "A reliable blade of tempered steel.",
 
+		"Durability": {
+			"MaxDurability": 10,
+			"IsRepairable": true,
+			"IsPermaBreak": false,
+			"DegradeRateModifier": 0.1
+		},
+
 		"WeaponClass": {
 			"ID": "wc_melee"
 		},
+
+		"HoldingTypes": [
+			{
+				"ID": "ht_one_hand"
+			}
+		],
 
 		"Damages": [
 			{

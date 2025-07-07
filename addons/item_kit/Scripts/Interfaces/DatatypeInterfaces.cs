@@ -76,14 +76,36 @@ public interface IDurableData {
 
     public bool IsRepairable { get; }
 
-    // Whether item is destroyed at 0 durability, or just becomes unusable
-    public bool BreaksPermanently { get; }
+    /// <summary>
+    /// Whether item is destroyed at 0 durability, or just becomes unusable
+    /// </summary>
+    public bool IsPermaBreak { get; }
 
-    // Allows disabling damage logic for “indestructible” items
-    public bool IsDamageable { get; }
-
-    // 	Multiplier used to scale how fast durability depletes
+    /// <summary>
+    /// 	Multiplier used to scale how fast durability depletes
+    /// </summary>
     public float DegradeRateModifier { get; }
+
+
+    /// <summary>
+    /// Current durability value that should be between 0 [included] and MaxDurability [included].
+    /// </summary>
+    public float CurrentDurability { get; }
+
+
+    /// <summary>
+    /// Set current durability value and clamp it between 0 and MaxDurability.
+    /// </summary>
+    /// <param name="value"></param>
+    public void SetDurability(float value);
+
+
+    /// <summary>
+    /// Update CurrentDurabilty by `value` amount and clam the result between 0 and MaxDurability.
+    /// </summary>
+    /// <param name="value"></param>
+    public void UpdateDurability(float value);
+
 } // IDurable
 
 
@@ -97,6 +119,7 @@ public interface IDamageData {
 } // IDamageData
 
 
+
 public interface IWeaponData {
     // Could be different from CategoryName of the IItem base class by further
     // categorization of a weapon: "Melee", "Ranged", "Finesse", etc.
@@ -104,7 +127,7 @@ public interface IWeaponData {
     public Array<DamageData> Damages { get; }
 
     // e.g. TwoHanded, OneHanded, OffHand, Fist, etc
-    public Array<string> HoldingStyles { get; }
+    public Array<HoldingTypeResource> HoldingTypes { get; }
 } // IWeaponData
 
 

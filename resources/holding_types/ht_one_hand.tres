@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://o7xgplqaevnx"]
+
+[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/Fields/HoldingTypeResource.cs" id="1_vh5vi"]
+
+[resource]
+script = ExtResource("1_vh5vi")
+ID = "ht_one_hand"
+Name = "One-Hand"
+Category = ""
+Description = "Holding with one hand."

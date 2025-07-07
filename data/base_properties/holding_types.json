@@ -1,0 +1,16 @@
+[
+	{
+		"HoldingType": {
+			"ID": "ht_one_hand",
+			"Name": "One-Hand",
+			"Description": "Holding with one hand."
+		}
+	},
+	{
+		"HoldingType": {
+			"ID": "ht_two_hand",
+			"Name": "Two-Hand",
+			"Description": "Holding with two hands."
+		}
+	}
+]

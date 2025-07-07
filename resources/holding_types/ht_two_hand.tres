@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://b1bccd7xb745y"]
+
+[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/Fields/HoldingTypeResource.cs" id="1_bemyr"]
+
+[resource]
+script = ExtResource("1_bemyr")
+ID = "ht_two_hand"
+Name = "Two-Hand"
+Category = ""
+Description = "Holding with two hands."
