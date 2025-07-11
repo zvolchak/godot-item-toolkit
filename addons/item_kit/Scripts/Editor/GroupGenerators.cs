@@ -44,11 +44,11 @@ public partial class GroupGenerators : ResourceFromJson {
 
 
     private void AddSection() {
-        string inputDir = "res://data/base_properties";
-        string outputDir = "res://resources/weapon_classes";
+        string inputDir = "res://data/";
+        string outputDir = "res://resources/";
 
         var newGen = new ItemBaseGenerator(
-            $"{inputDir}/weapon_classes.json",
+            $"{inputDir}/",
             $"{outputDir}/",
             settingName: $"WeaponClassResource_Extra_{_generators.Count}"
         );
