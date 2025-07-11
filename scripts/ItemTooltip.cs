@@ -18,9 +18,6 @@ public partial class ItemTooltip : Control {
     } // _Ready
 
 
-    public override void _Process(double delta) {
-    } // _Process
-
 
     public override void _Notification(int what) {
         if (what == NotificationEditorPostSave) {

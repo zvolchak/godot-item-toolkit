@@ -1,19 +1,9 @@
-[gd_scene load_steps=21 format=3 uid="uid://d3mgw2uyw8y86"]
+[gd_scene load_steps=9 format=3 uid="uid://d3mgw2uyw8y86"]
 
 [ext_resource type="Script" path="res://scripts/ItemTooltip.cs" id="1_jmj0o"]
 [ext_resource type="FontFile" uid="uid://djjiih6rw678r" path="res://fonts/avqest.ttf" id="1_ui2lw"]
 [ext_resource type="PackedScene" uid="uid://enqhhpxqy8gl" path="res://prefabs/line_with_title_and_value.tscn" id="3_hdsho"]
-[ext_resource type="Resource" uid="uid://dxi5xgq5tub5o" path="res://resources/attack_types/at_slash.tres" id="3_t8sgv"]
 [ext_resource type="Script" path="res://scripts/ItemWeapon.cs" id="3_v80oi"]
-[ext_resource type="Resource" uid="uid://ddd2coug1blww" path="res://resources/damage_types/dt_physical.tres" id="4_4vuwx"]
-[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/Fields/DamageData.cs" id="5_yhtjo"]
-[ext_resource type="Resource" uid="uid://cm5xpby8mcpiy" path="res://resources/images/sword_preview_001.tres" id="6_bleoc"]
-[ext_resource type="Resource" uid="uid://5kyyise7mdkh" path="res://resources/shapes/2by3_shape.tres" id="7_sb1wd"]
-[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/Fields/DurabilityData.cs" id="7_sqs8p"]
-[ext_resource type="Resource" uid="uid://dsdgbad4hyc6x" path="res://resources/rarities/rarity_common.tres" id="8_60v8r"]
-[ext_resource type="Resource" uid="uid://bem1dc4wjc8u3" path="res://resources/modifiers/basic_dexterity_mod_0002.tres" id="9_1rng5"]
-[ext_resource type="Resource" uid="uid://d2eiy30iewwj5" path="res://resources/modifiers/basic_strength_mod_0001.tres" id="10_k645a"]
-[ext_resource type="Resource" uid="uid://bt5iqxyk3nub1" path="res://resources/weapon_classes/wc_melee.tres" id="11_jtwam"]
 [ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/WeaponResource.cs" id="12_6b71b"]
 
 [sub_resource type="Theme" id="Theme_xpmtb"]
@@ -24,35 +14,14 @@ font_color = Color(0.647059, 0.572549, 0.388235, 1)
 outline_size = 1
 outline_color = Color(0.647059, 0.572549, 0.388235, 1)
 
-[sub_resource type="Resource" id="Resource_h6cd6"]
-script = ExtResource("5_yhtjo")
-Amount = Vector3(1, 2, 0)
-AttackSpeed = 1.0
-Cooldown = 0.0
-Range = 2.5
-DamageType = ExtResource("4_4vuwx")
-AttackType = ExtResource("3_t8sgv")
-
-[sub_resource type="Resource" id="Resource_kbps6"]
-script = ExtResource("7_sqs8p")
-MaxDurability = 10
-IsRepairable = true
-IsPermaBreak = false
-DegradeRateModifier = 0.1
-CurrentDurability = 0.0
-
 [sub_resource type="Resource" id="Resource_wfx2t"]
 script = ExtResource("12_6b71b")
-WeaponClass = ExtResource("11_jtwam")
-Damages = [SubResource("Resource_h6cd6")]
+Damages = []
 HoldingTypes = []
 CompatibleSlots = []
 SlotPriority = 1
-Durability = SubResource("Resource_kbps6")
-InventoryShape = ExtResource("7_sb1wd")
-Rarity = ExtResource("8_60v8r")
-StatRequirements = [ExtResource("9_1rng5"), ExtResource("10_k645a")]
-Images = [ExtResource("6_bleoc")]
+StatRequirements = []
+Images = []
 ID = "sword_0001"
 Name = "Steel Sword"
 Category = "sword"
@@ -62,7 +31,7 @@ Description = "A reliable blade of tempered steel."
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
-[node name="ItemTooltip" type="PanelContainer" parent="Camera2D" node_paths=PackedStringArray("Title", "DmgOrDefTitle", "DebugWeapon")]
+[node name="ItemTooltip" type="PanelContainer" parent="Camera2D" node_paths=PackedStringArray("Title")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -71,9 +40,7 @@ grow_vertical = 2
 size_flags_horizontal = 6
 size_flags_vertical = 6
 script = ExtResource("1_jmj0o")
-Title = NodePath("")
-DmgOrDefTitle = NodePath("")
-DebugWeapon = NodePath("")
+Title = NodePath("VBoxContainer/Title")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Camera2D/ItemTooltip"]
 layout_mode = 2

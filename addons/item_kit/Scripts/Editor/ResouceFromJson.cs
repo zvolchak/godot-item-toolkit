@@ -9,6 +9,7 @@ namespace Gamehound.ItemKit.Editor;
 public partial class ResourceFromJson : VBoxContainer {
 
     protected Button _generateButton;
+    protected string _generateBtnTxt = "Generate";
     protected LineEdit _inputPathField;
     protected LineEdit _outputPathField;
     protected string _fileContent;
@@ -18,15 +19,19 @@ public partial class ResourceFromJson : VBoxContainer {
     public ResourceFromJson() { }
 
 
-    public ResourceFromJson(string inputPath, string outputPath, string settingName = null) {
+    public ResourceFromJson(string inputPath, string outputPath, string settingName = null, string generateBtnText = null) {
         if (settingName == null || settingName == "") {
             _settingName = GetType().Name;
         } else {
             _settingName = settingName;
         }
 
-        SetSettingsValue(InputSettingName, inputPath);
-        SetSettingsValue(OutputSettingName, outputPath);
+        SetSettingsValue(InputSettingPath, inputPath);
+        SetSettingsValue(OutputSettingPath, outputPath);
+
+        if (generateBtnText != null) {
+            _generateBtnTxt = generateBtnText;
+        }
     }
 
 
@@ -41,19 +46,19 @@ public partial class ResourceFromJson : VBoxContainer {
         var inputRow = BuildInputRow(
             ref _inputPathField,
             "Input",
-            GetSettingsValue(InputSettingName, InputPath).AsString()
+            GetSettingsValue(InputSettingPath, InputPath).AsString()
         );
         var outputRow = BuildInputRow(
             ref _outputPathField,
             "Output",
-            GetSettingsValue(OutputSettingName, InputPath).AsString()
+            GetSettingsValue(OutputSettingPath, InputPath).AsString()
         );
 
         var isOverwriteCheckbox = BuildCheckboxRow(
             "Is Overwrite",
-            GetSettingsValue(IsOverwriteSettingName, false).As<bool>(),
+            GetSettingsValue(IsOverwriteSettingPath, false).As<bool>(),
             (isChecked) => {
-                SetSettingsValue(IsOverwriteSettingName, isChecked);
+                SetSettingsValue(IsOverwriteSettingPath, isChecked);
             }
         );
 
@@ -61,10 +66,10 @@ public partial class ResourceFromJson : VBoxContainer {
         _generateButton.Pressed += OnGeneratePressed;
 
         _inputPathField.TextChanged += (text) => {
-            SetSettingsValue(InputSettingName, text);
+            SetSettingsValue(InputSettingPath, text);
         };
         _outputPathField.TextChanged += (text) => {
-            SetSettingsValue(OutputSettingName, text);
+            SetSettingsValue(OutputSettingPath, text);
         };
 
         AddChild(inputRow);
@@ -75,8 +80,8 @@ public partial class ResourceFromJson : VBoxContainer {
 
 
     protected virtual void saveSettings() {
-        SetSettingsValue(InputSettingName, _inputPathField.Text);
-        SetSettingsValue(OutputSettingName, _outputPathField.Text);
+        SetSettingsValue(InputSettingPath, _inputPathField.Text);
+        SetSettingsValue(OutputSettingPath, _outputPathField.Text);
         ProjectSettings.Save();
     } // SaveSettings
 
@@ -111,16 +116,18 @@ public partial class ResourceFromJson : VBoxContainer {
         string placeholder = "",
         string tooltip = ""
     ) {
-        HBoxContainer row = new HBoxContainer();
-
-        Label label = new Label {
-            Text = labelText,
-        };
+        var row = new HBoxContainer();
         row.TooltipText = tooltip;
 
+        var label = new Label {
+            Text = labelText,
+            CustomMinimumSize = new Vector2(80, 0), // align all rows by label width
+            SizeFlagsHorizontal = SizeFlags.ShrinkBegin
+        };
+
         targetField = new LineEdit {
-            PlaceholderText = placeholder,
             Text = fieldSettingValue,
+            PlaceholderText = placeholder,
             SizeFlagsHorizontal = SizeFlags.Expand | SizeFlags.Fill
         };
 
@@ -175,13 +182,18 @@ public partial class ResourceFromJson : VBoxContainer {
 
     /*********************************GETTERS*********************************/
 
-    public virtual string GenerateBtnLable => "Generate";
+    public virtual string GenerateBtnLable {
+        get {
+            return _generateBtnTxt;
+        }
+    }
+
     public virtual string InputPath => _inputPathField?.Text ?? "res://data/";
     public virtual string OutputDir => _outputPathField?.Text ?? "res://resources/";
 
-    public virtual string InputSettingName => $"itemkit/{SettingName}/input_path";
-    public virtual string OutputSettingName => $"itemkit/{SettingName}/output_path";
-    public virtual string IsOverwriteSettingName => $"itemkit/{SettingName}/is_overwrite";
+    public virtual string InputSettingPath => $"itemkit/{SettingName}/input_path";
+    public virtual string OutputSettingPath => $"itemkit/{SettingName}/output_path";
+    public virtual string IsOverwriteSettingPath => $"itemkit/{SettingName}/is_overwrite";
 
     public virtual string SettingName {
         get {

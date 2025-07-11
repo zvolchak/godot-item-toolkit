@@ -15,9 +15,9 @@ public partial class DamageData : Resource, IDamageData {
 
    [Export] public float Range { get; set; } = 0.0f;
 
-   [Export] public DamageTypeResource DamageType { get; set; }
+   [Export] public ItemResourceBase DamageType { get; set; }
 
-   [Export] public AttackTypeResource AttackType { get; set; }
+   [Export] public ItemResourceBase AttackType { get; set; }
 
 
     public override string ToString() {

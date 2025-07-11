@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dl2b0aka86wi"]
+
+[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/ItemResourceBase.cs" id="1_e5kip"]
+
+[resource]
+script = ExtResource("1_e5kip")
+ID = "tg_cursed"
+Name = "cursed"
+Category = ""
+Description = ""

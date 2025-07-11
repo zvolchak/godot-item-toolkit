@@ -27,19 +27,12 @@ public partial class RarityResourceGenerator: ResourceFromJson {
             RarityResource rarity = rarityData.Rarity;
             rarity.CreateResource(
                 path: OutputDir,
-                options: new ResourceOptions {
-                    IsOverwrite = GetSettingsValue(IsOverwriteSettingName).AsBool(),
-                }
+                isOverwrite: GetSettingsValue(IsOverwriteSettingPath).AsBool()
             );
         }
     } // GenerateResources
 
 
     public override string GenerateBtnLable => "Generate Rarities";
-
-    // Matching setting name with RarityResource classname so that it con
-    // be accessed later by the RarityResource instance by its GetOutputDir()
-    // method.
-    //public override string OutputSettingName => $"itemkit/RarityResource/output_path";
 
 } // class

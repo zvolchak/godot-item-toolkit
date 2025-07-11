@@ -1,13 +1,13 @@
 [
 	{
-		"WeaponClass": {
+		"Value": {
 			"ID": "wc_melee",
 			"Name": "Melee",
 			"Description": "Can only hit at close range."
 		}
 	},
 	{
-		"WeaponClass": {
+		"Value": {
 			"ID": "wc_ranged",
 			"Name": "Ranged",
 			"Description": "Hits at a distance."

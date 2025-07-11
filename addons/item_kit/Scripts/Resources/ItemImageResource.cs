@@ -22,12 +22,12 @@ public partial class ItemImageResource :
         ResourceOptions options = null
     ) {
         Variant spritesDir;
-        if (options == null || (options?.other?.ContainsKey("sprites_dir") ?? false)) {
+        if (options == null || (options?.other?.ContainsKey("imgs_dir_path") ?? false)) {
             spritesDir = ProjectSettings
                 .GetSetting($"itemkit/{GetType().Name}/imgs_dir_path")
                 .AsString();
         } else {
-            options.other.TryGetValue("sprites_dir", out spritesDir);
+            options.other.TryGetValue("imgs_dir_path", out spritesDir);
         }
 
         (resource as ItemImageResource).TextureAsset = getTextureFromPath(

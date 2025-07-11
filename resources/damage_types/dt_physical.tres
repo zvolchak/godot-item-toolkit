@@ -1,9 +1,9 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://ddd2coug1blww"]
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://cpmbf51gbkbd4"]
 
-[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/Fields/DamageTypeResource.cs" id="1_x3wa7"]
+[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/ItemResourceBase.cs" id="1_fgj7m"]
 
 [resource]
-script = ExtResource("1_x3wa7")
+script = ExtResource("1_fgj7m")
 ID = "dt_physical"
 Name = "physical"
 Category = ""

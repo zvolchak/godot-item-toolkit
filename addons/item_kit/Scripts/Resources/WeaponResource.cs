@@ -15,7 +15,7 @@ public partial class WeaponResource :
     /// <summary>
     /// "Melee", "Ranged", "TwoHanded", "Finesse", etc.
     /// </summary>
-    [Export] public WeaponClassResource WeaponClass { get; set; }
+    [Export] public ItemResourceBase WeaponClass { get; set; }
 
 
     [Export] public Array<DamageData> Damages { get; set; }
@@ -24,7 +24,7 @@ public partial class WeaponResource :
     /// <summary>
     /// e.g. TwoHanded, OneHanded, OffHand, Fist, etc
     /// </summary>
-    [Export] public Array<HoldingTypeResource> HoldingTypes { get; set; } = new();
+    [Export] public Array<ItemResourceBase> HoldingTypes { get; set; } = new();
 
 
     // -- IEquippableData -- //

@@ -1,9 +1,9 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://b1bccd7xb745y"]
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://jnl7fb0w5yod"]
 
-[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/Fields/HoldingTypeResource.cs" id="1_bemyr"]
+[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/ItemResourceBase.cs" id="1_d6gp7"]
 
 [resource]
-script = ExtResource("1_bemyr")
+script = ExtResource("1_d6gp7")
 ID = "ht_two_hand"
 Name = "Two-Hand"
 Category = ""

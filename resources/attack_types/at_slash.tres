@@ -1,9 +1,9 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dxi5xgq5tub5o"]
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dwrxhs4r540ey"]
 
-[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/Fields/AttackTypeResource.cs" id="1_lahbh"]
+[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/ItemResourceBase.cs" id="1_88qb2"]
 
 [resource]
-script = ExtResource("1_lahbh")
+script = ExtResource("1_88qb2")
 ID = "at_slash"
 Name = "slash"
 Category = ""

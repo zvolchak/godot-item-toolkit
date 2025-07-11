@@ -1,9 +1,9 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dsmf8rye86r2a"]
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://c3p5qc7oyutbw"]
 
-[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/Fields/AttackTypeResource.cs" id="1_8xx7c"]
+[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/ItemResourceBase.cs" id="1_cml3b"]
 
 [resource]
-script = ExtResource("1_8xx7c")
+script = ExtResource("1_cml3b")
 ID = "at_thrust"
 Name = "thrust"
 Category = ""

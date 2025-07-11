@@ -1,10 +1,10 @@
 #if TOOLS
+using System;
+
 using Gamehound.ItemKit.Editor;
 
 using Godot;
 using Godot.Collections;
-
-using System;
 
 
 [Tool]
@@ -22,8 +22,12 @@ public partial class item_kit : EditorPlugin {
 
 
 	public override void _EnterTree() {
-		AddToolMenuItem(_menuBtnTitle, Callable.From(ToggleDockPanel));
-		_lastScriptWriteTime = GetLatestScriptWriteTime();
+        var button = new Button();
+        button.Text = "Item Kit";
+        button.Pressed += ToggleDockPanel;
+        AddControlToContainer(CustomControlContainer.Toolbar, button);
+
+        _lastScriptWriteTime = GetLatestScriptWriteTime();
 		SetProcess(true);
 	} // _EnterTree
 
@@ -76,55 +80,78 @@ public partial class item_kit : EditorPlugin {
 	} // ToggleDockPanel
 
 
-	private void CreateDockPanel() {
-		_dock = new TabContainer();
+    private void CreateDockPanel() {
+        _dock = new TabContainer();
+        _dock.SizeFlagsVertical = Control.SizeFlags.Expand;
+        _dock.SizeFlagsHorizontal = Control.SizeFlags.Expand;
 
-        _dock.AddChild(buildBasePropsTab());
-        _dock.SetTabTitle(0, "Base Properties");
+        _dock.AddChild(buildTypesResourcesTab());
+        _dock.SetTabTitle(_dock.GetTabCount() - 1, "Types");
 
+        _dock.AddChild(buildInventoryResourcesTab());
+        _dock.SetTabTitle(_dock.GetTabCount() - 1, "Inventory");
 
-        _dock.AddChild(buildSubResourcesTab());
-        _dock.SetTabTitle(1, "Sub Resources");
+        _dock.AddChild(buildAttributeResourceTab());
+        _dock.SetTabTitle(_dock.GetTabCount() - 1, "Attributes");
 
         _dock.AddChild(buildItemsTab());
-		_dock.SetTabTitle(2, "Item Resources");
+        _dock.SetTabTitle(_dock.GetTabCount() - 1, "Items");
 
-		AddControlToDock(DockSlot.RightUl, _dock);
-	} // CreateDockPanel
+        AddControlToDock(DockSlot.RightUl, _dock);
+    } // CreateDockPanel
 
 
-    private GroupGenerators buildBasePropsTab() {
+    private Control buildScrollContainer(Control content) {
+        var scroll = new ScrollContainer {
+            SizeFlagsVertical = Control.SizeFlags.ExpandFill,
+            SizeFlagsHorizontal = Control.SizeFlags.ExpandFill,
+            VerticalScrollMode = ScrollContainer.ScrollMode.Auto,
+        };
+
+        content.SizeFlagsVertical = Control.SizeFlags.ExpandFill;
+        content.SizeFlagsHorizontal = Control.SizeFlags.ExpandFill;
+
+        scroll.AddChild(content);
+        return scroll;
+    }
+
+
+    private Control buildTypesResourcesTab() {
         string inputDir = "res://data/base_properties";
         string outputDir = "res://resources";
         var basePropsTab = new GroupGenerators(
             new Array<ResourceFromJson>() {
-                new WeaponClassResouceGenerator(
+                new ItemBaseGenerator(
                     $"{inputDir}/weapon_classes.json",
                     $"{outputDir}/weapon_classes/",
-                    settingName: "WeaponClassResource"
+                    settingName: "WeaponClassResource",
+                    generateBtnText: "Weapon Class Resources"
                 ),
-                new AttackTypeResourceGenerator(
+                new ItemBaseGenerator(
                     $"{inputDir}/attack_types.json",
                     $"{outputDir}/attack_types/",
-                    settingName: $"AttackTypeResource"
+                    settingName: $"AttackTypeResource",
+                    generateBtnText: "Attack Type Resources"
                 ),
-                new DamageTypeResourceGenerators(
+                new ItemBaseGenerator(
                     $"{inputDir}/damage_types.json",
                     $"{outputDir}/damage_types/",
-                    settingName: "DamageTypeResource"
-                 ),
-                new HoldingTypeResourceGenerator(
+                    settingName: "DamageTypeResource",
+                    generateBtnText: "Damage Type Resources"
+                ),
+                new ItemBaseGenerator(
                     $"{inputDir}/holding_types.json",
                     $"{outputDir}/holding_types/",
-                    settingName: "HoldingTypeResource"
+                    settingName: "HoldingTypeResource",
+                    generateBtnText: "Holding Type Resources"
                 )
             }
         );
-        return basePropsTab;
+        return buildScrollContainer(basePropsTab);
     } // buildBasePropsGenerators
 
 
-    private GroupGenerators buildSubResourcesTab() {
+    private Control buildInventoryResourcesTab() {
         string inputDir = "res://data/sub_resources";
         string outputDir = "res://resources";
         var subResourceTab = new GroupGenerators(
@@ -140,6 +167,17 @@ public partial class item_kit : EditorPlugin {
                     settingName: "ItemImageResource"
 
                 ),
+            }
+        );
+        return buildScrollContainer(subResourceTab);
+    } // buildSubResourcesTab
+
+
+    private Control buildAttributeResourceTab() {
+        string inputDir = "res://data/sub_resources";
+        string outputDir = "res://resources";
+        var attribTab = new GroupGenerators(
+            new Array<ResourceFromJson>() {
                 new RarityResourceGenerator(
                     $"{inputDir}/rarities.json",
                     $"{outputDir}/rarities/",
@@ -152,11 +190,11 @@ public partial class item_kit : EditorPlugin {
                 ),
             }
         );
-        return subResourceTab;
-    } // buildSubResourcesTab
+        return buildScrollContainer(attribTab);
+    } // buildAttributeResourceTab
 
 
-    private GroupGenerators buildItemsTab() {
+    private Control buildItemsTab() {
         string inputDir = "res://data/items";
         string outputDir = "res://resources";
         var itemsTab = new GroupGenerators(
@@ -164,7 +202,7 @@ public partial class item_kit : EditorPlugin {
                         new WeaponResourcesGenerator($"{inputDir}/weapons.json",  $"{outputDir}/weapons/"),
             }
         );
-        return itemsTab;
+        return buildScrollContainer(itemsTab);
     } // buildSubResourcesTab
 
 
