@@ -116,16 +116,18 @@ public partial class ResourceFromJson : VBoxContainer {
         string placeholder = "",
         string tooltip = ""
     ) {
-        HBoxContainer row = new HBoxContainer();
-
-        Label label = new Label {
-            Text = labelText,
-        };
+        var row = new HBoxContainer();
         row.TooltipText = tooltip;
 
+        var label = new Label {
+            Text = labelText,
+            CustomMinimumSize = new Vector2(80, 0), // align all rows by label width
+            SizeFlagsHorizontal = SizeFlags.ShrinkBegin
+        };
+
         targetField = new LineEdit {
-            PlaceholderText = placeholder,
             Text = fieldSettingValue,
+            PlaceholderText = placeholder,
             SizeFlagsHorizontal = SizeFlags.Expand | SizeFlags.Fill
         };
 

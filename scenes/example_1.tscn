@@ -16,12 +16,12 @@ outline_color = Color(0.647059, 0.572549, 0.388235, 1)
 
 [sub_resource type="Resource" id="Resource_wfx2t"]
 script = ExtResource("12_6b71b")
-Damages = null
+Damages = []
 HoldingTypes = []
 CompatibleSlots = []
 SlotPriority = 1
-StatRequirements = null
-Images = null
+StatRequirements = []
+Images = []
 ID = "sword_0001"
 Name = "Steel Sword"
 Category = "sword"
