@@ -1,13 +1,13 @@
 [
 	{
-		"AttackType": {
+		"Value": {
 			"ID": "at_slash",
 			"Name": "slash",
 			"Description": "Slash attack."
 		}
 	},
 	{
-		"AttackType": {
+		"Value": {
 			"ID": "at_thrust",
 			"Name": "thrust",
 			"Description": "Thrust attack."

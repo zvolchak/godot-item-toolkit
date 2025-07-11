@@ -22,8 +22,12 @@ public partial class item_kit : EditorPlugin {
 
 
 	public override void _EnterTree() {
-		AddToolMenuItem(_menuBtnTitle, Callable.From(ToggleDockPanel));
-		_lastScriptWriteTime = GetLatestScriptWriteTime();
+        var button = new Button();
+        button.Text = "Item Kit";
+        button.Pressed += ToggleDockPanel;
+        AddControlToContainer(CustomControlContainer.Toolbar, button);
+
+        _lastScriptWriteTime = GetLatestScriptWriteTime();
 		SetProcess(true);
 	} // _EnterTree
 
@@ -98,25 +102,29 @@ public partial class item_kit : EditorPlugin {
         string outputDir = "res://resources";
         var basePropsTab = new GroupGenerators(
             new Array<ResourceFromJson>() {
-                new WeaponClassResouceGenerator(
+                new ItemBaseGenerator(
                     $"{inputDir}/weapon_classes.json",
                     $"{outputDir}/weapon_classes/",
-                    settingName: "WeaponClassResource"
+                    settingName: "WeaponClassResource",
+                    generateBtnText: "Weapon Class Resources"
                 ),
-                new AttackTypeResourceGenerator(
+                new ItemBaseGenerator(
                     $"{inputDir}/attack_types.json",
                     $"{outputDir}/attack_types/",
-                    settingName: $"AttackTypeResource"
+                    settingName: $"AttackTypeResource",
+                    generateBtnText: "Attack Type Resources"
                 ),
-                new DamageTypeResourceGenerators(
+                new ItemBaseGenerator(
                     $"{inputDir}/damage_types.json",
                     $"{outputDir}/damage_types/",
-                    settingName: "DamageTypeResource"
-                 ),
-                new HoldingTypeResourceGenerator(
+                    settingName: "DamageTypeResource",
+                    generateBtnText: "Damage Type Resources"
+                ),
+                new ItemBaseGenerator(
                     $"{inputDir}/holding_types.json",
                     $"{outputDir}/holding_types/",
-                    settingName: "HoldingTypeResource"
+                    settingName: "HoldingTypeResource",
+                    generateBtnText: "Holding Type Resources"
                 )
             }
         );

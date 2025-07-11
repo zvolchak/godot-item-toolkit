@@ -17,13 +17,29 @@ public interface IIdentifier {
 
 
 public interface IItemShape {
+
     public int Width { get; }
+    public int Height { get; }
     public Array<int> Layout { get; }
+
+    /// <summary>
+    /// Whether or not this shape can overlap other shapes and
+    /// can be overlapped by others.
+    /// </summary>
+    public bool CanOverlap { get; }
 
     /// <summary>
     /// Return a cell value at position [col, row].
     /// </summary>
-    public int Get(int col, int row);
+    public int GetIndex(int col, int row, int width=-1);
+
+    /// <summary>
+    /// Return coordinates on a 2D grid from given index.
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
+    public Vector2I GetCoords(int index, int width=-1, int height=-1);
+
 } // IInventoryShape
 
 
@@ -114,8 +130,8 @@ public interface IDamageData {
     public float AttackSpeed { get; }
     public float Cooldown { get; }
     public float Range { get; }
-    public DamageTypeResource DamageType { get; }
-    public AttackTypeResource AttackType { get; }
+    public ItemResourceBase DamageType { get; }
+    public ItemResourceBase AttackType { get; }
 } // IDamageData
 
 
@@ -123,11 +139,11 @@ public interface IDamageData {
 public interface IWeaponData {
     // Could be different from CategoryName of the IItem base class by further
     // categorization of a weapon: "Melee", "Ranged", "Finesse", etc.
-    public WeaponClassResource WeaponClass { get; }
+    public ItemResourceBase WeaponClass { get; }
     public Array<DamageData> Damages { get; }
 
     // e.g. TwoHanded, OneHanded, OffHand, Fist, etc
-    public Array<HoldingTypeResource> HoldingTypes { get; }
+    public Array<ItemResourceBase> HoldingTypes { get; }
 } // IWeaponData
 
 

@@ -42,9 +42,13 @@ public partial class WeaponResourcesGenerator : ResourceFromJson {
                     return res as PropertyModifierResource ?? null;
                 })
             );
-            var weaponClass = entry.WeaponClass.CreateResource() as WeaponClassResource;
-            var holdingTypes = new Array<HoldingTypeResource>(
-                entry.HoldingTypes.Select(ht => ht.CreateResource() as HoldingTypeResource)
+            //var weaponClass = entry.WeaponClass.CreateResource() as WeaponClassResource;
+            var weaponClass = entry.WeaponClass.CreateResource(
+                settingName: "WeaponClassResource") as ItemResourceBase;
+            var holdingTypes = new Array<ItemResourceBase>(
+                entry.HoldingTypes.Select(
+                    ht => ht.CreateResource(settingName: "HoldingTypeResource") as ItemResourceBase
+                )
             );
 
             /// Override sub resources with a reference to a previously created resources.
@@ -58,9 +62,7 @@ public partial class WeaponResourcesGenerator : ResourceFromJson {
 
             entry.CreateResource(
                 path,
-                options: new ResourceOptions {
-                    IsOverwrite = GetSettingsValue(IsOverwriteSettingName).AsBool(),
-                }
+                isOverwrite: GetSettingsValue(IsOverwriteSettingPath).AsBool()
             );
         } // foreach
 
@@ -70,11 +72,11 @@ public partial class WeaponResourcesGenerator : ResourceFromJson {
 
     private void updateDamageReferences(Array<DamageData> damages) {
         foreach (var damage in damages) {
-            var at = damage.AttackType?.CreateResource() as AttackTypeResource;
-            var dt = damage.DamageType?.CreateResource() as DamageTypeResource;
+            var at = damage.AttackType?.CreateResource(settingName: "AttackTypeResource");
+            var dt = damage.DamageType?.CreateResource(settingName: "DamageTypeResource");
 
-            damage.AttackType = at;
-            damage.DamageType = dt;
+            damage.AttackType = at as ItemResourceBase;
+            damage.DamageType = dt as ItemResourceBase;
         } // foreach
     } // updateDamageReferences
 

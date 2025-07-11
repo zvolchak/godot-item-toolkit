@@ -18,10 +18,25 @@ public partial class ItemShapeResource :
     [JsonConverter(typeof(ListToGodotArraySerializer<int>))]
     [Export] public Array<int> Layout { get; set; } = new();
 
+    [Export] public bool CanOverlap { get; set; }
 
-    public virtual int Get(int col, int row) {
-        int index = row * Width + col;
+    public virtual int Height => Layout.Count;
+
+
+
+    public virtual int GetIndex(int col, int row, int width = -1) {
+        if (width < 0)
+            width = Width;
+
+        int index = row * width + col;
         return Layout[index];
+    } // Get
+
+
+    public virtual Vector2I GetCoords(int index, int width = -1, int height = -1) {
+        width = width < 0 ? Width : width;
+        height = height < 0 ? Height : height;
+        return new Vector2I(index * width, index * height);
     } // Get
 
 } // ItemShape

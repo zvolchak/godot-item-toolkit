@@ -1,9 +1,9 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://o7xgplqaevnx"]
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://c8q2a25wipj2i"]
 
-[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/Fields/HoldingTypeResource.cs" id="1_vh5vi"]
+[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/ItemResourceBase.cs" id="1_ciik1"]
 
 [resource]
-script = ExtResource("1_vh5vi")
+script = ExtResource("1_ciik1")
 ID = "ht_one_hand"
 Name = "One-Hand"
 Category = ""

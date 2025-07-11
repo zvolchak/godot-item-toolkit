@@ -42,6 +42,8 @@ public partial class ItemResourceBase :
     /// </summary>
     public virtual Resource CreateResource(
         string path = null,
+        string settingName = null,
+        bool isOverwrite = false,
         ResourceOptions options = null
     ) {
         if (ID == null)
@@ -50,10 +52,12 @@ public partial class ItemResourceBase :
         // When path is a directory, use GetResourceFilename() as a filename.
         if (path != null && path != "" && !path.Contains("."))
             path = System.IO.Path.Combine(path, GetResourceFilename());
+        if (path == null)
+            path = GetFullPath(settingName: settingName);
 
         path = Hook_Preprocess(path: path, options: options);
         Resource resource = Hook_LoadResource(path: path, options: options);
-        resource = Hook_ProcessDuplicate(resource, options: options);
+        resource = Hook_ProcessDuplicate(resource, isOverwrite: isOverwrite, options: options);
         if (resource != null)
             return resource;
         else
@@ -165,6 +169,7 @@ public partial class ItemResourceBase :
     /// </summary>
     public virtual Resource Hook_ProcessDuplicate(
         Resource existing,
+        bool isOverwrite = false,
         ResourceOptions options = null
     ) {
         if (existing == null)
@@ -172,18 +177,18 @@ public partial class ItemResourceBase :
 
         string path = (existing as ItemResourceBase)?.GetFullPath();
 
-        if (existing != null && !(options?.IsOverwrite ?? false)) {
+        if (existing != null && !isOverwrite) {
             GD.PushWarning(
                 $"[{GetType().Name}::{existing.ResourcePath}] exists. " +
                 $"No overwrite is set. Returning existing resource as is."
             );
             return existing;
-        } else if (existing != null && (options?.IsOverwrite ?? false)) {
+        } else if (existing != null && isOverwrite) {
             GD.PushWarning(
                 $"[{GetType().Name}::{existing.ResourcePath}] already exists. " +
-                "Overwriting existing resource."
+                "WARNING: Overwriting existing resource currently unavailable."
             );
-            // this.CopyFrom(existing);
+             //this.CopyFrom(existing);
         }
 
         // null means no existing resource needs to be used as reference. Instead,
@@ -278,16 +283,17 @@ public partial class ItemResourceBase :
     ///
     /// Override this method for eahc resource type to set a custom path.
     /// </summary>
-    public virtual string GetOutputDir() {
+    public virtual string GetOutputDir(string settingName=null) {
+        settingName = settingName ?? GetType().Name;
         string dirPath = ProjectSettings.GetSetting(
-            $"itemkit/{GetType().Name}/output_path"
+            $"itemkit/{settingName}/output_path"
         ).AsString();
         return dirPath != null ? dirPath.ToString() : "res://resources/";
     } // GetOutputDir
 
 
-    public virtual string GetFullPath() {
-        string path = GetOutputDir().TrimEnd('/');
+    public virtual string GetFullPath(string settingName=null) {
+        string path = GetOutputDir(settingName: settingName).TrimEnd('/');
         string filename = GetResourceFilename().TrimStart('/');
         return $"{path}/{filename}";
     } // GetFullPath

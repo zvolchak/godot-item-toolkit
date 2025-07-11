@@ -46,6 +46,11 @@ WeaponResourcesGenerator/is_overwrite=true
 PropertyModifierResource/output_path="res://resources/modifiers/"
 HoldingTypeResource/input_path="res://data/base_properties/holding_types.json"
 HoldingTypeResource/output_path="res://resources/holding_types/"
+TagResource/input_path="res://data/base_properties/tags.json"
+TagResource/output_path="res://resources/tags/"
+TagResource/is_overwrite=true
+ItemImageResource/imgs_dir_path="res://sprites/"
+WeaponClassResource/is_overwrite=true
 
 [mono]
 

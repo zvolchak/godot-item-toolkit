@@ -27,9 +27,7 @@ public partial class PropertyModResourceGenerator : ResourceFromJson {
             foreach (PropertyModifierResource mod in modData.Modifiers) {
                 mod.CreateResource(
                     path: OutputDir,
-                    options: new ResourceOptions {
-                        IsOverwrite = GetSettingsValue(IsOverwriteSettingName).AsBool(),
-                    }
+                    isOverwrite: GetSettingsValue(IsOverwriteSettingPath).AsBool()
                 );
             } // foreach mod
         } // foreach data
@@ -44,6 +42,6 @@ public partial class PropertyModResourceGenerator : ResourceFromJson {
     /// Matching setting name with PropertyModifierResource classname so that it can be accessed
     /// later by the PropertyModifierResource instance by its GetOutputDir() method.
     /// </summary>
-    public override string OutputSettingName => $"itemkit/PropertyModifierResource/output_path";
+    public override string OutputSettingPath => $"itemkit/PropertyModifierResource/output_path";
 
 } // class

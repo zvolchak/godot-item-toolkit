@@ -61,12 +61,12 @@ public partial class TexturesResourceGenerator : ResourceFromJson {
         foreach (JsonItemTextureData imgJson in data) {
             foreach (ItemImageResource img in imgJson.Images) {
                 var opts = new Godot.Collections.Dictionary<string, Variant>();
-                opts.Add("sprites_dir", GetSettingsValue(IsOverwriteSettingName).AsString());
+                opts.Add("imgs_dir_path", GetSettingsValue(IsOverwriteSettingPath).AsString());
 
                 img.CreateResource(
                     path: OutputDir,
+                    isOverwrite: GetSettingsValue(IsOverwriteSettingPath).AsBool(),
                     options: new ResourceOptions {
-                        IsOverwrite = GetSettingsValue(IsOverwriteSettingName).AsBool(),
                         other = opts
                     }
                 );
@@ -88,16 +88,6 @@ public partial class TexturesResourceGenerator : ResourceFromJson {
             return $"itemkit/ItemImageResource/imgs_dir_path";
         }
     }
-
-
-    // Matching setting name with ItemShapeResource classname so that it con
-    // be accessed later by the ItemShapeResource instance by its GetOutputDir()
-    // method.
-    //public override string OutputSettingName {
-    //    get {
-    //        return $"itemkit/{GetType().Name}/output_path";
-    //    }
-    //}
 
 
     /// <summary>

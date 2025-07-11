@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://cf7088ee3b7qf"]
+
+[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/ItemResourceBase.cs" id="1_8eip4"]
+
+[resource]
+script = ExtResource("1_8eip4")
+ID = "wc_ranged"
+Name = "Ranged"
+Category = ""
+Description = "Hits at a distance."

@@ -30,20 +30,13 @@ public partial class ItemShapeResourceGenerator : ResourceFromJson {
             ItemShapeResource shape = shapeData.InventoryShape;
             var s = shape.CreateResource(
                 path: OutputDir,
-                options: new ResourceOptions {
-                    IsOverwrite = GetSettingsValue(IsOverwriteSettingName).AsBool(),
-                }
+                isOverwrite: GetSettingsValue(IsOverwriteSettingPath).AsBool()
             );
         }
     } // GenerateResources
 
 
     public override string GenerateBtnLable => "Generate Shapes";
-
-    // Matching setting name with ItemShapeResource classname so that it con
-    // be accessed later by the ItemShapeResource instance by its GetOutputDir()
-    // method.
-    //public override string OutputSettingName => $"itemkit/ItemShapeResource/output_path";
 
 } // class
 

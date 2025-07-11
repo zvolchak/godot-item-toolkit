@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dpbkn5mie5mwg"]
+
+[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/ItemResourceBase.cs" id="1_j58g7"]
+
+[resource]
+script = ExtResource("1_j58g7")
+ID = "tag_1"
+Name = "Tag 1"
+Category = ""
+Description = ""

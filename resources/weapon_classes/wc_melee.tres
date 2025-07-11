@@ -1,10 +1,10 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://bt5iqxyk3nub1"]
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dxvifjbv4mixr"]
 
-[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/Fields/WeaponClassResource.cs" id="1_4vypb"]
+[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/ItemResourceBase.cs" id="1_6bgun"]
 
 [resource]
-script = ExtResource("1_4vypb")
+script = ExtResource("1_6bgun")
 ID = "wc_melee"
-Name = ""
+Name = "Melee"
 Category = ""
-Description = ""
+Description = "Can only hit at close range."

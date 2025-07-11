@@ -1,19 +1,19 @@
-[gd_resource type="Resource" load_steps=15 format=3 uid="uid://dgtpqw626vp6k"]
+[gd_resource type="Resource" load_steps=15 format=3 uid="uid://ci6bk1l1daakn"]
 
-[ext_resource type="Resource" uid="uid://ddd2coug1blww" path="res://resources/damage_types/dt_physical.tres" id="1_ldsty"]
-[ext_resource type="Resource" uid="uid://dxi5xgq5tub5o" path="res://resources/attack_types/at_slash.tres" id="1_okr05"]
+[ext_resource type="Resource" uid="uid://cpmbf51gbkbd4" path="res://resources/damage_types/dt_physical.tres" id="1_ldsty"]
+[ext_resource type="Resource" uid="uid://dwrxhs4r540ey" path="res://resources/attack_types/at_slash.tres" id="1_okr05"]
 [ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/Fields/DamageData.cs" id="2_8pfex"]
-[ext_resource type="Resource" uid="uid://cm5xpby8mcpiy" path="res://resources/images/sword_preview_001.tres" id="2_yt3q7"]
+[ext_resource type="Resource" uid="uid://dd5lpqeya75sb" path="res://resources/images/sword_preview_001.tres" id="2_yt3q7"]
 [ext_resource type="Resource" uid="uid://5kyyise7mdkh" path="res://resources/shapes/2by3_shape.tres" id="3_r2xai"]
 [ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/Fields/DurabilityData.cs" id="4_1l3nr"]
 [ext_resource type="Resource" uid="uid://dsdgbad4hyc6x" path="res://resources/rarities/rarity_common.tres" id="4_rafp3"]
-[ext_resource type="Resource" uid="uid://o7xgplqaevnx" path="res://resources/holding_types/ht_one_hand.tres" id="5_p5plk"]
+[ext_resource type="Resource" uid="uid://c8q2a25wipj2i" path="res://resources/holding_types/ht_one_hand.tres" id="5_p5plk"]
 [ext_resource type="Resource" uid="uid://bem1dc4wjc8u3" path="res://resources/modifiers/basic_dexterity_mod_0002.tres" id="6_5la51"]
 [ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/WeaponResource.cs" id="7_iwyrp"]
 [ext_resource type="Resource" uid="uid://d2eiy30iewwj5" path="res://resources/modifiers/basic_strength_mod_0001.tres" id="7_un0h5"]
-[ext_resource type="Resource" uid="uid://bt5iqxyk3nub1" path="res://resources/weapon_classes/wc_melee.tres" id="8_v2t43"]
+[ext_resource type="Resource" uid="uid://dxvifjbv4mixr" path="res://resources/weapon_classes/wc_melee.tres" id="8_v2t43"]
 
-[sub_resource type="Resource" id="Resource_khdv1"]
+[sub_resource type="Resource" id="Resource_pd6d4"]
 script = ExtResource("2_8pfex")
 Amount = Vector3(1, 2, 0)
 AttackSpeed = 1.0
@@ -22,7 +22,7 @@ Range = 2.5
 DamageType = ExtResource("1_ldsty")
 AttackType = ExtResource("1_okr05")
 
-[sub_resource type="Resource" id="Resource_eseti"]
+[sub_resource type="Resource" id="Resource_02t42"]
 script = ExtResource("4_1l3nr")
 MaxDurability = 10
 IsRepairable = true
@@ -32,17 +32,17 @@ CurrentDurability = 0.0
 
 [resource]
 script = ExtResource("7_iwyrp")
-ID = "sword_0001"
-Name = "Steel Sword"
-Category = "sword"
-Description = "A reliable blade of tempered steel."
 WeaponClass = ExtResource("8_v2t43")
-Damages = [SubResource("Resource_khdv1")]
+Damages = [SubResource("Resource_pd6d4")]
 HoldingTypes = [ExtResource("5_p5plk")]
 CompatibleSlots = []
 SlotPriority = 1
-Durability = SubResource("Resource_eseti")
+Durability = SubResource("Resource_02t42")
 InventoryShape = ExtResource("3_r2xai")
 Rarity = ExtResource("4_rafp3")
 StatRequirements = [ExtResource("6_5la51"), ExtResource("7_un0h5")]
 Images = [ExtResource("2_yt3q7")]
+ID = "sword_0001"
+Name = "Steel Sword"
+Category = "sword"
+Description = "A reliable blade of tempered steel."
