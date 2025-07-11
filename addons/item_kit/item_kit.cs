@@ -80,8 +80,10 @@ public partial class item_kit : EditorPlugin {
 	} // ToggleDockPanel
 
 
-	private void CreateDockPanel() {
-		_dock = new TabContainer();
+    private void CreateDockPanel() {
+        _dock = new TabContainer();
+        _dock.SizeFlagsVertical = Control.SizeFlags.Expand;
+        _dock.SizeFlagsHorizontal = Control.SizeFlags.Expand;
 
         _dock.AddChild(buildTypesResourcesTab());
         _dock.SetTabTitle(_dock.GetTabCount() - 1, "Types");
@@ -93,13 +95,28 @@ public partial class item_kit : EditorPlugin {
         _dock.SetTabTitle(_dock.GetTabCount() - 1, "Attributes");
 
         _dock.AddChild(buildItemsTab());
-		_dock.SetTabTitle(_dock.GetTabCount() - 1, "Items");
+        _dock.SetTabTitle(_dock.GetTabCount() - 1, "Items");
 
-		AddControlToDock(DockSlot.RightUl, _dock);
-	} // CreateDockPanel
+        AddControlToDock(DockSlot.RightUl, _dock);
+    } // CreateDockPanel
 
 
-    private GroupGenerators buildTypesResourcesTab() {
+    private Control buildScrollContainer(Control content) {
+        var scroll = new ScrollContainer {
+            SizeFlagsVertical = Control.SizeFlags.ExpandFill,
+            SizeFlagsHorizontal = Control.SizeFlags.ExpandFill,
+            VerticalScrollMode = ScrollContainer.ScrollMode.Auto,
+        };
+
+        content.SizeFlagsVertical = Control.SizeFlags.ExpandFill;
+        content.SizeFlagsHorizontal = Control.SizeFlags.ExpandFill;
+
+        scroll.AddChild(content);
+        return scroll;
+    }
+
+
+    private Control buildTypesResourcesTab() {
         string inputDir = "res://data/base_properties";
         string outputDir = "res://resources";
         var basePropsTab = new GroupGenerators(
@@ -130,11 +147,11 @@ public partial class item_kit : EditorPlugin {
                 )
             }
         );
-        return basePropsTab;
+        return buildScrollContainer(basePropsTab);
     } // buildBasePropsGenerators
 
 
-    private GroupGenerators buildInventoryResourcesTab() {
+    private Control buildInventoryResourcesTab() {
         string inputDir = "res://data/sub_resources";
         string outputDir = "res://resources";
         var subResourceTab = new GroupGenerators(
@@ -152,11 +169,11 @@ public partial class item_kit : EditorPlugin {
                 ),
             }
         );
-        return subResourceTab;
+        return buildScrollContainer(subResourceTab);
     } // buildSubResourcesTab
 
 
-    private GroupGenerators buildAttributeResourceTab() {
+    private Control buildAttributeResourceTab() {
         string inputDir = "res://data/sub_resources";
         string outputDir = "res://resources";
         var attribTab = new GroupGenerators(
@@ -173,11 +190,11 @@ public partial class item_kit : EditorPlugin {
                 ),
             }
         );
-        return attribTab;
+        return buildScrollContainer(attribTab);
     } // buildAttributeResourceTab
 
 
-    private GroupGenerators buildItemsTab() {
+    private Control buildItemsTab() {
         string inputDir = "res://data/items";
         string outputDir = "res://resources";
         var itemsTab = new GroupGenerators(
@@ -185,7 +202,7 @@ public partial class item_kit : EditorPlugin {
                         new WeaponResourcesGenerator($"{inputDir}/weapons.json",  $"{outputDir}/weapons/"),
             }
         );
-        return itemsTab;
+        return buildScrollContainer(itemsTab);
     } // buildSubResourcesTab
 
 

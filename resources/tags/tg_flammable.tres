@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dpx0agsjommmq"]
+
+[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/ItemResourceBase.cs" id="1_3kaba"]
+
+[resource]
+script = ExtResource("1_3kaba")
+ID = "tg_flammable"
+Name = "flammable"
+Category = ""
+Description = ""

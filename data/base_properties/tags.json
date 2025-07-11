@@ -1,0 +1,18 @@
+[
+	{
+		"Value": {
+			"ID": "tg_flammable",
+			"Name": "flammable"
+		}
+	},
+	{
+		"Value": {
+			"ID": "tg_radioactive",
+			"Name": "radiocative"
+		},
+		"Value": {
+			"ID": "tg_cursed",
+			"Name": "cursed"
+		}
+	}
+]

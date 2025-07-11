@@ -7,7 +7,8 @@ namespace Gamehound.ItemKit.Editor;
 public partial class GroupGenerators : ResourceFromJson {
 
     protected Array<ResourceFromJson> _generators = new Array<ResourceFromJson>();
-
+    private VBoxContainer _sectionContainer;
+    private Button _addButton;
 
     protected GroupGenerators() { }
 
@@ -24,15 +25,37 @@ public partial class GroupGenerators : ResourceFromJson {
 
         AddThemeConstantOverride("separation", 24);
 
+        _sectionContainer = new VBoxContainer();
+        _sectionContainer.AddThemeConstantOverride("separation", 24);
+        AddChild(_sectionContainer);
+
         foreach (ResourceFromJson gen in _generators) {
-            AddChild(buildSection(gen));
+            _sectionContainer.AddChild(buildSection(gen));
         }
+
+        _addButton = new Button { Text = "Add More" };
+        _addButton.Pressed += AddSection;
+        AddChild(_addButton);
 
         _generateButton = new Button { Text = "Generate All" };
         _generateButton.Pressed += () => OnGeneratePressed();
-
         AddChild(_generateButton);
     } // init
+
+
+    private void AddSection() {
+        string inputDir = "res://data/base_properties";
+        string outputDir = "res://resources/weapon_classes";
+
+        var newGen = new ItemBaseGenerator(
+            $"{inputDir}/weapon_classes.json",
+            $"{outputDir}/",
+            settingName: $"WeaponClassResource_Extra_{_generators.Count}"
+        );
+
+        _generators.Add(newGen);
+        _sectionContainer.AddChild(buildSection(newGen));
+    }
 
 
     private Control buildSection(ResourceFromJson gen) {

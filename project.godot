@@ -51,6 +51,14 @@ TagResource/output_path="res://resources/tags/"
 TagResource/is_overwrite=true
 ItemImageResource/imgs_dir_path="res://sprites/"
 WeaponClassResource/is_overwrite=true
+WeaponClassResource_Extra_4/input_path="res://data/base_properties/tags.json"
+WeaponClassResource_Extra_4/output_path="res://resources/tags/"
+WeaponClassResource_Extra_5/input_path="res://data/base_properties/weapon_classes.json"
+WeaponClassResource_Extra_5/output_path="res://resources/weapon_classes/"
+WeaponClassResource_Extra_6/input_path="res://data/base_properties/weapon_classes.json"
+WeaponClassResource_Extra_6/output_path="res://resources/weapon_classes/"
+WeaponClassResource_Extra_7/input_path="res://data/base_properties/weapon_classes.json"
+WeaponClassResource_Extra_7/output_path="res://resources/weapon_classes/"
 
 [mono]
 
