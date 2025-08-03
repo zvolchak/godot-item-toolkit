@@ -144,6 +144,12 @@ public partial class item_kit : EditorPlugin {
                     $"{outputDir}/holding_types/",
                     settingName: "HoldingTypeResource",
                     generateBtnText: "Holding Type Resources"
+                ),
+                new ItemBaseGenerator(
+                    $"{inputDir}/tags.json",
+                    $"{outputDir}/tags/",
+                    settingName: "TagsResource",
+                    generateBtnText: "Tags Resources"
                 )
             }
         );

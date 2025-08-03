@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dqspvevndhhyw"]
+
+[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/ItemResourceBase.cs" id="1_hhmsy"]
+
+[resource]
+script = ExtResource("1_hhmsy")
+ID = "tag_radioactive"
+Name = "radiocative"
+Category = ""
+Description = ""

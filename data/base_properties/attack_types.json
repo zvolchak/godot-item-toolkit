@@ -1,16 +1,12 @@
 [
 	{
-		"Value": {
-			"ID": "at_slash",
-			"Name": "slash",
-			"Description": "Slash attack."
-		}
+		"ID": "at_slash",
+		"Name": "slash",
+		"Description": "Slash attack."
 	},
 	{
-		"Value": {
-			"ID": "at_thrust",
-			"Name": "thrust",
-			"Description": "Thrust attack."
-		}
+		"ID": "at_thrust",
+		"Name": "thrust",
+		"Description": "Thrust attack."
 	}
 ]

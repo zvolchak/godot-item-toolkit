@@ -1,9 +1,9 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://cceo44ran22u6"]
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://cfnfhob84vf6r"]
 
-[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/ItemResourceBase.cs" id="1_rvbqp"]
+[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/ItemResourceBase.cs" id="1_s4qua"]
 
 [resource]
-script = ExtResource("1_rvbqp")
+script = ExtResource("1_s4qua")
 ID = "dt_magic"
 Name = "magic"
 Category = ""

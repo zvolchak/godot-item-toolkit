@@ -18,8 +18,6 @@ public partial class ItemShapeResource :
     [JsonConverter(typeof(ListToGodotArraySerializer<int>))]
     [Export] public Array<int> Layout { get; set; } = new();
 
-    [Export] public bool CanOverlap { get; set; }
-
     public virtual int Height => Layout.Count;
 
 

@@ -4,7 +4,7 @@ namespace Gamehound.ItemKit.Editor;
 
 
 public partial class ItemBaseGenerator
-    : Generator<JsonItemBaseData, ItemResourceBase> {
+    : Generator<ItemResourceBase, ItemResourceBase> {
 
     public ItemBaseGenerator(
         string inputPath,
@@ -16,8 +16,8 @@ public partial class ItemBaseGenerator
     }
 
 
-    protected override ItemResourceBase ExtractResource(JsonItemBaseData item) {
-        return item.Value;
+    protected override ItemResourceBase ExtractResource(ItemResourceBase item) {
+        return item;
     }
 
 } // class

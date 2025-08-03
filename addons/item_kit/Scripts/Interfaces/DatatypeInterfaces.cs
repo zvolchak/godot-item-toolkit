@@ -23,12 +23,6 @@ public interface IItemShape {
     public Array<int> Layout { get; }
 
     /// <summary>
-    /// Whether or not this shape can overlap other shapes and
-    /// can be overlapped by others.
-    /// </summary>
-    public bool CanOverlap { get; }
-
-    /// <summary>
     /// Return a cell value at position [col, row].
     /// </summary>
     public int GetIndex(int col, int row, int width=-1);

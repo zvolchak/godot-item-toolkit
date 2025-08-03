@@ -1,16 +1,12 @@
 [
 	{
-		"Value": {
-			"ID": "dt_physical",
-			"Name": "physical",
-			"Description": "Deals physical damage."
-		}
+		"ID": "dt_physical",
+		"Name": "physical",
+		"Description": "Deals physical damage."
 	},
 	{
-		"Value": {
-			"ID": "dt_magic",
-			"Name": "magic",
-			"Description": "Deals Magic damage."
-		}
+		"ID": "dt_magic",
+		"Name": "magic",
+		"Description": "Deals Magic damage."
 	}
 ]

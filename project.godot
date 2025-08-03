@@ -59,6 +59,8 @@ WeaponClassResource_Extra_6/input_path="res://data/base_properties/weapon_classe
 WeaponClassResource_Extra_6/output_path="res://resources/weapon_classes/"
 WeaponClassResource_Extra_7/input_path="res://data/base_properties/weapon_classes.json"
 WeaponClassResource_Extra_7/output_path="res://resources/weapon_classes/"
+TagsResource/input_path="res://data/base_properties/tags.json"
+TagsResource/output_path="res://resources/tags/"
 
 [mono]
 
