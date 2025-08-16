@@ -100,4 +100,9 @@ public partial class GroupGenerators : ResourceFromJson {
     } // OnGeneratePressed
 
 
+    public void AddGenerator(ResourceFromJson generator) {
+        _generators.Add(generator);
+    }
+
+
 } // class

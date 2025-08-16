@@ -2,9 +2,6 @@ using System.Collections.Generic;
 using System.Text.Json;
 using Gamehound.ItemKit.Resources;
 
-using Godot;
-
-
 namespace Gamehound.ItemKit.Editor;
 
 
@@ -22,12 +19,11 @@ public partial class ItemShapeResourceGenerator : ResourceFromJson {
     public override void GenerateResources(string jsonContent) {
         base.GenerateResources(jsonContent);
 
-        var data = JsonSerializer.Deserialize<List<JsonItemShapeData>>(
+        var data = JsonSerializer.Deserialize<List<ItemShapeResource>>(
             jsonContent, SerializerOptions
         );
 
-        foreach (JsonItemShapeData shapeData in data) {
-            ItemShapeResource shape = shapeData.InventoryShape;
+        foreach (ItemShapeResource shape in data) {
             var s = shape.CreateResource(
                 path: OutputDir,
                 isOverwrite: GetSettingsValue(IsOverwriteSettingPath).AsBool()

@@ -16,16 +16,20 @@ public partial class ItemImageResource :
     [Export] public Texture2D TextureAsset { get; set; }
 
 
-    public override Resource Hook_SaveResource(
+    public override Resource Hook_BeforeSave(
         Resource resource,
         string path = null,
         ResourceOptions options = null
     ) {
         Variant spritesDir;
-        if (options == null || (options?.other?.ContainsKey("imgs_dir_path") ?? false)) {
+        if (options == null) {
             spritesDir = ProjectSettings
                 .GetSetting($"itemkit/{GetType().Name}/imgs_dir_path")
                 .AsString();
+        } else if (options?.other?.ContainsKey("imgs_dir_path") ?? false) {
+            Variant imgs_dir_path;
+            options.other.TryGetValue("imgs_dir_path", out imgs_dir_path);
+            spritesDir = imgs_dir_path.AsString();
         } else {
             options.other.TryGetValue("imgs_dir_path", out spritesDir);
         }
@@ -35,7 +39,6 @@ public partial class ItemImageResource :
             ImagePath
         );
 
-        resource = base.Hook_SaveResource(resource, path: path, options: options);
         return resource;
     } // Hook_Postprocess
 

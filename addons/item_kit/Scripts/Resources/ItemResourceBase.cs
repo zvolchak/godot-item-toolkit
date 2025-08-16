@@ -44,6 +44,7 @@ public partial class ItemResourceBase :
         string path = null,
         string settingName = null,
         bool isOverwrite = false,
+        bool dontCreate = false,
         ResourceOptions options = null
     ) {
         if (ID == null)
@@ -55,7 +56,7 @@ public partial class ItemResourceBase :
         if (path == null)
             path = GetFullPath(settingName: settingName);
 
-        path = Hook_Preprocess(path: path, options: options);
+        path = Hook_Preprocess(path: path, settingName: settingName,  options: options);
         Resource resource = Hook_LoadResource(path: path, options: options);
         resource = Hook_ProcessDuplicate(resource, isOverwrite: isOverwrite, options: options);
         if (resource != null)
@@ -63,7 +64,10 @@ public partial class ItemResourceBase :
         else
             resource = this;
 
-        resource = Hook_SaveResource(resource, path: path, options: options);
+        resource = Hook_BeforeSave(resource, options: options);
+
+        if (!dontCreate)
+            resource = Hook_SaveResource(resource, path: path, options: options);
         resource = Hook_Postprocess(resource, path: path, options: options);
         return resource;
     } // CreateResource
@@ -78,10 +82,11 @@ public partial class ItemResourceBase :
     /// </summary>
     public virtual string Hook_Preprocess(
         string path = null,
+        string settingName = null,
         ResourceOptions options = null
     ) {
         if (path == "" || path == null)
-            path = GetFullPath();
+            path = GetFullPath(settingName: settingName);
 
         string dirPath = System.IO.Path.GetDirectoryName(path);
         string globalDirPath = ProjectSettings.GlobalizePath(dirPath);
@@ -91,6 +96,15 @@ public partial class ItemResourceBase :
         }
         return path;
     } // Hook_Prepare
+
+
+    public virtual Resource Hook_BeforeSave(
+        Resource resource,
+        string path = null, 
+        ResourceOptions options = null
+    ) {
+        return resource;
+    } // Hook_BeforeSave
 
 
     /// <summary>
@@ -108,10 +122,14 @@ public partial class ItemResourceBase :
         if (path == "" || path == null)
             path = GetFullPath();
 
+        var flags = SaverFlags.ChangePath |
+            SaverFlags.Compress |
+            SaverFlags.OmitEditorProperties;
+
         Error result = ResourceSaver.Save(
             resource,
             path,
-            SaverFlags.Compress | SaverFlags.OmitEditorProperties
+            flags
         );
 
         if (result != Error.Ok) {
@@ -162,10 +180,6 @@ public partial class ItemResourceBase :
     ///
     /// Returning null means no existing resource needs to be used as reference.
     /// Instead, this current resource is modified and will need to be saved.
-    ///
-    /// TODO: Make overwriting process smarter. Aka, it sohuld look into the
-    /// JSON data and try to figure out which fields are present in the JSON and
-    /// overwrite only those.
     /// </summary>
     public virtual Resource Hook_ProcessDuplicate(
         Resource existing,
@@ -185,14 +199,10 @@ public partial class ItemResourceBase :
             return existing;
         } else if (existing != null && isOverwrite) {
             GD.PushWarning(
-                $"[{GetType().Name}::{existing.ResourcePath}] already exists. " +
-                "WARNING: Overwriting existing resource currently unavailable."
+                $"[{GetType().Name}::{existing.ResourcePath}] already exists. Overwriting..."
             );
-             //this.CopyFrom(existing);
         }
 
-        // null means no existing resource needs to be used as reference. Instead,
-        // this current resource is modified and will need to be saved.
         return null;
     } // Hook_ProcessDuplicate
 
@@ -295,7 +305,8 @@ public partial class ItemResourceBase :
     public virtual string GetFullPath(string settingName=null) {
         string path = GetOutputDir(settingName: settingName).TrimEnd('/');
         string filename = GetResourceFilename().TrimStart('/');
-        return $"{path}/{filename}";
+        //return $"{path}/{filename}";
+        return ResourcePath;
     } // GetFullPath
 
 } // class

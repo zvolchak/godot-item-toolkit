@@ -1,9 +1,9 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://c2ehkctw532o4"]
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://qp34a3r6ooea"]
 
-[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/ItemShapeResource.cs" id="1_7wma5"]
+[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/ItemShapeResource.cs" id="1_sppdm"]
 
 [resource]
-script = ExtResource("1_7wma5")
+script = ExtResource("1_sppdm")
 Width = 2
 Layout = [1, 1, 1, 1, 1, 1]
 ID = "2by3_shape"

@@ -70,7 +70,7 @@ public partial class item_kit : EditorPlugin {
 	} // _Process
 
 
-	private void ToggleDockPanel() {
+	protected virtual void ToggleDockPanel() {
 		if (_dock != null) {
 			CloseDock();
 			return;
@@ -80,7 +80,7 @@ public partial class item_kit : EditorPlugin {
 	} // ToggleDockPanel
 
 
-    private void CreateDockPanel() {
+    protected virtual void CreateDockPanel() {
         _dock = new TabContainer();
         _dock.SizeFlagsVertical = Control.SizeFlags.Expand;
         _dock.SizeFlagsHorizontal = Control.SizeFlags.Expand;
@@ -94,14 +94,14 @@ public partial class item_kit : EditorPlugin {
         _dock.AddChild(buildAttributeResourceTab());
         _dock.SetTabTitle(_dock.GetTabCount() - 1, "Attributes");
 
-        _dock.AddChild(buildItemsTab());
+        _dock.AddChild(buildScrollContainer(buildItemsTab()));
         _dock.SetTabTitle(_dock.GetTabCount() - 1, "Items");
 
         AddControlToDock(DockSlot.RightUl, _dock);
     } // CreateDockPanel
 
 
-    private Control buildScrollContainer(Control content) {
+    protected virtual Control buildScrollContainer(Control content) {
         var scroll = new ScrollContainer {
             SizeFlagsVertical = Control.SizeFlags.ExpandFill,
             SizeFlagsHorizontal = Control.SizeFlags.ExpandFill,
@@ -116,7 +116,7 @@ public partial class item_kit : EditorPlugin {
     }
 
 
-    private Control buildTypesResourcesTab() {
+    protected virtual Control buildTypesResourcesTab() {
         string inputDir = "res://data/base_properties";
         string outputDir = "res://resources";
         var basePropsTab = new GroupGenerators(
@@ -157,7 +157,7 @@ public partial class item_kit : EditorPlugin {
     } // buildBasePropsGenerators
 
 
-    private Control buildInventoryResourcesTab() {
+    protected virtual Control buildInventoryResourcesTab() {
         string inputDir = "res://data/sub_resources";
         string outputDir = "res://resources";
         var subResourceTab = new GroupGenerators(
@@ -179,7 +179,7 @@ public partial class item_kit : EditorPlugin {
     } // buildSubResourcesTab
 
 
-    private Control buildAttributeResourceTab() {
+    protected virtual Control buildAttributeResourceTab() {
         string inputDir = "res://data/sub_resources";
         string outputDir = "res://resources";
         var attribTab = new GroupGenerators(
@@ -200,7 +200,7 @@ public partial class item_kit : EditorPlugin {
     } // buildAttributeResourceTab
 
 
-    private Control buildItemsTab() {
+    protected virtual GroupGenerators buildItemsTab() {
         string inputDir = "res://data/items";
         string outputDir = "res://resources";
         var itemsTab = new GroupGenerators(
@@ -208,11 +208,11 @@ public partial class item_kit : EditorPlugin {
                         new WeaponResourcesGenerator($"{inputDir}/weapons.json",  $"{outputDir}/weapons/"),
             }
         );
-        return buildScrollContainer(itemsTab);
+        return itemsTab;
     } // buildSubResourcesTab
 
 
-    private void CloseDock() {
+    protected virtual void CloseDock() {
 		if (_dock != null && _dock.IsInsideTree()) {
 			RemoveControlFromDocks(_dock);
 			_dock.QueueFree();
@@ -220,14 +220,14 @@ public partial class item_kit : EditorPlugin {
 
 		_dock = null;
 	} // CloseDock
-	
 
-	private double GetLatestScriptWriteTime() {
+
+    protected virtual double GetLatestScriptWriteTime() {
 		return ScanDirectoryForModifiedTime(_watchDir);
 	} // GetLatestScriptWriteTime
 
 
-	private double ScanDirectoryForModifiedTime(string path) {
+    protected virtual double ScanDirectoryForModifiedTime(string path) {
 		double latest = 0;
 
 		var dir = DirAccess.Open(path);

@@ -11,12 +11,14 @@ public interface IResourceCreator {
         string destination = null,
         string settingName = null,
         bool isOverwrite = false,
+        bool dontCreate = false,
         ResourceOptions options = null
     );
 
 
     public string Hook_Preprocess(
         string path = null,
+        string settingName = null,
         ResourceOptions options = null
     );
 
@@ -30,6 +32,13 @@ public interface IResourceCreator {
     public Resource Hook_ProcessDuplicate(
         Resource existingResource,
         bool isOverwrite = false,
+        ResourceOptions options = null
+    );
+
+
+    public Resource Hook_BeforeSave(
+        Resource resource,
+        string path = null,
         ResourceOptions options = null
     );
 

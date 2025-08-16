@@ -1,29 +1,29 @@
-[gd_resource type="Resource" load_steps=15 format=3 uid="uid://vnrfd8ah63dd"]
+[gd_resource type="Resource" load_steps=15 format=3 uid="uid://djhmk1fc2s0lr"]
 
-[ext_resource type="Resource" uid="uid://8xrssjqu0k10" path="res://resources/damage_types/dt_physical.tres" id="1_ldsty"]
-[ext_resource type="Resource" uid="uid://dibp6q4bgkqcp" path="res://resources/attack_types/at_slash.tres" id="1_okr05"]
-[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/Fields/DamageData.cs" id="2_8pfex"]
-[ext_resource type="Resource" uid="uid://dd5lpqeya75sb" path="res://resources/images/sword_preview_001.tres" id="2_yt3q7"]
-[ext_resource type="Resource" uid="uid://c2ehkctw532o4" path="res://resources/shapes/2by3_shape.tres" id="3_r2xai"]
-[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/Fields/DurabilityData.cs" id="4_1l3nr"]
-[ext_resource type="Resource" uid="uid://dsdgbad4hyc6x" path="res://resources/rarities/rarity_common.tres" id="4_rafp3"]
-[ext_resource type="Resource" uid="uid://hovujphckbbm" path="res://resources/holding_types/ht_one_hand.tres" id="5_p5plk"]
-[ext_resource type="Resource" uid="uid://bem1dc4wjc8u3" path="res://resources/modifiers/basic_dexterity_mod_0002.tres" id="6_5la51"]
-[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/WeaponResource.cs" id="7_iwyrp"]
-[ext_resource type="Resource" uid="uid://d2eiy30iewwj5" path="res://resources/modifiers/basic_strength_mod_0001.tres" id="7_un0h5"]
-[ext_resource type="Resource" uid="uid://dxckqvqc3lp0p" path="res://resources/weapon_classes/wc_melee.tres" id="8_v2t43"]
+[ext_resource type="Resource" uid="uid://dibp6q4bgkqcp" path="res://resources/attack_types/at_slash.tres" id="1_a1xe3"]
+[ext_resource type="Resource" uid="uid://8xrssjqu0k10" path="res://resources/damage_types/dt_physical.tres" id="2_6aff4"]
+[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/Fields/DamageData.cs" id="3_o1squ"]
+[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/Fields/DurabilityData.cs" id="4_04kno"]
+[ext_resource type="Resource" uid="uid://hovujphckbbm" path="res://resources/holding_types/ht_one_hand.tres" id="5_qkvtf"]
+[ext_resource type="Resource" uid="uid://dd5lpqeya75sb" path="res://resources/images/sword_preview_001.tres" id="6_x61w5"]
+[ext_resource type="Resource" uid="uid://qp34a3r6ooea" path="res://resources/shapes/2by3_shape.tres" id="7_7x0i0"]
+[ext_resource type="Resource" uid="uid://dsdgbad4hyc6x" path="res://resources/rarities/rarity_common.tres" id="8_6vxxv"]
+[ext_resource type="Resource" uid="uid://bem1dc4wjc8u3" path="res://resources/modifiers/basic_dexterity_mod_0002.tres" id="9_2dby0"]
+[ext_resource type="Resource" uid="uid://d2eiy30iewwj5" path="res://resources/modifiers/basic_strength_mod_0001.tres" id="10_2ocfm"]
+[ext_resource type="Resource" uid="uid://dxckqvqc3lp0p" path="res://resources/weapon_classes/wc_melee.tres" id="11_s3ef5"]
+[ext_resource type="Script" path="res://addons/item_kit/Scripts/Resources/WeaponResource.cs" id="12_uyr1r"]
 
-[sub_resource type="Resource" id="Resource_1b0v7"]
-script = ExtResource("2_8pfex")
+[sub_resource type="Resource" id="Resource_tp5wn"]
+script = ExtResource("3_o1squ")
 Amount = Vector3(1, 2, 0)
 AttackSpeed = 1.0
 Cooldown = 0.0
 Range = 2.5
-DamageType = ExtResource("1_ldsty")
-AttackType = ExtResource("1_okr05")
+DamageType = ExtResource("2_6aff4")
+AttackType = ExtResource("1_a1xe3")
 
-[sub_resource type="Resource" id="Resource_gn777"]
-script = ExtResource("4_1l3nr")
+[sub_resource type="Resource" id="Resource_4k5uo"]
+script = ExtResource("4_04kno")
 MaxDurability = 10
 IsRepairable = true
 IsPermaBreak = false
@@ -31,17 +31,17 @@ DegradeRateModifier = 0.1
 CurrentDurability = 0.0
 
 [resource]
-script = ExtResource("7_iwyrp")
-WeaponClass = ExtResource("8_v2t43")
-Damages = [SubResource("Resource_1b0v7")]
-HoldingTypes = [ExtResource("5_p5plk")]
+script = ExtResource("12_uyr1r")
+WeaponClass = ExtResource("11_s3ef5")
+Damages = [SubResource("Resource_tp5wn")]
+HoldingTypes = [ExtResource("5_qkvtf")]
 CompatibleSlots = []
 SlotPriority = 1
-Durability = SubResource("Resource_gn777")
-InventoryShape = ExtResource("3_r2xai")
-Rarity = ExtResource("4_rafp3")
-StatRequirements = [ExtResource("6_5la51"), ExtResource("7_un0h5")]
-Images = [ExtResource("2_yt3q7")]
+Durability = SubResource("Resource_4k5uo")
+InventoryShape = ExtResource("7_7x0i0")
+Rarity = ExtResource("8_6vxxv")
+StatRequirements = [ExtResource("9_2dby0"), ExtResource("10_2ocfm")]
+Images = [ExtResource("6_x61w5")]
 ID = "sword_0001"
 Name = "Steel Sword"
 Category = "sword"
